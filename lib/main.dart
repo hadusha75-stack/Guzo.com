@@ -37,8 +37,7 @@ class MyApp extends StatelessWidget {
       theme: ThemeData(colorScheme: .fromSeed(seedColor: Colors.green)),
 
       home: isLoggIn ? FlightsPage() : LoginPageGoogle(),
-      // home: TravelerDetailsPage(travelerNumber: 2),
-      // home: FlightsPage(),
+    
     );
   }
 }
