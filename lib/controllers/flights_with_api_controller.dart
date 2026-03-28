@@ -23,6 +23,181 @@ class FlightUpdaredController extends GetxController {
   var paymentOptions = <dynamic>[].obs;
   var cardPaymentId = Rxn<dynamic>();
 
+  List<dynamic> _allOffers = [];
+
+  var sortMode = 'best'.obs;
+
+  var filterMaxStops = Rxn<int>();
+  var filterMaxDurationHours = Rxn<double>();
+  var filterAirlines = <String>{}.obs;
+  var filterDepSlots = <int>{}.obs;
+  var filterArrSlots = <int>{}.obs;
+
+  var filteredOffers = <dynamic>[].obs;
+
+  static const _timeSlotRanges = [(0, 6), (6, 12), (12, 18), (18, 24)];
+  static const _timeSlotLabels = [
+    '12:00 AM – 5:59 AM',
+    '6:00 AM – 11:59 AM',
+    '12:00 PM – 5:59 PM',
+    '6:00 PM – 11:59 PM',
+  ];
+  List<String> get timeSlotLabels => List.unmodifiable(_timeSlotLabels);
+
+  List<int> get depSlotCounts => List.generate(4, (i) {
+    final (start, end) = _timeSlotRanges[i];
+    return _allOffers.where((o) {
+      final seg = ((o['flights'] as List?)?.first?['segments'] as List?)?.first;
+      final h = DateTime.tryParse(seg?['departureDateTime'] ?? '')?.hour ?? -1;
+      return h >= start && h < end;
+    }).length;
+  });
+
+  List<int> get arrSlotCounts => List.generate(4, (i) {
+    final (start, end) = _timeSlotRanges[i];
+    return _allOffers.where((o) {
+      final flights = o['flights'] as List? ?? [];
+      final segs = flights.isNotEmpty ? (flights.last['segments'] as List? ?? []) : [];
+      final h = DateTime.tryParse(segs.isNotEmpty ? segs.last['arrivalDateTime'] ?? '' : '')?.hour ?? -1;
+      return h >= start && h < end;
+    }).length;
+  });
+
+  int stopsCount(int? maxStops) => _allOffers.where((o) {
+    final flights = o['flights'] as List? ?? [];
+    return flights.every((f) {
+      final stops = ((f['segments'] as List?)?.length ?? 1) - 1;
+      return maxStops == null || stops <= maxStops;
+    });
+  }).length;
+
+  String stopsMinPrice(int? maxStops) {
+    final prices = _allOffers.where((o) {
+      final flights = o['flights'] as List? ?? [];
+      return flights.every((f) {
+        final stops = ((f['segments'] as List?)?.length ?? 1) - 1;
+        return maxStops == null || stops <= maxStops;
+      });
+    }).map((o) => double.tryParse(o['pricing']?['total']?.toString() ?? '') ?? double.infinity)
+        .where((p) => p != double.infinity);
+    if (prices.isEmpty) return '';
+    return '\$${prices.reduce((a, b) => a < b ? a : b).toStringAsFixed(0)}';
+  }
+
+  double get maxDurationHours {
+    double max = 0;
+    for (final o in _allOffers) {
+      double total = 0;
+      for (final f in (o['flights'] as List? ?? [])) {
+        final m = RegExp(r'PT(?:(\d+)H)?(?:(\d+)M)?').firstMatch(f['duration'] as String? ?? '');
+        if (m != null) total += (int.tryParse(m.group(1) ?? '0') ?? 0) + (int.tryParse(m.group(2) ?? '0') ?? 0) / 60.0;
+      }
+      if (total > max) max = total;
+    }
+    return max == 0 ? 24 : (max + 1).ceilToDouble();
+  }
+
+  int airlineOfferCount(String code) => _allOffers.where((o) {
+    final seg = ((o['flights'] as List?)?.first?['segments'] as List?)?.first;
+    return (seg?['airlineCode'] as String? ?? '') == code;
+  }).length;
+
+  void _applyAll() {
+    var result = List<dynamic>.from(_allOffers);
+
+    if (filterMaxStops.value != null) {
+      result = result.where((o) {
+        final flights = o['flights'] as List? ?? [];
+        return flights.every((f) => ((f['segments'] as List?)?.length ?? 1) - 1 <= filterMaxStops.value!);
+      }).toList();
+    }
+
+    if (filterMaxDurationHours.value != null) {
+      result = result.where((o) {
+        double total = 0;
+        for (final f in (o['flights'] as List? ?? [])) {
+          final m = RegExp(r'PT(?:(\d+)H)?(?:(\d+)M)?').firstMatch(f['duration'] as String? ?? '');
+          if (m != null) total += (int.tryParse(m.group(1) ?? '0') ?? 0) + (int.tryParse(m.group(2) ?? '0') ?? 0) / 60.0;
+        }
+        return total <= filterMaxDurationHours.value!;
+      }).toList();
+    }
+
+    if (filterDepSlots.isNotEmpty) {
+      result = result.where((o) {
+        final seg = ((o['flights'] as List?)?.first?['segments'] as List?)?.first;
+        final h = DateTime.tryParse(seg?['departureDateTime'] ?? '')?.hour ?? -1;
+        return filterDepSlots.any((slot) { final (s, e) = _timeSlotRanges[slot]; return h >= s && h < e; });
+      }).toList();
+    }
+
+    if (filterArrSlots.isNotEmpty) {
+      result = result.where((o) {
+        final flights = o['flights'] as List? ?? [];
+        final segs = flights.isNotEmpty ? (flights.last['segments'] as List? ?? []) : [];
+        final h = DateTime.tryParse(segs.isNotEmpty ? segs.last['arrivalDateTime'] ?? '' : '')?.hour ?? -1;
+        return filterArrSlots.any((slot) { final (s, e) = _timeSlotRanges[slot]; return h >= s && h < e; });
+      }).toList();
+    }
+
+    if (filterAirlines.isNotEmpty) {
+      result = result.where((o) {
+        final seg = ((o['flights'] as List?)?.first?['segments'] as List?)?.first;
+        return filterAirlines.contains(seg?['airlineCode'] as String? ?? '');
+      }).toList();
+    }
+
+    if (sortMode.value == 'cheapest') {
+      result.sort((a, b) {
+        final pa = double.tryParse(a['pricing']?['total']?.toString() ?? '0') ?? 0;
+        final pb = double.tryParse(b['pricing']?['total']?.toString() ?? '0') ?? 0;
+        return pa.compareTo(pb);
+      });
+    } else if (sortMode.value == 'fastest') {
+      result.sort((a, b) {
+        int mins(dynamic o) {
+          int t = 0;
+          for (final f in (o['flights'] as List? ?? [])) {
+            final m = RegExp(r'PT(?:(\d+)H)?(?:(\d+)M)?').firstMatch(f['duration'] as String? ?? '');
+            if (m != null) t += (int.tryParse(m.group(1) ?? '0') ?? 0) * 60 + (int.tryParse(m.group(2) ?? '0') ?? 0);
+          }
+          return t;
+        }
+        return mins(a).compareTo(mins(b));
+      });
+    }
+
+    filteredOffers.value = result;
+  }
+
+  void setSortMode(String mode) { sortMode.value = mode; _applyAll(); }
+  void setFilterStops(int? v) { filterMaxStops.value = v; _applyAll(); }
+  void setFilterAirlines(Set<String> v) { filterAirlines.value = v; _applyAll(); }
+  void setFilterDepSlots(Set<int> v) { filterDepSlots.value = v; _applyAll(); }
+  void setFilterArrSlots(Set<int> v) { filterArrSlots.value = v; _applyAll(); }
+  void setFilterMaxDuration(double? v) { filterMaxDurationHours.value = v; _applyAll(); }
+
+  void clearFilters() {
+    filterMaxStops.value = null;
+    filterMaxDurationHours.value = null;
+    filterAirlines.value = {};
+    filterDepSlots.value = {};
+    filterArrSlots.value = {};
+    _applyAll();
+  }
+
+  List<Map<String, String>> get availableAirlines {
+    final seen = <String>{};
+    final result = <Map<String, String>>[];
+    for (final o in _allOffers) {
+      final seg = ((o['flights'] as List?)?.first?['segments'] as List?)?.first;
+      final code = seg?['airlineCode'] as String? ?? '';
+      final name = seg?['airlineName'] as String? ?? code;
+      if (code.isNotEmpty && seen.add(code)) result.add({'code': code, 'name': name});
+    }
+    return result;
+  }
+
   Map<String, dynamic>? _priceResponseData;
 
   List<PassengerInfo> _passengers = [];
@@ -65,6 +240,8 @@ class FlightUpdaredController extends GetxController {
       );
 
       offers.value = results;
+      _allOffers = List<dynamic>.from(results);
+      clearFilters(); // reset filters and populate filteredOffers
     } catch (e) {
       errorMessage.value = e.toString();
       debugPrint('SEARCH ERROR: $e');
@@ -176,8 +353,7 @@ class FlightUpdaredController extends GetxController {
       return;
     }
 
-    // Reset payment state so we never reuse a stale bookingLocator or cardPaymentId
-    bookingLocator.value = '';
+ bookingLocator.value = '';
     cardPaymentId.value = null;
     paymentOptions.value = [];
 

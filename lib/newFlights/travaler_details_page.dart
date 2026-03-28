@@ -41,6 +41,7 @@ class _TravelerDetailsPageState extends State<TravelerDetailsPage> {
 
   String? _selectedGender;
   DateTime? _selectedDateOfBirth;
+  bool _submitted = false;
 
   @override
   void initState() {
@@ -101,7 +102,9 @@ class _TravelerDetailsPageState extends State<TravelerDetailsPage> {
       ),
       body: Form(
         key: _formKey,
-        autovalidateMode: AutovalidateMode.onUserInteraction,
+        autovalidateMode: _submitted
+            ? AutovalidateMode.onUserInteraction
+            : AutovalidateMode.disabled,
         child: Column(
           children: [
             Expanded(
@@ -175,9 +178,14 @@ class _TravelerDetailsPageState extends State<TravelerDetailsPage> {
                       border: OutlineInputBorder(
                         borderRadius: BorderRadius.circular(8),
                       ),
+                      suffixIcon:
+                          (_submitted && _firstNameController.text.isEmpty)
+                          ? const Icon(Icons.error_outline, color: Colors.red)
+                          : null,
                     ),
                     validator: (v) =>
                         v!.isEmpty ? 'Add first name(s) to continue' : null,
+                    onChanged: (_) => setState(() {}),
                   ),
                   const SizedBox(height: 20),
                   const Text(
@@ -195,9 +203,14 @@ class _TravelerDetailsPageState extends State<TravelerDetailsPage> {
                       border: OutlineInputBorder(
                         borderRadius: BorderRadius.circular(8),
                       ),
+                      suffixIcon:
+                          (_submitted && _lastNameController.text.isEmpty)
+                          ? const Icon(Icons.error_outline, color: Colors.red)
+                          : null,
                     ),
                     validator: (v) =>
                         v!.isEmpty ? 'Add last name(s) to continue' : null,
+                    onChanged: (_) => setState(() {}),
                   ),
                   const SizedBox(height: 20),
                   const Text(
@@ -341,7 +354,6 @@ class _TravelerDetailsPageState extends State<TravelerDetailsPage> {
                                                 _genderController.text =
                                                     localSelectedGender;
                                               });
-                                              
                                               Navigator.pop(context);
                                             },
                                             style: ElevatedButton.styleFrom(
@@ -374,10 +386,13 @@ class _TravelerDetailsPageState extends State<TravelerDetailsPage> {
                         controller: _genderController,
                         readOnly: true,
                         decoration: InputDecoration(
-                          suffixIcon: const Icon(
-                            Icons.keyboard_arrow_down,
-                            size: 30,
-                          ),
+                          suffixIcon:
+                              (_submitted && _genderController.text.isEmpty)
+                              ? const Icon(
+                                  Icons.error_outline,
+                                  color: Colors.red,
+                                )
+                              : const Icon(Icons.keyboard_arrow_down, size: 30),
                           border: OutlineInputBorder(
                             borderRadius: BorderRadius.circular(8),
                           ),
@@ -412,21 +427,27 @@ class _TravelerDetailsPageState extends State<TravelerDetailsPage> {
                             border: OutlineInputBorder(
                               borderRadius: BorderRadius.circular(8),
                             ),
+                            suffixIcon:
+                                (_submitted &&
+                                    (_monthController.text.isEmpty ||
+                                        (int.tryParse(_monthController.text) ??
+                                                0) <
+                                            1 ||
+                                        (int.tryParse(_monthController.text) ??
+                                                13) >
+                                            12))
+                                ? const Icon(
+                                    Icons.error_outline,
+                                    color: Colors.red,
+                                    size: 20,
+                                  )
+                                : null,
                           ),
                           validator: (v) {
-                            if (v == null || v.isEmpty) {
-                              return 'Required';
-                            }
-
+                            if (v == null || v.isEmpty) return 'Required';
                             final month = int.tryParse(v);
-                            if (month == null) {
-                              return 'Enter a \nvalid number';
-                            }
-
-                            if (month < 1 || month > 12) {
-                              return 'Month must be \bbetween 1 \nand 12';
-                            }
-
+                            if (month == null) return 'Invalid';
+                            if (month < 1 || month > 12) return 'Must be 1-12';
                             return null;
                           },
                         ),
@@ -449,18 +470,27 @@ class _TravelerDetailsPageState extends State<TravelerDetailsPage> {
                             border: OutlineInputBorder(
                               borderRadius: BorderRadius.circular(8),
                             ),
+                            suffixIcon:
+                                (_submitted &&
+                                    (_dateController.text.isEmpty ||
+                                        (int.tryParse(_dateController.text) ??
+                                                0) <
+                                            1 ||
+                                        (int.tryParse(_dateController.text) ??
+                                                32) >
+                                            31))
+                                ? const Icon(
+                                    Icons.error_outline,
+                                    color: Colors.red,
+                                    size: 20,
+                                  )
+                                : null,
                           ),
                           validator: (v) {
-                            if (v == null || v.isEmpty) {
-                              return 'Required';
-                            }
+                            if (v == null || v.isEmpty) return 'Required';
                             final day = int.tryParse(v);
-                            if (day == null) {
-                              return 'Enter a \nvalid number';
-                            }
-                            if (day < 1 || day > 31) {
-                              return 'Day must be \nbetween 1 \nand 31';
-                            }
+                            if (day == null) return 'Invalid';
+                            if (day < 1 || day > 31) return 'Must be 1-31';
                             return null;
                           },
                         ),
@@ -483,17 +513,28 @@ class _TravelerDetailsPageState extends State<TravelerDetailsPage> {
                             border: OutlineInputBorder(
                               borderRadius: BorderRadius.circular(8),
                             ),
+                            suffixIcon:
+                                (_submitted &&
+                                    (_yearController.text.isEmpty ||
+                                        (int.tryParse(_yearController.text) ??
+                                                0) <
+                                            1900 ||
+                                        (int.tryParse(_yearController.text) ??
+                                                9999) >
+                                            DateTime.now().year))
+                                ? const Icon(
+                                    Icons.error_outline,
+                                    color: Colors.red,
+                                    size: 20,
+                                  )
+                                : null,
                           ),
                           validator: (v) {
-                            if (v == null || v.isEmpty) {
-                              return 'Required';
-                            }
+                            if (v == null || v.isEmpty) return 'Required';
                             final year = int.tryParse(v);
-                            if (year == null) {
-                              return 'Enter a \nvalid number';
-                            }
-                            if (year < 1900 || year > 2025) {
-                              return 'Enter a \nvalid year';
+                            if (year == null) return 'Invalid';
+                            if (year < 1900 || year > DateTime.now().year) {
+                              return 'Invalid year';
                             }
                             return null;
                           },
@@ -514,6 +555,7 @@ class _TravelerDetailsPageState extends State<TravelerDetailsPage> {
                 ),
                 child: ElevatedButton(
                   onPressed: () {
+                    setState(() => _submitted = true);
                     if (_formKey.currentState!.validate()) {
                       userNameController.setName(
                         _firstNameController.text.trim(),

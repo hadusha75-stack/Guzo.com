@@ -602,59 +602,7 @@ class _CheckoutPageState extends State<CheckoutPage> {
                     SizedBox(height: 30),
                     Center(
                       child: InkWell(
-                        onTap: () {
-                          showModalBottomSheet(
-                            context: context,
-                            backgroundColor: Colors.transparent,
-                            builder: (context) {
-                              return DraggableScrollableSheet(
-                                initialChildSize: 0.75,
-                                minChildSize: 0.4,
-                                maxChildSize: 0.95,
-                                builder: (context, scrollController) {
-                                  return Container(
-                                    height: 200,
-                                    decoration: const BoxDecoration(
-                                      color: Colors.white,
-                                      borderRadius: BorderRadius.vertical(
-                                        top: Radius.circular(20),
-                                      ),
-                                    ),
-                                    child: Column(
-                                      children: [
-                                        const SizedBox(height: 12),
-                                        Center(
-                                          child: Container(
-                                            width: 60,
-                                            height: 6,
-                                            decoration: BoxDecoration(
-                                              color: Colors.grey,
-                                              borderRadius:
-                                                  BorderRadius.circular(10),
-                                            ),
-                                          ),
-                                        ),
-                                        const SizedBox(height: 20),
-
-                                        const SizedBox(height: 20),
-
-                                        Expanded(
-                                          child: ListView(
-                                            controller: scrollController,
-                                            padding: const EdgeInsets.symmetric(
-                                              horizontal: 20,
-                                            ),
-                                            children: const [],
-                                          ),
-                                        ),
-                                      ],
-                                    ),
-                                  );
-                                },
-                              );
-                            },
-                          );
-                        },
+                        onTap: () => _showFlightDetailsSheet(context, firstFlight),
                         child: Text(
                           "View flight details",
                           style: TextStyle(
@@ -730,61 +678,7 @@ class _CheckoutPageState extends State<CheckoutPage> {
 
                       Center(
                         child: InkWell(
-                          onTap: () {
-                            showModalBottomSheet(
-                              context: context,
-                              backgroundColor: Colors.transparent,
-                              isDismissible: true,
-                              enableDrag: true,
-                              builder: (context) {
-                                return DraggableScrollableSheet(
-                                  initialChildSize: 0.75,
-                                  minChildSize: 0.4,
-                                  maxChildSize: 0.95,
-                                  builder: (context, scrollController) {
-                                    return Container(
-                                      decoration: const BoxDecoration(
-                                        color: Colors.white,
-                                        borderRadius: BorderRadius.vertical(
-                                          top: Radius.circular(20),
-                                        ),
-                                      ),
-                                      child: Column(
-                                        children: [
-                                          const SizedBox(height: 12),
-                                          Center(
-                                            child: Container(
-                                              width: 60,
-                                              height: 6,
-                                              decoration: BoxDecoration(
-                                                color: Colors.grey,
-                                                borderRadius:
-                                                    BorderRadius.circular(10),
-                                              ),
-                                            ),
-                                          ),
-                                          const SizedBox(height: 20),
-
-                                          Expanded(
-                                            child: ListView(
-                                              controller: scrollController,
-                                              padding:
-                                                  const EdgeInsets.symmetric(
-                                                    horizontal: 20,
-                                                  ),
-                                              children: const [
-                                                SizedBox(height: 40),
-                                              ],
-                                            ),
-                                          ),
-                                        ],
-                                      ),
-                                    );
-                                  },
-                                );
-                              },
-                            );
-                          },
+                          onTap: () => _showFlightDetailsSheet(context, secondFlight),
                           child: Text(
                             "View flight details",
                             style: TextStyle(
@@ -865,59 +759,7 @@ class _CheckoutPageState extends State<CheckoutPage> {
                     SizedBox(height: 30),
                     Center(
                       child: InkWell(
-                        onTap: () {
-                          showModalBottomSheet(
-                            context: context,
-                            backgroundColor: Colors.transparent,
-                            builder: (context) {
-                              return DraggableScrollableSheet(
-                                initialChildSize: 0.75,
-                                minChildSize: 0.4,
-                                maxChildSize: 0.95,
-                                builder: (context, scrollController) {
-                                  return Container(
-                                    height: 200,
-                                    decoration: const BoxDecoration(
-                                      color: Colors.white,
-                                      borderRadius: BorderRadius.vertical(
-                                        top: Radius.circular(20),
-                                      ),
-                                    ),
-                                    child: Column(
-                                      children: [
-                                        const SizedBox(height: 12),
-                                        Center(
-                                          child: Container(
-                                            width: 60,
-                                            height: 6,
-                                            decoration: BoxDecoration(
-                                              color: Colors.grey,
-                                              borderRadius:
-                                                  BorderRadius.circular(10),
-                                            ),
-                                          ),
-                                        ),
-                                        const SizedBox(height: 20),
-
-                                        const SizedBox(height: 20),
-
-                                        Expanded(
-                                          child: ListView(
-                                            controller: scrollController,
-                                            padding: const EdgeInsets.symmetric(
-                                              horizontal: 20,
-                                            ),
-                                            children: const [],
-                                          ),
-                                        ),
-                                      ],
-                                    ),
-                                  );
-                                },
-                              );
-                            },
-                          );
-                        },
+                        onTap: () => _showFlightDetailsSheet(context, firstFlight),
                         child: Text(
                           "View flight details",
                           style: TextStyle(
@@ -2099,6 +1941,169 @@ class _CheckoutPageState extends State<CheckoutPage> {
           Text(price, style: const TextStyle(fontSize: 15)),
         ],
       ),
+    );
+  }
+
+  void _showFlightDetailsSheet(BuildContext context, dynamic flight) {
+    if (flight == null) return;
+    final segments = flight['segments'] as List? ?? [];
+    final duration = flight['duration'] as String? ?? '';
+
+    showModalBottomSheet(
+      context: context,
+      backgroundColor: Colors.transparent,
+      isScrollControlled: true,
+      builder: (ctx) {
+        return DraggableScrollableSheet(
+          initialChildSize: 0.75,
+          minChildSize: 0.4,
+          maxChildSize: 0.95,
+          builder: (ctx, scrollCtrl) {
+            return Container(
+              decoration: const BoxDecoration(
+                color: Colors.white,
+                borderRadius: BorderRadius.vertical(top: Radius.circular(20)),
+              ),
+              child: Column(
+                children: [
+                  const SizedBox(height: 12),
+                  Center(
+                    child: Container(
+                      width: 60, height: 6,
+                      decoration: BoxDecoration(color: Colors.grey, borderRadius: BorderRadius.circular(10)),
+                    ),
+                  ),
+                  const SizedBox(height: 16),
+                  Padding(
+                    padding: const EdgeInsets.symmetric(horizontal: 20),
+                    child: Row(
+                      children: [
+                        const Text('Flight details', style: TextStyle(fontSize: 20, fontWeight: FontWeight.bold)),
+                        const Spacer(),
+                        Text(formatDuration(duration), style: TextStyle(color: Colors.grey[600], fontSize: 15)),
+                      ],
+                    ),
+                  ),
+                  const SizedBox(height: 12),
+                  const Divider(height: 1),
+                  Expanded(
+                    child: ListView.builder(
+                      controller: scrollCtrl,
+                      padding: const EdgeInsets.symmetric(horizontal: 20, vertical: 16),
+                      itemCount: segments.length,
+                      itemBuilder: (ctx, i) {
+                        final seg = segments[i] as Map<String, dynamic>;
+                        final airline = seg['airlineName'] ?? seg['airlineCode'] ?? '';
+                        final flightNum = seg['flightNumber'] ?? '';
+                        final depAirport = seg['departureAirport'] ?? '';
+                        final depName = seg['departureAirportName'] ?? depAirport;
+                        final arrAirport = seg['arrivalAirport'] ?? '';
+                        final arrName = seg['arrivalAirportName'] ?? arrAirport;
+                        final depTime = formatTime(seg['departureDateTime']);
+                        final arrTime = formatTime(seg['arrivalDateTime']);
+                        final cabin = seg['classOfService'] ?? '';
+                        final rbd = seg['rbd'] ?? '';
+
+                        // layover between segments
+                        Widget? layover;
+                        if (i > 0) {
+                          final prevArr = segments[i - 1]['arrivalDateTime'] as String?;
+                          final thisDep = seg['departureDateTime'] as String?;
+                          if (prevArr != null && thisDep != null) {
+                            final diff = DateTime.tryParse(thisDep)?.difference(DateTime.tryParse(prevArr) ?? DateTime.now());
+                            if (diff != null) {
+                              final h = diff.inHours;
+                              final m = diff.inMinutes % 60;
+                              layover = Container(
+                                margin: const EdgeInsets.symmetric(vertical: 12),
+                                padding: const EdgeInsets.symmetric(horizontal: 12, vertical: 8),
+                                decoration: BoxDecoration(
+                                  color: Colors.orange.shade50,
+                                  borderRadius: BorderRadius.circular(8),
+                                  border: Border.all(color: Colors.orange.shade200),
+                                ),
+                                child: Row(
+                                  children: [
+                                    const Icon(Icons.access_time, size: 16, color: Colors.orange),
+                                    const SizedBox(width: 6),
+                                    Text('Layover: ${h}h ${m}m in $depAirport',
+                                        style: const TextStyle(fontSize: 13, color: Colors.orange)),
+                                  ],
+                                ),
+                              );
+                            }
+                          }
+                        }
+
+                        return Column(
+                          crossAxisAlignment: CrossAxisAlignment.start,
+                          children: [
+                            if (layover != null) layover,
+                            // Airline + flight number
+                            Row(
+                              children: [
+                                const Icon(Icons.flight_takeoff, size: 18, color: Colors.grey),
+                                const SizedBox(width: 6),
+                                Text('$airline  $flightNum',
+                                    style: const TextStyle(fontWeight: FontWeight.w600, fontSize: 15)),
+                                const Spacer(),
+                                if (cabin.isNotEmpty)
+                                  Container(
+                                    padding: const EdgeInsets.symmetric(horizontal: 8, vertical: 3),
+                                    decoration: BoxDecoration(
+                                      color: Colors.grey.shade100,
+                                      borderRadius: BorderRadius.circular(4),
+                                    ),
+                                    child: Text('$cabin${rbd.isNotEmpty ? ' ($rbd)' : ''}',
+                                        style: const TextStyle(fontSize: 12)),
+                                  ),
+                              ],
+                            ),
+                            const SizedBox(height: 14),
+                            // Timeline
+                            IntrinsicHeight(
+                              child: Row(
+                                crossAxisAlignment: CrossAxisAlignment.stretch,
+                                children: [
+                                  // dot-line-dot
+                                  Column(
+                                    children: [
+                                      Container(width: 10, height: 10,
+                                          decoration: const BoxDecoration(color: GuzoTheme.primaryGreen, shape: BoxShape.circle)),
+                                      Expanded(child: Container(width: 2, color: Colors.grey.shade300)),
+                                      Container(width: 10, height: 10,
+                                          decoration: BoxDecoration(color: Colors.grey.shade400, shape: BoxShape.circle)),
+                                    ],
+                                  ),
+                                  const SizedBox(width: 12),
+                                  Expanded(
+                                    child: Column(
+                                      crossAxisAlignment: CrossAxisAlignment.start,
+                                      children: [
+                                        Text(depTime, style: const TextStyle(fontWeight: FontWeight.bold, fontSize: 16)),
+                                        Text('$depAirport  $depName', style: TextStyle(color: Colors.grey[600], fontSize: 13)),
+                                        const SizedBox(height: 20),
+                                        Text(arrTime, style: const TextStyle(fontWeight: FontWeight.bold, fontSize: 16)),
+                                        Text('$arrAirport  $arrName', style: TextStyle(color: Colors.grey[600], fontSize: 13)),
+                                      ],
+                                    ),
+                                  ),
+                                ],
+                              ),
+                            ),
+                            const SizedBox(height: 16),
+                            if (i < segments.length - 1) const Divider(height: 1),
+                          ],
+                        );
+                      },
+                    ),
+                  ),
+                ],
+              ),
+            );
+          },
+        );
+      },
     );
   }
 

@@ -88,7 +88,6 @@ class _PaymentPageState extends State<PaymentPage> {
                 child: Column(
                   crossAxisAlignment: CrossAxisAlignment.start,
                   children: [
-                    // Show loading banner while payment options are being fetched
                     Obx(() {
                       if (ctrl.cardPaymentId.value == null &&
                           !ctrl.isLoading.value) {
@@ -140,7 +139,7 @@ class _PaymentPageState extends State<PaymentPage> {
                       controller: _cardHolderCtrl,
                       textCapitalization: TextCapitalization.characters,
                       decoration: _inputDecoration(
-                        hint: 'JOHN DOE',
+                        hint: 'ashenafi hadush',
                         icon: Icons.person_outline,
                       ),
                       validator: (v) =>
@@ -252,7 +251,6 @@ class _PaymentPageState extends State<PaymentPage> {
                     ),
                     const SizedBox(height: 24),
 
-                    // Booking reference
                     Obx(() {
                       final locator = ctrl.bookingLocator.value;
                       if (locator.isEmpty) return const SizedBox.shrink();

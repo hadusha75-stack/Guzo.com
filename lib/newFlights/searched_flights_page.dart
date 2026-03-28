@@ -95,9 +95,9 @@ class _SearchedFlightsPageState extends State<SearchedFlightsPage> {
                     bottom: 20,
                   ),
 
-                  itemCount: flightApicontroller.offers.length,
+                  itemCount: flightApicontroller.filteredOffers.length,
                   itemBuilder: (context, index) {
-                    var offer = flightApicontroller.offers[index];
+                    var offer = flightApicontroller.filteredOffers[index];
                     final flights = offer['flights'] as List? ?? [];
                     final provider = offer['provider'] ?? 'Unknown';
 
@@ -173,7 +173,7 @@ class _SearchedFlightsPageState extends State<SearchedFlightsPage> {
                                 top: 10,
                               ),
                               child: Text(
-                                "${flightApicontroller.offers.length} flights found",
+                                "${flightApicontroller.filteredOffers.length} of ${flightApicontroller.offers.length} flights found",
                               ),
                             ),
                             const SizedBox(height: 20),
@@ -659,9 +659,9 @@ class _SearchedFlightsPageState extends State<SearchedFlightsPage> {
                     bottom: 20,
                   ),
 
-                  itemCount: flightApicontroller.offers.length,
+                  itemCount: flightApicontroller.filteredOffers.length,
                   itemBuilder: (context, index) {
-                    var offer = flightApicontroller.offers[index];
+                    var offer = flightApicontroller.filteredOffers[index];
                     final flights = offer['flights'] as List? ?? [];
                     final provider = offer['provider'] ?? 'Unknown';
 
@@ -753,7 +753,7 @@ class _SearchedFlightsPageState extends State<SearchedFlightsPage> {
                                 top: 10,
                               ),
                               child: Text(
-                                "${flightApicontroller.offers.length} flights found",
+                                "${flightApicontroller.filteredOffers.length} of ${flightApicontroller.offers.length} flights found",
                               ),
                             ),
                             const SizedBox(height: 20),
@@ -1425,7 +1425,7 @@ class _SearchedFlightsPageState extends State<SearchedFlightsPage> {
                       child: Row(
                         children: [
                           OutlinedButton(
-                            onPressed: () {},
+                            onPressed: () => _showSortSheet(context),
                             child: Row(
                               children: [
                                 Icon(Icons.swap_vert),
@@ -1454,7 +1454,7 @@ class _SearchedFlightsPageState extends State<SearchedFlightsPage> {
                           ),
                           SizedBox(width: 15),
                           OutlinedButton(
-                            onPressed: () {},
+                            onPressed: () => _showFilterSheet(context),
                             child: Row(
                               mainAxisAlignment: MainAxisAlignment.center,
                               children: [
@@ -2325,6 +2325,437 @@ class _SearchedFlightsPageState extends State<SearchedFlightsPage> {
           ),
         ),
       ],
+    );
+  }
+
+  void _showSortSheet(BuildContext context) {
+    showModalBottomSheet(
+      context: context,
+      backgroundColor: Colors.white,
+      shape: const RoundedRectangleBorder(
+        borderRadius: BorderRadius.vertical(top: Radius.circular(20)),
+      ),
+      builder: (_) {
+        return Obx(() {
+          final ctrl = flightApicontroller;
+          return Padding(
+            padding: const EdgeInsets.fromLTRB(20, 20, 20, 40),
+            child: Column(
+              mainAxisSize: MainAxisSize.min,
+              crossAxisAlignment: CrossAxisAlignment.start,
+              children: [
+                const Text(
+                  'Sort by',
+                  style: TextStyle(fontSize: 20, fontWeight: FontWeight.bold),
+                ),
+                const SizedBox(height: 16),
+                for (final option in [
+                  ('best', 'Best', Icons.star_outline),
+                  ('cheapest', 'Cheapest', Icons.attach_money),
+                  ('fastest', 'Fastest', Icons.bolt_outlined),
+                ])
+                  ListTile(
+                    contentPadding: EdgeInsets.zero,
+                    leading: Icon(option.$3),
+                    title: Text(option.$2),
+                    trailing: ctrl.sortMode.value == option.$1
+                        ? const Icon(Icons.check, color: GuzoTheme.primaryGreen)
+                        : null,
+                    onTap: () {
+                      ctrl.setSortMode(option.$1);
+                      Get.back();
+                    },
+                  ),
+              ],
+            ),
+          );
+        });
+      },
+    );
+  }
+
+  void _showFilterSheet(BuildContext context) {
+    final ctrl = flightApicontroller;
+    final airlines = ctrl.availableAirlines;
+    final maxDur = ctrl.maxDurationHours;
+
+    // local state
+    int? tempStops = ctrl.filterMaxStops.value;
+    double tempDur = ctrl.filterMaxDurationHours.value ?? maxDur;
+    var tempDepSlots = Set<int>.from(ctrl.filterDepSlots);
+    var tempArrSlots = Set<int>.from(ctrl.filterArrSlots);
+    var tempAirlines = Set<String>.from(ctrl.filterAirlines);
+    int flightTimesTab = 0; // 0 = departing, 1 = return
+
+    final fromCode = uppercontroller.recievedFromFrom.value;
+    final toCode = uppercontroller.recievedFromTo.value;
+
+    showModalBottomSheet(
+      context: context,
+      isScrollControlled: true,
+      backgroundColor: Colors.white,
+      shape: const RoundedRectangleBorder(
+        borderRadius: BorderRadius.vertical(top: Radius.circular(16)),
+      ),
+      builder: (_) => StatefulBuilder(
+        builder: (ctx, setSheet) {
+          final depCounts = ctrl.depSlotCounts;
+          final arrCounts = ctrl.arrSlotCounts;
+          final resultCount = ctrl.filteredOffers.length;
+
+          return DraggableScrollableSheet(
+            expand: false,
+            initialChildSize: 0.92,
+            maxChildSize: 0.95,
+            builder: (_, scrollCtrl) => Column(
+              children: [
+                // Header
+                Padding(
+                  padding: const EdgeInsets.fromLTRB(16, 16, 16, 0),
+                  child: Row(
+                    children: [
+                      InkWell(
+                        onTap: () => Get.back(),
+                        child: const Icon(Icons.close),
+                      ),
+                      const Spacer(),
+                      TextButton(
+                        onPressed: () {
+                          setSheet(() {
+                            tempStops = null;
+                            tempDur = maxDur;
+                            tempDepSlots = {};
+                            tempArrSlots = {};
+                            tempAirlines = {};
+                          });
+                          ctrl.clearFilters();
+                        },
+                        child: const Text(
+                          'Reset all',
+                          style: TextStyle(
+                            color: Colors.blue,
+                            fontSize: 20,
+                            fontWeight: FontWeight.w600,
+                          ),
+                        ),
+                      ),
+                    ],
+                  ),
+                ),
+                const Padding(
+                  padding: EdgeInsets.fromLTRB(16, 8, 16, 0),
+                  child: Align(
+                    alignment: Alignment.centerLeft,
+                    child: Text(
+                      'Filter by',
+                      style: TextStyle(
+                        fontSize: 30,
+                        fontWeight: FontWeight.bold,
+                      ),
+                    ),
+                  ),
+                ),
+                const Divider(height: 40),
+                Expanded(
+                  child: ListView(
+                    controller: scrollCtrl,
+                    padding: const EdgeInsets.symmetric(horizontal: 16),
+                    children: [
+                      const Text(
+                        'Number of stops',
+                        style: TextStyle(
+                          fontSize: 20,
+                          fontWeight: FontWeight.bold,
+                        ),
+                      ),
+                      const SizedBox(height: 12),
+                      for (final entry in [
+                        (0, 'Direct only'),
+                        (1, 'Max 1 stop per flight'),
+                        (2, 'Max 2 stops per flight'),
+                      ]) ...[
+                        InkWell(
+                          onTap: () => setSheet(
+                            () => tempStops = tempStops == entry.$1
+                                ? null
+                                : entry.$1,
+                          ),
+                          child: Padding(
+                            padding: const EdgeInsets.symmetric(vertical: 10),
+                            child: Row(
+                              children: [
+                                Expanded(
+                                  child: Column(
+                                    crossAxisAlignment:
+                                        CrossAxisAlignment.start,
+                                    children: [
+                                      Text(
+                                        '${entry.$2} (${ctrl.stopsCount(entry.$1)})',
+                                        style: const TextStyle(fontSize: 15),
+                                      ),
+                                      Text(
+                                        'From ${ctrl.stopsMinPrice(entry.$1)} per adult',
+                                        style: TextStyle(
+                                          fontSize: 13,
+                                          color: Colors.grey[600],
+                                        ),
+                                      ),
+                                    ],
+                                  ),
+                                ),
+                                Radio<int?>(
+                                  value: entry.$1,
+                                  groupValue: tempStops,
+                                  activeColor: Colors.blue,
+                                  onChanged: (v) =>
+                                      setSheet(() => tempStops = v),
+                                ),
+                              ],
+                            ),
+                          ),
+                        ),
+                        const Divider(height: 1),
+                      ],
+                      const SizedBox(height: 20),
+
+                      const Text(
+                        'Duration',
+                        style: TextStyle(
+                          fontSize: 16,
+                          fontWeight: FontWeight.bold,
+                        ),
+                      ),
+                      const SizedBox(height: 8),
+                      const Text(
+                        'Maximum travel time (hours)',
+                        style: TextStyle(fontSize: 14),
+                      ),
+                      Text(
+                        '${tempDur.toStringAsFixed(0)} hours',
+                        style: const TextStyle(fontSize: 14),
+                      ),
+                      Slider(
+                        value: tempDur,
+                        min: 1,
+                        max: maxDur,
+                        divisions: maxDur.toInt(),
+                        activeColor: Colors.blue,
+                        onChanged: (v) => setSheet(() => tempDur = v),
+                      ),
+                      const Divider(height: 24),
+
+                      const Text(
+                        'Flight times',
+                        style: TextStyle(
+                          fontSize: 16,
+                          fontWeight: FontWeight.bold,
+                        ),
+                      ),
+                      const SizedBox(height: 8),
+                      // Tab bar
+                      Row(
+                        children: [
+                          for (final t in [
+                            (0, 'Departing flight'),
+                            (1, 'Return flight'),
+                          ])
+                            Expanded(
+                              child: GestureDetector(
+                                onTap: () =>
+                                    setSheet(() => flightTimesTab = t.$1),
+                                child: Column(
+                                  children: [
+                                    Padding(
+                                      padding: const EdgeInsets.symmetric(
+                                        vertical: 10,
+                                      ),
+                                      child: Text(
+                                        t.$2,
+                                        style: TextStyle(
+                                          color: flightTimesTab == t.$1
+                                              ? Colors.blue
+                                              : Colors.black54,
+                                          fontWeight: flightTimesTab == t.$1
+                                              ? FontWeight.w600
+                                              : FontWeight.normal,
+                                        ),
+                                      ),
+                                    ),
+                                    Container(
+                                      height: 2,
+                                      color: flightTimesTab == t.$1
+                                          ? Colors.blue
+                                          : Colors.transparent,
+                                    ),
+                                  ],
+                                ),
+                              ),
+                            ),
+                        ],
+                      ),
+                      const SizedBox(height: 8),
+                      Text(
+                        flightTimesTab == 0
+                            ? 'Departs from $fromCode'
+                            : 'Arrives to $toCode',
+                        style: const TextStyle(
+                          fontWeight: FontWeight.w600,
+                          fontSize: 14,
+                        ),
+                      ),
+                      const SizedBox(height: 8),
+                      for (int i = 0; i < 4; i++) ...[
+                        Builder(
+                          builder: (_) {
+                            final slots = flightTimesTab == 0
+                                ? tempDepSlots
+                                : tempArrSlots;
+                            final counts = flightTimesTab == 0
+                                ? depCounts
+                                : arrCounts;
+                            final label = ctrl.timeSlotLabels[i];
+                            final checked = slots.contains(i);
+                            return CheckboxListTile(
+                              contentPadding: EdgeInsets.zero,
+                              title: Text(
+                                '$label (${counts[i]})',
+                                style: const TextStyle(fontSize: 14),
+                              ),
+                              value: checked,
+                              activeColor: Colors.blue,
+                              controlAffinity: ListTileControlAffinity.trailing,
+                              onChanged: (v) => setSheet(() {
+                                if (flightTimesTab == 0) {
+                                  v == true
+                                      ? tempDepSlots.add(i)
+                                      : tempDepSlots.remove(i);
+                                } else {
+                                  v == true
+                                      ? tempArrSlots.add(i)
+                                      : tempArrSlots.remove(i);
+                                }
+                              }),
+                            );
+                          },
+                        ),
+                        const Divider(height: 1),
+                      ],
+                      const SizedBox(height: 20),
+
+                      if (airlines.isNotEmpty) ...[
+                        const Text(
+                          'Airlines',
+                          style: TextStyle(
+                            fontSize: 16,
+                            fontWeight: FontWeight.bold,
+                          ),
+                        ),
+                        const SizedBox(height: 4),
+                        Row(
+                          children: [
+                            TextButton(
+                              onPressed: () =>
+                                  setSheet(() => tempAirlines = {}),
+                              style: TextButton.styleFrom(
+                                padding: EdgeInsets.zero,
+                                minimumSize: Size.zero,
+                              ),
+                              child: const Text(
+                                'Select all',
+                                style: TextStyle(color: Colors.blue),
+                              ),
+                            ),
+                            const SizedBox(width: 12),
+                            TextButton(
+                              onPressed: () => setSheet(
+                                () => tempAirlines = airlines
+                                    .map((a) => a['code']!)
+                                    .toSet(),
+                              ),
+                              style: TextButton.styleFrom(
+                                padding: EdgeInsets.zero,
+                                minimumSize: Size.zero,
+                              ),
+                              child: Text(
+                                'Reset',
+                                style: TextStyle(color: Colors.grey[600]),
+                              ),
+                            ),
+                          ],
+                        ),
+                        for (final a in airlines) ...[
+                          CheckboxListTile(
+                            contentPadding: EdgeInsets.zero,
+                            title: Text(
+                              '${a['name']} (${ctrl.airlineOfferCount(a['code']!)})',
+                              style: const TextStyle(fontSize: 14),
+                            ),
+                            value:
+                                tempAirlines.isEmpty ||
+                                tempAirlines.contains(a['code']),
+                            activeColor: Colors.blue,
+                            controlAffinity: ListTileControlAffinity.trailing,
+                            onChanged: (checked) => setSheet(() {
+                              if (tempAirlines.isEmpty) {
+                                tempAirlines = airlines
+                                    .map((x) => x['code']!)
+                                    .toSet();
+                                if (checked != true)
+                                  tempAirlines.remove(a['code']);
+                              } else if (checked == true) {
+                                tempAirlines.add(a['code']!);
+                                if (tempAirlines.length == airlines.length)
+                                  tempAirlines = {};
+                              } else {
+                                tempAirlines.remove(a['code']);
+                              }
+                            }),
+                          ),
+                          const Divider(height: 1),
+                        ],
+                      ],
+                      const SizedBox(height: 100),
+                    ],
+                  ),
+                ),
+                Padding(
+                  padding: const EdgeInsets.fromLTRB(16, 8, 16, 32),
+                  child: SizedBox(
+                    width: double.infinity,
+                    height: 56,
+                    child: ElevatedButton(
+                      style: ElevatedButton.styleFrom(
+                        backgroundColor: Colors.blue,
+                        shape: RoundedRectangleBorder(
+                          borderRadius: BorderRadius.circular(8),
+                        ),
+                      ),
+                      onPressed: () {
+                        ctrl.setFilterStops(tempStops);
+                        ctrl.setFilterMaxDuration(
+                          tempDur >= maxDur ? null : tempDur,
+                        );
+                        ctrl.setFilterDepSlots(tempDepSlots);
+                        ctrl.setFilterArrSlots(tempArrSlots);
+                        ctrl.setFilterAirlines(tempAirlines);
+                        Get.back();
+                      },
+                      child: Text(
+                        'Show $resultCount results',
+                        style: const TextStyle(
+                          color: Colors.white,
+                          fontSize: 16,
+                          fontWeight: FontWeight.bold,
+                        ),
+                      ),
+                    ),
+                  ),
+                ),
+              ],
+            ),
+          );
+        },
+      ),
     );
   }
 }

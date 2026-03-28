@@ -13,8 +13,9 @@ class TravelProtectionScreen extends StatefulWidget {
 }
 
 class _TravelProtectionScreenState extends State<TravelProtectionScreen> {
-  int selectedOption = 0;
+  int selectedOption = -1;
   bool showAdultBreakdown = false;
+  int selectedOptionForPassingTonextPage = 0;
   final flightDatacontroller = Get.find<FlightDataController>();
 
   @override
@@ -101,7 +102,10 @@ class _TravelProtectionScreenState extends State<TravelProtectionScreen> {
                     onTap: () {
                       flightDatacontroller.setPrice2(0);
                       flightDatacontroller.setPrice3();
-                      setState(() => selectedOption = 0);
+                      setState(() {
+                        selectedOption = 0;
+                        selectedOptionForPassingTonextPage = 5;
+                      });
                     },
                     child: _optionCard(
                       index: 0,
@@ -117,7 +121,10 @@ class _TravelProtectionScreenState extends State<TravelProtectionScreen> {
                     onTap: () {
                       flightDatacontroller.setPrice2(36.84);
                       flightDatacontroller.setPrice3();
-                      setState(() => selectedOption = 1);
+                      setState(() {
+                        selectedOption = 1;
+                        selectedOptionForPassingTonextPage = 5;
+                      });
                     },
                     child: _protectionCard(),
                   ),
@@ -386,18 +393,17 @@ class _TravelProtectionScreenState extends State<TravelProtectionScreen> {
                           ),
                         ),
                         onPressed: () {
-                          if(flightDatacontroller.selectedForPassingTonextPage.value.isEmpty){
+                          if (selectedOptionForPassingTonextPage == 5) {
+                            Get.to(() => SelectYourSeatsPage());
+                          } else {
                             Get.snackbar(
                               "Please select an option",
                               "You must select either 'No travel protection' or 'Travel protection' to proceed.",
-                              backgroundColor: Colors.redAccent,
-                              colorText: Colors.white,
+                              backgroundColor: GuzoTheme.accentGold,
+                              colorText: Colors.black,
                               snackPosition: SnackPosition.BOTTOM,
                             );
                             return;
-                          }else{
-                          Get.to(() => SelectYourSeatsPage());
-
                           }
                         },
                         child: const Text(
