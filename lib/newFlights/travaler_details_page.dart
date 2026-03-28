@@ -341,6 +341,7 @@ class _TravelerDetailsPageState extends State<TravelerDetailsPage> {
                                                 _genderController.text =
                                                     localSelectedGender;
                                               });
+                                              
                                               Navigator.pop(context);
                                             },
                                             style: ElevatedButton.styleFrom(

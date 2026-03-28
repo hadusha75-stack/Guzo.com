@@ -1,4 +1,5 @@
 import 'package:booking/controllers/flights_with_api_controller.dart';
+import 'package:booking/controllers/user_name_controller.dart';
 import 'package:booking/theam/app_color.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
@@ -19,6 +20,7 @@ class _PaymentPageState extends State<PaymentPage> {
   final _cvvCtrl = TextEditingController();
 
   final flightApiController = Get.find<FlightUpdaredController>();
+  final userNameController = Get.find<UserNameController>();
 
   @override
   void dispose() {
@@ -35,20 +37,26 @@ class _PaymentPageState extends State<PaymentPage> {
     final expiry = _expiryCtrl.text.trim();
     final parts = expiry.split('/');
     if (parts.length != 2) {
-      Get.snackbar('Error', 'Invalid expiry format (MM/YY)',
-          snackPosition: SnackPosition.BOTTOM,
-          backgroundColor: Colors.red,
-          colorText: Colors.white);
+      Get.snackbar(
+        'Error',
+        'Invalid expiry format (MM/YY)',
+        snackPosition: SnackPosition.BOTTOM,
+        backgroundColor: Colors.red,
+        colorText: Colors.white,
+      );
       return;
     }
 
     // Use the cardPaymentId already fetched during hold
     final paymentId = flightApiController.cardPaymentId.value?.toString();
     if (paymentId == null || paymentId.isEmpty) {
-      Get.snackbar('Error', 'No card payment option available',
-          snackPosition: SnackPosition.BOTTOM,
-          backgroundColor: Colors.red,
-          colorText: Colors.white);
+      Get.snackbar(
+        'Error',
+        'No card payment option available',
+        snackPosition: SnackPosition.BOTTOM,
+        backgroundColor: Colors.red,
+        colorText: Colors.white,
+      );
       return;
     }
 
@@ -109,15 +117,19 @@ class _PaymentPageState extends State<PaymentPage> {
                     const Text(
                       "Cardholder's name *",
                       style: TextStyle(
-                          fontWeight: FontWeight.w600, fontSize: 15),
+                        fontWeight: FontWeight.w600,
+                        fontSize: 15,
+                      ),
                     ),
                     const SizedBox(height: 8),
                     TextFormField(
                       controller: _cardHolderCtrl,
                       textCapitalization: TextCapitalization.characters,
                       decoration: _inputDecoration(
-                          hint: 'JOHN DOE',
-                          icon: Icons.person_outline),
+                        hint: 'ashenafi hadush',
+
+                        icon: Icons.person_outline,
+                      ),
                       validator: (v) =>
                           v == null || v.isEmpty ? 'Required' : null,
                     ),
@@ -127,7 +139,9 @@ class _PaymentPageState extends State<PaymentPage> {
                     const Text(
                       'Card number *',
                       style: TextStyle(
-                          fontWeight: FontWeight.w600, fontSize: 15),
+                        fontWeight: FontWeight.w600,
+                        fontSize: 15,
+                      ),
                     ),
                     const SizedBox(height: 8),
                     TextFormField(
@@ -139,11 +153,11 @@ class _PaymentPageState extends State<PaymentPage> {
                         _CardNumberFormatter(),
                       ],
                       decoration: _inputDecoration(
-                          hint: '0000 0000 0000 0000',
-                          icon: Icons.credit_card),
+                        hint: '0000 0000 0000 0000',
+                        icon: Icons.credit_card,
+                      ),
                       validator: (v) {
-                        final digits =
-                            (v ?? '').replaceAll(' ', '');
+                        final digits = (v ?? '').replaceAll(' ', '');
                         if (digits.length < 13) {
                           return 'Enter a valid card number';
                         }
@@ -162,8 +176,9 @@ class _PaymentPageState extends State<PaymentPage> {
                               const Text(
                                 'Expiry date *',
                                 style: TextStyle(
-                                    fontWeight: FontWeight.w600,
-                                    fontSize: 15),
+                                  fontWeight: FontWeight.w600,
+                                  fontSize: 15,
+                                ),
                               ),
                               const SizedBox(height: 8),
                               TextFormField(
@@ -171,12 +186,12 @@ class _PaymentPageState extends State<PaymentPage> {
                                 keyboardType: TextInputType.datetime,
                                 inputFormatters: [
                                   FilteringTextInputFormatter.allow(
-                                      RegExp(r'[\d/]')),
+                                    RegExp(r'[\d/]'),
+                                  ),
                                   LengthLimitingTextInputFormatter(5),
                                   _ExpiryFormatter(),
                                 ],
-                                decoration:
-                                    _inputDecoration(hint: 'MM/YY'),
+                                decoration: _inputDecoration(hint: 'MM/YY'),
                                 validator: (v) {
                                   if (v == null || v.isEmpty) {
                                     return 'Required';
@@ -201,8 +216,9 @@ class _PaymentPageState extends State<PaymentPage> {
                               const Text(
                                 'CVV *',
                                 style: TextStyle(
-                                    fontWeight: FontWeight.w600,
-                                    fontSize: 15),
+                                  fontWeight: FontWeight.w600,
+                                  fontSize: 15,
+                                ),
                               ),
                               const SizedBox(height: 8),
                               TextFormField(
@@ -214,8 +230,9 @@ class _PaymentPageState extends State<PaymentPage> {
                                   LengthLimitingTextInputFormatter(4),
                                 ],
                                 decoration: _inputDecoration(
-                                    hint: '•••',
-                                    icon: Icons.lock_outline),
+                                  hint: '•••',
+                                  icon: Icons.lock_outline,
+                                ),
                                 validator: (v) {
                                   if (v == null || v.length < 3) {
                                     return 'Invalid CVV';
@@ -232,8 +249,7 @@ class _PaymentPageState extends State<PaymentPage> {
 
                     // Booking summary
                     Obx(() {
-                      final locator =
-                          flightApiController.bookingLocator.value;
+                      final locator = flightApiController.bookingLocator.value;
                       if (locator.isEmpty) return const SizedBox.shrink();
                       return Container(
                         padding: const EdgeInsets.all(14),
@@ -241,13 +257,15 @@ class _PaymentPageState extends State<PaymentPage> {
                           color: Colors.green.shade50,
                           borderRadius: BorderRadius.circular(8),
                           border: Border.all(
-                              color: GuzoTheme.primaryGreen
-                                  .withOpacity(0.4)),
+                            color: GuzoTheme.primaryGreen.withOpacity(0.4),
+                          ),
                         ),
                         child: Row(
                           children: [
-                            const Icon(Icons.check_circle_outline,
-                                color: GuzoTheme.primaryGreen),
+                            const Icon(
+                              Icons.check_circle_outline,
+                              color: GuzoTheme.primaryGreen,
+                            ),
                             const SizedBox(width: 10),
                             Expanded(
                               child: Text(
@@ -272,8 +290,7 @@ class _PaymentPageState extends State<PaymentPage> {
               padding: const EdgeInsets.fromLTRB(20, 12, 20, 32),
               decoration: BoxDecoration(
                 color: Colors.white,
-                border: Border(
-                    top: BorderSide(color: Colors.grey.shade200)),
+                border: Border(top: BorderSide(color: Colors.grey.shade200)),
               ),
               child: Obx(
                 () => SizedBox(
@@ -321,13 +338,11 @@ class _PaymentPageState extends State<PaymentPage> {
     return InputDecoration(
       hintText: hint,
       prefixIcon: icon != null ? Icon(icon) : null,
-      contentPadding:
-          const EdgeInsets.symmetric(vertical: 18, horizontal: 16),
+      contentPadding: const EdgeInsets.symmetric(vertical: 18, horizontal: 16),
       border: OutlineInputBorder(borderRadius: BorderRadius.circular(10)),
       focusedBorder: OutlineInputBorder(
         borderRadius: BorderRadius.circular(10),
-        borderSide:
-            const BorderSide(color: GuzoTheme.primaryGreen, width: 2),
+        borderSide: const BorderSide(color: GuzoTheme.primaryGreen, width: 2),
       ),
     );
   }
@@ -337,7 +352,9 @@ class _PaymentPageState extends State<PaymentPage> {
 class _CardNumberFormatter extends TextInputFormatter {
   @override
   TextEditingValue formatEditUpdate(
-      TextEditingValue oldValue, TextEditingValue newValue) {
+    TextEditingValue oldValue,
+    TextEditingValue newValue,
+  ) {
     final digits = newValue.text.replaceAll(' ', '');
     final buffer = StringBuffer();
     for (int i = 0; i < digits.length; i++) {
@@ -356,7 +373,9 @@ class _CardNumberFormatter extends TextInputFormatter {
 class _ExpiryFormatter extends TextInputFormatter {
   @override
   TextEditingValue formatEditUpdate(
-      TextEditingValue oldValue, TextEditingValue newValue) {
+    TextEditingValue oldValue,
+    TextEditingValue newValue,
+  ) {
     var text = newValue.text.replaceAll('/', '');
     if (text.length > 2) {
       text = '${text.substring(0, 2)}/${text.substring(2)}';

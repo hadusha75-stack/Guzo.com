@@ -21,7 +21,6 @@ class _TravelProtectionScreenState extends State<TravelProtectionScreen> {
   Widget build(BuildContext context) {
     final flightApicontroller = Get.find<FlightUpdaredController>();
     final offer = flightApicontroller.selectedOffer.value;
-    final price = offer?['pricing']?['total'] ?? '';
     final currency = offer?['pricing']?['currency'] ?? '';
     final flightDatacontroller = Get.find<FlightDataController>();
 
@@ -101,6 +100,7 @@ class _TravelProtectionScreenState extends State<TravelProtectionScreen> {
                   InkWell(
                     onTap: () {
                       flightDatacontroller.setPrice2(0);
+                      flightDatacontroller.setPrice3();
                       setState(() => selectedOption = 0);
                     },
                     child: _optionCard(
@@ -116,6 +116,7 @@ class _TravelProtectionScreenState extends State<TravelProtectionScreen> {
                   InkWell(
                     onTap: () {
                       flightDatacontroller.setPrice2(36.84);
+                      flightDatacontroller.setPrice3();
                       setState(() => selectedOption = 1);
                     },
                     child: _protectionCard(),
@@ -385,7 +386,19 @@ class _TravelProtectionScreenState extends State<TravelProtectionScreen> {
                           ),
                         ),
                         onPressed: () {
+                          if(flightDatacontroller.selectedForPassingTonextPage.value.isEmpty){
+                            Get.snackbar(
+                              "Please select an option",
+                              "You must select either 'No travel protection' or 'Travel protection' to proceed.",
+                              backgroundColor: Colors.redAccent,
+                              colorText: Colors.white,
+                              snackPosition: SnackPosition.BOTTOM,
+                            );
+                            return;
+                          }else{
                           Get.to(() => SelectYourSeatsPage());
+
+                          }
                         },
                         child: const Text(
                           "Next",

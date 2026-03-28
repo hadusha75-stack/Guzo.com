@@ -245,7 +245,7 @@ if (res.statusCode != 200) {
   Future<Map<String, dynamic>> confirmBooking({
     required String bookingLocator,
     required dynamic paymentOptionId,
-    required Map<String, String> cardInfo,
+    required Map<String, String> cardInfo, required String offerPriceId, required String verifyFareId, required List<PassengerInfo> passengers, Map<String, dynamic>? pricing,
   }) async {
     final token = await _getToken();
 

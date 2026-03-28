@@ -15,6 +15,7 @@ class SelectTicketScreen extends StatefulWidget {
 
 class _SelectTicketScreenState extends State<SelectTicketScreen> {
   int selectedIndex = 0;
+  int selectedIndexForNavigation = 0;
   final controller = Get.put(TicketController());
   final flightDatacontroller = Get.find<FlightDataController>();
 
@@ -46,8 +47,10 @@ class _SelectTicketScreenState extends State<SelectTicketScreen> {
                   InkWell(
                     onTap: () {
                       flightDatacontroller.setPrice(403.02);
+                      flightDatacontroller.setPrice31();
                       setState(() {
                         selectedIndex = 0;
+                        selectedIndexForNavigation = 5;
                       });
                     },
                     child: _TicketCard(
@@ -70,6 +73,7 @@ class _SelectTicketScreenState extends State<SelectTicketScreen> {
                       flightDatacontroller.setPrice(456.13);
                       setState(() {
                         selectedIndex = 1;
+                        selectedIndexForNavigation = 5;
                       });
                     },
                     child: _TicketCard(
@@ -331,7 +335,17 @@ class _SelectTicketScreenState extends State<SelectTicketScreen> {
                           ),
                         ),
                         onPressed: () {
-                          Get.to(() => FlightCustomizeScreen());
+                          if (selectedIndexForNavigation != 5) {
+                            Get.snackbar(
+                              "Please select a ticket type",
+                              "You need to select either standard or flexible ticket to proceed",
+                              backgroundColor: Colors.red.shade100,
+                              colorText: Colors.red.shade800,
+                            );
+                            return;
+                          } else {
+                            Get.to(() => FlightCustomizeScreen());
+                          }
                         },
                         child: const Text(
                           "Next",

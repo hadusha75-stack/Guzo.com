@@ -1,5 +1,7 @@
+// ignore: file_names
 import 'package:get/get.dart';
 
+// ignore: depend_on_referenced_packages
 import 'package:intl/intl.dart';
 
 class FlightSegment {
@@ -17,6 +19,16 @@ class FlightDataController extends GetxController {
   void setTotalPriceFromApi(double price) {
     totalPriceFromApi.value = price;
     totalPrice.value = totalPriceFromApi.toStringAsFixed(2);
+  }
+
+  var selectedForPassingTonextPage = "".obs;
+  void setPrice3() {
+    selectedForPassingTonextPage.value = "selected";
+  }
+  
+  var selectedForPassingTonextPage1 = "".obs;
+  void setPrice31() {
+    selectedForPassingTonextPage.value = "selected";
   }
 
   var totalPricecover = ''.obs;

@@ -8,7 +8,7 @@ import 'package:get/get.dart';
 class FlightUpdaredController extends GetxController {
   final _api = BookingApiService();
 
- var isLoading = false.obs;
+  var isLoading = false.obs;
   var offers = <dynamic>[].obs;
   var errorMessage = ''.obs;
 
@@ -18,16 +18,16 @@ class FlightUpdaredController extends GetxController {
   var executionId = ''.obs;
   var offerPriceId = ''.obs;
 
- var bookingLocator = ''.obs;
+  var bookingLocator = ''.obs;
 
- var paymentOptions = <dynamic>[].obs;
+  var paymentOptions = <dynamic>[].obs;
   var cardPaymentId = Rxn<dynamic>();
 
- Map<String, dynamic>? _priceResponseData;
+  Map<String, dynamic>? _priceResponseData;
 
- List<PassengerInfo> _passengers = [];
+  List<PassengerInfo> _passengers = [];
 
- Future<void> searchFlights({
+  Future<void> searchFlights({
     required String originCode,
     required String destinationCode,
     required String departureDate,
@@ -61,18 +61,17 @@ class FlightUpdaredController extends GetxController {
     }
   }
 
- Future<void> selectOfferAndGetPrice(Map<String, dynamic> offer) async {
+  Future<void> selectOfferAndGetPrice(Map<String, dynamic> offer) async {
     try {
       isLoading.value = true;
       selectedOffer.value = offer;
 
-      // Reset previous pricing
       executionId.value = '';
       offerPriceId.value = '';
 
       final flightCtrl = Get.find<FlightDataController>();
 
-     final isOneWay = flightCtrl.selectedTripType.value == 'One-way';
+      final isOneWay = flightCtrl.selectedTripType.value == 'One-way';
       final originDestinations = <Map<String, dynamic>>[
         {
           'departure': {
@@ -107,25 +106,26 @@ class FlightUpdaredController extends GetxController {
 
       debugPrint('PRICE DATA: $priceData');
 
-     _priceResponseData = priceData;
+      _priceResponseData = priceData;
 
-     executionId.value = (priceData['executionId'] ?? '').toString();
-      offerPriceId.value = (priceData['id'] ??
-              priceData['executionId'] ??
-              offer['offerId'] ??
-              '')
-          .toString();
+      executionId.value = (priceData['executionId'] ?? '').toString();
+      offerPriceId.value =
+          (priceData['id'] ??
+                  priceData['executionId'] ??
+                  offer['offerId'] ??
+                  '')
+              .toString();
 
       if (executionId.value.isEmpty) {
         throw Exception(
-            'offer-price returned no executionId. Full data: $priceData');
+          'offer-price returned no executionId. Full data: $priceData',
+        );
       }
 
       pricingDetails.value = priceData['pricing'] as Map<String, dynamic>?;
 
-    final total = double.tryParse(
-              offer['pricing']?['total']?.toString() ?? '0') ??
-          0.0;
+      final total =
+          double.tryParse(offer['pricing']?['total']?.toString() ?? '0') ?? 0.0;
       if (total > 0) {
         Get.find<FlightDataController>().setTotalPriceFromApi(total);
       }
@@ -145,19 +145,26 @@ class FlightUpdaredController extends GetxController {
       isLoading.value = false;
     }
   }
-Future<void> holdFlight(List<Map<String, dynamic>> customerInfosJson) async {
+
+  Future<void> holdFlight(List<Map<String, dynamic>> customerInfosJson) async {
     if (selectedOffer.value == null) {
-      Get.snackbar('Error', 'No flight selected',
-          snackPosition: SnackPosition.BOTTOM);
+      Get.snackbar(
+        'Error',
+        'No flight selected',
+        snackPosition: SnackPosition.BOTTOM,
+      );
       return;
     }
     if (executionId.value.isEmpty) {
-      Get.snackbar('Error', 'Pricing not loaded. Please go back and try again.',
-          snackPosition: SnackPosition.BOTTOM);
+      Get.snackbar(
+        'Error',
+        'Pricing not loaded. Please go back and try again.',
+        snackPosition: SnackPosition.BOTTOM,
+      );
       return;
     }
 
-  if (offerPriceId.value.isEmpty) {
+    if (offerPriceId.value.isEmpty) {
       offerPriceId.value = executionId.value;
     }
 
@@ -179,12 +186,14 @@ Future<void> holdFlight(List<Map<String, dynamic>> customerInfosJson) async {
           email: userCtrl.email.value,
           phoneNo:
               '${userCtrl.phoneCode.value}${userCtrl.phoneNumber.value}'.isEmpty
-                  ? '+251912345678'
-                  : '${userCtrl.phoneCode.value}${userCtrl.phoneNumber.value}',
+              ? '+251912345678'
+              : '${userCtrl.phoneCode.value}${userCtrl.phoneNumber.value}',
           passport: userCtrl.passportNumber.value.isEmpty
               ? 'A12345678'
               : userCtrl.passportNumber.value,
-          gender: userCtrl.gender.value.isEmpty ? 'MALE' : userCtrl.gender.value,
+          gender: userCtrl.gender.value.isEmpty
+              ? 'MALE'
+              : userCtrl.gender.value,
           country: 'ET',
           paxId: 'PAX1',
         ),
@@ -199,7 +208,8 @@ Future<void> holdFlight(List<Map<String, dynamic>> customerInfosJson) async {
       final response = await _api.holdFlight(
         executionId: executionId.value,
         offerPriceId: offerPriceId.value,
-        verifyFareId: _priceResponseData?['id']?.toString() ?? offerPriceId.value,
+        verifyFareId:
+            _priceResponseData?['id']?.toString() ?? offerPriceId.value,
         offer: selectedOffer.value!,
         passengers: _passengers,
         travellers: travellers,
@@ -207,7 +217,7 @@ Future<void> holdFlight(List<Map<String, dynamic>> customerInfosJson) async {
 
       debugPrint('HOLD RESPONSE: $response');
 
-     final locator = response['data']?['id']?.toString() ?? '';
+      final locator = response['data']?['id']?.toString() ?? '';
       if (locator.isNotEmpty) {
         bookingLocator.value = locator;
       }
@@ -224,13 +234,16 @@ Future<void> holdFlight(List<Map<String, dynamic>> customerInfosJson) async {
         return;
       }
 
-     await _fetchPaymentOptions(travellers);
+      await _fetchPaymentOptions(travellers);
     } catch (e) {
       debugPrint('HOLD ERROR: $e');
-      Get.snackbar('Error', 'Hold failed: $e',
-          snackPosition: SnackPosition.BOTTOM,
-          backgroundColor: Colors.red.shade700,
-          colorText: Colors.white);
+      Get.snackbar(
+        'Error',
+        'Hold failed: $e',
+        snackPosition: SnackPosition.BOTTOM,
+        backgroundColor: Colors.red.shade700,
+        colorText: Colors.white,
+      );
     } finally {
       isLoading.value = false;
     }
@@ -240,7 +253,8 @@ Future<void> holdFlight(List<Map<String, dynamic>> customerInfosJson) async {
     try {
       final response = await _api.getPaymentOptions(
         executionId: executionId.value,
-        verifyFareId: _priceResponseData?['id']?.toString() ?? offerPriceId.value,
+        verifyFareId:
+            _priceResponseData?['id']?.toString() ?? offerPriceId.value,
         offer: selectedOffer.value!,
         passengers: _passengers,
         travellers: travellers,
@@ -248,7 +262,7 @@ Future<void> holdFlight(List<Map<String, dynamic>> customerInfosJson) async {
 
       debugPrint('PAYMENT OPTIONS RESPONSE: $response');
 
-    final locator = response['data']?['id']?.toString() ?? '';
+      final locator = response['data']?['id']?.toString() ?? '';
       if (locator.isNotEmpty) bookingLocator.value = locator;
 
       final cards = response['data']?['paymentOptions']?['cards'];
@@ -261,27 +275,31 @@ Future<void> holdFlight(List<Map<String, dynamic>> customerInfosJson) async {
       debugPrint('PAYMENT OPTIONS ERROR: $e');
     }
   }
-Future<Map<String, dynamic>?> getPaymentOptions(
+
+  Future<Map<String, dynamic>?> getPaymentOptions(
     List<Map<String, dynamic>> ignored,
   ) async {
-  if (cardPaymentId.value != null) {
+    if (cardPaymentId.value != null) {
       return {
         'data': {
           'id': bookingLocator.value,
           'paymentOptions': {'cards': paymentOptions},
-        }
+        },
       };
     }
     return null;
   }
 
- Future<void> confirmBooking({
+  Future<void> confirmBooking({
     required String paymentId,
     required Map<String, String> cardInfo,
   }) async {
     if (bookingLocator.value.isEmpty) {
-      Get.snackbar('Error', 'No booking locator found',
-          snackPosition: SnackPosition.BOTTOM);
+      Get.snackbar(
+        'Error',
+        'No booking locator found',
+        snackPosition: SnackPosition.BOTTOM,
+      );
       return;
     }
 
@@ -292,6 +310,9 @@ Future<Map<String, dynamic>?> getPaymentOptions(
         bookingLocator: bookingLocator.value,
         paymentOptionId: paymentId,
         cardInfo: cardInfo,
+        offerPriceId: '',
+        verifyFareId: '',
+        passengers: [],
       );
 
       debugPrint('CONFIRM RESPONSE: $response');
@@ -308,10 +329,13 @@ Future<Map<String, dynamic>?> getPaymentOptions(
       Get.until((route) => route.isFirst);
     } catch (e) {
       debugPrint('CONFIRM ERROR: $e');
-      Get.snackbar('Error', 'Failed to confirm booking: $e',
-          snackPosition: SnackPosition.BOTTOM,
-          backgroundColor: Colors.red.shade700,
-          colorText: Colors.white);
+      Get.snackbar(
+        'Error',
+        'Failed to confirm booking: $e',
+        snackPosition: SnackPosition.BOTTOM,
+        backgroundColor: Colors.red.shade700,
+        colorText: Colors.white,
+      );
     } finally {
       isLoading.value = false;
     }
