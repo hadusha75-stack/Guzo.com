@@ -27,6 +27,18 @@ class FlightUpdaredController extends GetxController {
 
   List<PassengerInfo> _passengers = [];
 
+  void resetBookingState() {
+    bookingLocator.value = '';
+    cardPaymentId.value = null;
+    paymentOptions.value = [];
+    executionId.value = '';
+    offerPriceId.value = '';
+    _priceResponseData = null;
+    _passengers = [];
+    _api.resetToken();
+    debugPrint('Booking state reset');
+  }
+
   Future<void> searchFlights({
     required String originCode,
     required String destinationCode,
@@ -164,9 +176,10 @@ class FlightUpdaredController extends GetxController {
       return;
     }
 
-    if (offerPriceId.value.isEmpty) {
-      offerPriceId.value = executionId.value;
-    }
+    // Reset payment state so we never reuse a stale bookingLocator or cardPaymentId
+    bookingLocator.value = '';
+    cardPaymentId.value = null;
+    paymentOptions.value = [];
 
     try {
       isLoading.value = true;
@@ -251,10 +264,12 @@ class FlightUpdaredController extends GetxController {
 
   Future<void> _fetchPaymentOptions(TravellerCount travellers) async {
     try {
+      final fareId =
+          _priceResponseData?['id']?.toString() ?? offerPriceId.value;
       final response = await _api.getPaymentOptions(
         executionId: executionId.value,
-        verifyFareId:
-            _priceResponseData?['id']?.toString() ?? offerPriceId.value,
+        fareId: fareId,
+        verifyFareId: fareId,
         offer: selectedOffer.value!,
         passengers: _passengers,
         travellers: travellers,
@@ -270,9 +285,27 @@ class FlightUpdaredController extends GetxController {
         paymentOptions.value = cards;
         cardPaymentId.value = cards[0]['id'];
         debugPrint('Card payment ID: ${cardPaymentId.value}');
+      } else {
+        debugPrint(
+          'PAYMENT OPTIONS: no cards returned. Full response: $response',
+        );
+        Get.snackbar(
+          'Payment Error',
+          'No card payment options available. Please try again.',
+          snackPosition: SnackPosition.BOTTOM,
+          backgroundColor: Colors.red.shade700,
+          colorText: Colors.white,
+        );
       }
     } catch (e) {
       debugPrint('PAYMENT OPTIONS ERROR: $e');
+      Get.snackbar(
+        'Payment Error',
+        'Failed to load payment options: $e',
+        snackPosition: SnackPosition.BOTTOM,
+        backgroundColor: Colors.red.shade700,
+        colorText: Colors.white,
+      );
     }
   }
 
@@ -314,19 +347,38 @@ class FlightUpdaredController extends GetxController {
         verifyFareId: '',
         passengers: [],
       );
+      debugPrint('CONFIRM FULL RESPONSE: $response');
+      debugPrint('  bookingLocator sent: ${bookingLocator.value}');
+      debugPrint('  paymentId sent: $paymentId');
+      debugPrint('  cardInfo sent: $cardInfo');
 
+      final success = response['success'] == true;
+      if (!success) {
+        final message = response['message']?.toString() ?? 'Unknown error';
+        debugPrint('CONFIRM FAILED — message: $message');
+        Get.snackbar(
+          'Booking Failed',
+          message,
+          snackPosition: SnackPosition.BOTTOM,
+          backgroundColor: Colors.red.shade700,
+          colorText: Colors.white,
+          duration: const Duration(seconds: 6),
+        );
+        return;
+      } else {
+        debugPrint('CONFIRMATION SUCCESS: $response');
+        Get.snackbar(
+          'Booking Confirmed',
+          'Your flight has been booked successfully!',
+          backgroundColor: const Color(0xFF0B5D39),
+          colorText: Colors.white,
+          duration: const Duration(seconds: 4),
+          snackPosition: SnackPosition.BOTTOM,
+        );
+
+        Get.until((route) => route.isFirst);
+      }
       debugPrint('CONFIRM RESPONSE: $response');
-
-      Get.snackbar(
-        'Booking Confirmed',
-        'Your flight has been booked successfully!',
-        backgroundColor: const Color(0xFF0B5D39),
-        colorText: Colors.white,
-        duration: const Duration(seconds: 4),
-        snackPosition: SnackPosition.BOTTOM,
-      );
-
-      Get.until((route) => route.isFirst);
     } catch (e) {
       debugPrint('CONFIRM ERROR: $e');
       Get.snackbar(

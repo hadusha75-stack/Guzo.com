@@ -6,6 +6,10 @@ import 'package:http/http.dart' as http;
 class BookingApiService {
   static const String _base = 'http://3.11.26.231/fannos';
   String? _token;
+
+  void resetToken() {
+    _token = null;
+  }
 Future<String> _getToken() async {
     if (_token != null) return _token!;
     final res = await http.post(
@@ -165,7 +169,7 @@ if (res.statusCode != 200) {
     final bodyMap = <String, dynamic>{
       'bookingHold': true,
       'executionId': executionId,
-      'offerPriceId': executionId,   
+      'offerPriceId': executionId, // API expects executionId here (Postman step 4)
       'provider': offer['provider'],
       'offerItems': [item.toJson()],
       'customerInfos': passengers.map((p) => p.toJson()).toList(),
@@ -196,6 +200,7 @@ if (res.statusCode != 200) {
 
   Future<Map<String, dynamic>> getPaymentOptions({
     required String executionId,
+    required String fareId,       // offer-price response data.id
     required String verifyFareId,
     required Map<String, dynamic> offer,
     required List<PassengerInfo> passengers,
@@ -214,7 +219,7 @@ if (res.statusCode != 200) {
     final bodyMap = <String, dynamic>{
       'bookingHold': true,
       'executionId': executionId,
-      'offerPriceId': offer['offerId'],
+      'offerPriceId': fareId,      // API expects fareId (data.id from offer-price) here
       'provider': offer['provider'],
       'offerItems': [item.toJson()],
       'customerInfos': passengers.map((p) => p.toJson()).toList(),
@@ -249,9 +254,11 @@ if (res.statusCode != 200) {
   }) async {
     final token = await _getToken();
 
+    // Parse to int if possible so JSON encodes as number, not string (API expects raw number)
+    final dynamic payOptionId = int.tryParse(paymentOptionId.toString()) ?? paymentOptionId;
     final body = jsonEncode({
       'bookingLocator': bookingLocator,
-      'payOption': {'id': paymentOptionId},
+      'payOption': {'id': payOptionId},
       'isCardMethod': true,
       'cardInfo': cardInfo,
     });

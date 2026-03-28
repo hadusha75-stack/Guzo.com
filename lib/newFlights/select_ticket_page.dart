@@ -14,7 +14,7 @@ class SelectTicketScreen extends StatefulWidget {
 }
 
 class _SelectTicketScreenState extends State<SelectTicketScreen> {
-  int selectedIndex = 0;
+  int selectedIndex = -1;
   int selectedIndexForNavigation = 0;
   final controller = Get.put(TicketController());
   final flightDatacontroller = Get.find<FlightDataController>();

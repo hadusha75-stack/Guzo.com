@@ -1,5 +1,4 @@
 import 'package:booking/controllers/flights_with_api_controller.dart';
-import 'package:booking/controllers/user_name_controller.dart';
 import 'package:booking/theam/app_color.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
@@ -19,8 +18,7 @@ class _PaymentPageState extends State<PaymentPage> {
   final _expiryCtrl = TextEditingController();
   final _cvvCtrl = TextEditingController();
 
-  final flightApiController = Get.find<FlightUpdaredController>();
-  final userNameController = Get.find<UserNameController>();
+  final ctrl = Get.find<FlightUpdaredController>();
 
   @override
   void dispose() {
@@ -34,43 +32,29 @@ class _PaymentPageState extends State<PaymentPage> {
   Future<void> _confirmPayment() async {
     if (!_formKey.currentState!.validate()) return;
 
-    final expiry = _expiryCtrl.text.trim();
-    final parts = expiry.split('/');
-    if (parts.length != 2) {
+    final paymentId = ctrl.cardPaymentId.value;
+    if (paymentId == null) {
       Get.snackbar(
-        'Error',
-        'Invalid expiry format (MM/YY)',
+        'Not Ready',
+        'Payment options are still loading, please wait.',
         snackPosition: SnackPosition.BOTTOM,
-        backgroundColor: Colors.red,
+        backgroundColor: Colors.orange,
         colorText: Colors.white,
       );
       return;
     }
 
-    // Use the cardPaymentId already fetched during hold
-    final paymentId = flightApiController.cardPaymentId.value?.toString();
-    if (paymentId == null || paymentId.isEmpty) {
-      Get.snackbar(
-        'Error',
-        'No card payment option available',
-        snackPosition: SnackPosition.BOTTOM,
-        backgroundColor: Colors.red,
-        colorText: Colors.white,
-      );
-      return;
-    }
+    final expiry = _expiryCtrl.text.trim().split('/');
 
-    final cardInfo = {
-      'cardHolder': _cardHolderCtrl.text.trim(),
-      'cardNumber': _cardNumberCtrl.text.replaceAll(' ', ''),
-      'expireMonth': parts[0].trim(),
-      'expireYear': parts[1].trim(),
-      'cvv': _cvvCtrl.text.trim(),
-    };
-
-    await flightApiController.confirmBooking(
-      paymentId: paymentId,
-      cardInfo: cardInfo,
+    await ctrl.confirmBooking(
+      paymentId: paymentId.toString(),
+      cardInfo: {
+        'cardHolder': _cardHolderCtrl.text.trim(),
+        'cardNumber': _cardNumberCtrl.text.replaceAll(' ', ''),
+        'expireMonth': expiry[0].trim(),
+        'expireYear': expiry[1].trim(),
+        'cvv': _cvvCtrl.text.trim(),
+      },
     );
   }
 
@@ -104,6 +88,37 @@ class _PaymentPageState extends State<PaymentPage> {
                 child: Column(
                   crossAxisAlignment: CrossAxisAlignment.start,
                   children: [
+                    // Show loading banner while payment options are being fetched
+                    Obx(() {
+                      if (ctrl.cardPaymentId.value == null &&
+                          !ctrl.isLoading.value) {
+                        return Container(
+                          margin: const EdgeInsets.only(bottom: 16),
+                          padding: const EdgeInsets.all(12),
+                          decoration: BoxDecoration(
+                            color: Colors.orange.shade50,
+                            borderRadius: BorderRadius.circular(8),
+                            border: Border.all(color: Colors.orange.shade300),
+                          ),
+                          child: const Row(
+                            children: [
+                              SizedBox(
+                                width: 16,
+                                height: 16,
+                                child: CircularProgressIndicator(
+                                  strokeWidth: 2,
+                                  color: Colors.orange,
+                                ),
+                              ),
+                              SizedBox(width: 10),
+                              Text('Loading payment options...'),
+                            ],
+                          ),
+                        );
+                      }
+                      return const SizedBox.shrink();
+                    }),
+
                     const Text(
                       'Card details',
                       style: TextStyle(
@@ -113,7 +128,6 @@ class _PaymentPageState extends State<PaymentPage> {
                     ),
                     const SizedBox(height: 24),
 
-                    // Card holder
                     const Text(
                       "Cardholder's name *",
                       style: TextStyle(
@@ -126,8 +140,7 @@ class _PaymentPageState extends State<PaymentPage> {
                       controller: _cardHolderCtrl,
                       textCapitalization: TextCapitalization.characters,
                       decoration: _inputDecoration(
-                        hint: 'ashenafi hadush',
-
+                        hint: 'JOHN DOE',
                         icon: Icons.person_outline,
                       ),
                       validator: (v) =>
@@ -135,7 +148,6 @@ class _PaymentPageState extends State<PaymentPage> {
                     ),
                     const SizedBox(height: 20),
 
-                    // Card number
                     const Text(
                       'Card number *',
                       style: TextStyle(
@@ -153,20 +165,18 @@ class _PaymentPageState extends State<PaymentPage> {
                         _CardNumberFormatter(),
                       ],
                       decoration: _inputDecoration(
-                        hint: '0000 0000 0000 0000',
+                        hint: '4242 4242 4242 4242',
                         icon: Icons.credit_card,
                       ),
                       validator: (v) {
                         final digits = (v ?? '').replaceAll(' ', '');
-                        if (digits.length < 13) {
-                          return 'Enter a valid card number';
-                        }
-                        return null;
+                        return digits.length < 13
+                            ? 'Enter a valid card number'
+                            : null;
                       },
                     ),
                     const SizedBox(height: 20),
 
-                    // Expiry + CVV
                     Row(
                       children: [
                         Expanded(
@@ -193,13 +203,11 @@ class _PaymentPageState extends State<PaymentPage> {
                                 ],
                                 decoration: _inputDecoration(hint: 'MM/YY'),
                                 validator: (v) {
-                                  if (v == null || v.isEmpty) {
-                                    return 'Required';
-                                  }
-                                  final parts = v.split('/');
-                                  if (parts.length != 2 ||
-                                      parts[0].length != 2 ||
-                                      parts[1].length != 2) {
+                                  if (v == null || v.isEmpty) return 'Required';
+                                  final p = v.split('/');
+                                  if (p.length != 2 ||
+                                      p[0].length != 2 ||
+                                      p[1].length != 2) {
                                     return 'MM/YY format';
                                   }
                                   return null;
@@ -233,23 +241,20 @@ class _PaymentPageState extends State<PaymentPage> {
                                   hint: '•••',
                                   icon: Icons.lock_outline,
                                 ),
-                                validator: (v) {
-                                  if (v == null || v.length < 3) {
-                                    return 'Invalid CVV';
-                                  }
-                                  return null;
-                                },
+                                validator: (v) => (v == null || v.length < 3)
+                                    ? 'Invalid CVV'
+                                    : null,
                               ),
                             ],
                           ),
                         ),
                       ],
                     ),
-                    const SizedBox(height: 32),
+                    const SizedBox(height: 24),
 
-                    // Booking summary
+                    // Booking reference
                     Obx(() {
-                      final locator = flightApiController.bookingLocator.value;
+                      final locator = ctrl.bookingLocator.value;
                       if (locator.isEmpty) return const SizedBox.shrink();
                       return Container(
                         padding: const EdgeInsets.all(14),
@@ -285,21 +290,21 @@ class _PaymentPageState extends State<PaymentPage> {
               ),
             ),
 
-            // Bottom pay button
+            // Pay button
             Container(
               padding: const EdgeInsets.fromLTRB(20, 12, 20, 32),
               decoration: BoxDecoration(
                 color: Colors.white,
                 border: Border(top: BorderSide(color: Colors.grey.shade200)),
               ),
-              child: Obx(
-                () => SizedBox(
+              child: Obx(() {
+                final ready =
+                    ctrl.cardPaymentId.value != null && !ctrl.isLoading.value;
+                return SizedBox(
                   width: double.infinity,
                   height: 60,
                   child: ElevatedButton(
-                    onPressed: flightApiController.isLoading.value
-                        ? null
-                        : _confirmPayment,
+                    onPressed: ready ? _confirmPayment : null,
                     style: ElevatedButton.styleFrom(
                       backgroundColor: GuzoTheme.primaryGreen,
                       disabledBackgroundColor: Colors.grey.shade300,
@@ -307,7 +312,7 @@ class _PaymentPageState extends State<PaymentPage> {
                         borderRadius: BorderRadius.circular(8),
                       ),
                     ),
-                    child: flightApiController.isLoading.value
+                    child: ctrl.isLoading.value
                         ? const SizedBox(
                             height: 22,
                             width: 22,
@@ -325,8 +330,8 @@ class _PaymentPageState extends State<PaymentPage> {
                             ),
                           ),
                   ),
-                ),
-              ),
+                );
+              }),
             ),
           ],
         ),
@@ -348,7 +353,6 @@ class _PaymentPageState extends State<PaymentPage> {
   }
 }
 
-// Auto-formats card number with spaces every 4 digits
 class _CardNumberFormatter extends TextInputFormatter {
   @override
   TextEditingValue formatEditUpdate(
@@ -369,7 +373,6 @@ class _CardNumberFormatter extends TextInputFormatter {
   }
 }
 
-// Auto-inserts slash after MM
 class _ExpiryFormatter extends TextInputFormatter {
   @override
   TextEditingValue formatEditUpdate(
@@ -377,9 +380,7 @@ class _ExpiryFormatter extends TextInputFormatter {
     TextEditingValue newValue,
   ) {
     var text = newValue.text.replaceAll('/', '');
-    if (text.length > 2) {
-      text = '${text.substring(0, 2)}/${text.substring(2)}';
-    }
+    if (text.length > 2) text = '${text.substring(0, 2)}/${text.substring(2)}';
     return TextEditingValue(
       text: text,
       selection: TextSelection.collapsed(offset: text.length),
