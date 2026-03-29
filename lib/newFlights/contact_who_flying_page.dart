@@ -440,7 +440,7 @@ class _ContactWhoFlyingPageState extends State<ContactWhoFlyingPage> {
                                         ),
                                       ),
 
-                                    const Divider(height: 30),
+                                    const Divider(height: 10),
                                     Row(
                                       mainAxisAlignment:
                                           MainAxisAlignment.spaceBetween,
@@ -456,7 +456,7 @@ class _ContactWhoFlyingPageState extends State<ContactWhoFlyingPage> {
                                                 fontSize: 15,
                                               ),
                                             ),
-                                            SizedBox(height: 15),
+                                            SizedBox(height: 7),
 
                                             Text(
                                               "Flexible ticket",
@@ -465,7 +465,7 @@ class _ContactWhoFlyingPageState extends State<ContactWhoFlyingPage> {
                                                 color: Colors.grey[600],
                                               ),
                                             ),
-                                            SizedBox(height: 15),
+                                            SizedBox(height: 7),
 
                                             Text(
                                               "Travel protection",
@@ -483,12 +483,12 @@ class _ContactWhoFlyingPageState extends State<ContactWhoFlyingPage> {
                                           child: Column(
                                             children: [
                                               Text(""),
-                                              SizedBox(height: 15),
+                                              SizedBox(height: 7),
                                               const Text(
                                                 "\$ 34.06",
                                                 style: TextStyle(fontSize: 15),
                                               ),
-                                              SizedBox(height: 15),
+                                              SizedBox(height: 7),
 
                                               const Text(
                                                 "\$ 36.06",
@@ -499,7 +499,7 @@ class _ContactWhoFlyingPageState extends State<ContactWhoFlyingPage> {
                                         ),
                                       ],
                                     ),
-                                    const Divider(height: 30),
+                                    const Divider(height: 10),
 
                                     Row(
                                       mainAxisAlignment:
@@ -516,7 +516,7 @@ class _ContactWhoFlyingPageState extends State<ContactWhoFlyingPage> {
                                                 fontSize: 16,
                                               ),
                                             ),
-                                            SizedBox(height: 15),
+                                            SizedBox(height: 7),
                                             Text(
                                               "Guzo.com pays",
                                               style: TextStyle(
@@ -543,7 +543,7 @@ class _ContactWhoFlyingPageState extends State<ContactWhoFlyingPage> {
                                         ),
                                       ],
                                     ),
-                                    const Divider(height: 30),
+                                    const Divider(height: 10),
 
                                     Row(
                                       mainAxisAlignment:
@@ -567,7 +567,7 @@ class _ContactWhoFlyingPageState extends State<ContactWhoFlyingPage> {
                                                 color: Colors.grey[600],
                                               ),
                                             ),
-                                            SizedBox(height: 15),
+                                            SizedBox(height: 6),
                                           ],
                                         ),
                                         Padding(
@@ -578,7 +578,7 @@ class _ContactWhoFlyingPageState extends State<ContactWhoFlyingPage> {
                                             "$currency ${flightDataController.totalPrice.value}",
                                             style: TextStyle(
                                               fontWeight: FontWeight.bold,
-                                              fontSize: 24,
+                                              fontSize: 17,
                                             ),
                                           ),
                                         ),
@@ -587,14 +587,14 @@ class _ContactWhoFlyingPageState extends State<ContactWhoFlyingPage> {
 
                                     const Spacer(),
                                     Divider(height: 1),
-                                    SizedBox(height: 25),
+                                    // SizedBox(height: 25),
                                     Padding(
                                       padding: const EdgeInsets.only(
                                         bottom: 20.0,
                                       ),
                                       child: SizedBox(
                                         width: double.infinity,
-                                        height: 70,
+                                        height: 55,
                                         child: ElevatedButton(
                                           onPressed: () =>
                                               Navigator.pop(context),
@@ -631,7 +631,7 @@ class _ContactWhoFlyingPageState extends State<ContactWhoFlyingPage> {
                             "$currency ${flightDataController.totalPrice.value}",
                             style: TextStyle(
                               fontWeight: FontWeight.bold,
-                              fontSize: 20,
+                              fontSize: 16,
                             ),
                           ),
                           SizedBox(width: 5),
@@ -641,9 +641,9 @@ class _ContactWhoFlyingPageState extends State<ContactWhoFlyingPage> {
                     ),
                   ),
                   Padding(
-                    padding: const EdgeInsets.only(right: 12.0),
+                    padding: const EdgeInsets.only(right: 8.0),
                     child: SizedBox(
-                      width: 180,
+                      width: 140,
                       height: 60,
                       child: ElevatedButton(
                         style: ElevatedButton.styleFrom(

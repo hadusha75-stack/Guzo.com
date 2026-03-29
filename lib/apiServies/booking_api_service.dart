@@ -271,6 +271,27 @@ if (res.statusCode != 200) {
     _assertOk(res, 'flight/hold/confirmpayment');
     return jsonDecode(res.body) as Map<String, dynamic>;
   }
+  Future<Map<String, dynamic>> paymentCallback({
+    required String status,
+    required String traceNumber,
+    required String txnref,
+  }) async {
+    final token = await _getToken();
+    final body = jsonEncode({
+      'status': status,
+      'traceNumber': traceNumber,
+      'txnref': txnref,
+    });
+    debugPrint('PAYMENT-CALLBACK REQUEST: $body');
+    final res = await http.post(
+      Uri.parse('$_base/api/flight/hold/payment-callback'),
+      headers: _headers(token),
+      body: body,
+    );
+    debugPrint('PAYMENT-CALLBACK RESPONSE [${res.statusCode}]: ${res.body}');
+    return jsonDecode(res.body) as Map<String, dynamic>;
+  }
+
   void _assertOk(http.Response res, String endpoint) {
     if (res.statusCode != 200) {
       throw Exception('[$endpoint] HTTP ${res.statusCode}: ${res.body}');

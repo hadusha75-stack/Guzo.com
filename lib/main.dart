@@ -19,7 +19,7 @@ Future<void> main() async {
 
   await GetStorage.init();
 
-  runApp(DevicePreview(enabled: !kReleaseMode, builder: (context) => MyApp()));
+  runApp(DevicePreview(enabled: kIsWeb, builder: (context) => MyApp()));
 }
 
 class MyApp extends StatelessWidget {
@@ -32,12 +32,10 @@ class MyApp extends StatelessWidget {
     return GetMaterialApp(
       title: 'Guzo.com',
       debugShowCheckedModeBanner: false,
-      locale: DevicePreview.locale(context),
-      builder: DevicePreview.appBuilder,
-      theme: ThemeData(colorScheme: .fromSeed(seedColor: Colors.green)),
-
+      locale: kIsWeb ? DevicePreview.locale(context) : null,
+      builder: kIsWeb ? DevicePreview.appBuilder : null,
+      theme: ThemeData(colorScheme: ColorScheme.fromSeed(seedColor: Colors.green)),
       home: isLoggIn ? FlightsPage() : LoginPageGoogle(),
-    
     );
   }
 }

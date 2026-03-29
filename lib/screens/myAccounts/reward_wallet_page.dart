@@ -43,14 +43,14 @@ class RewardWalletPage extends StatelessWidget {
                     children: [
                       Text(
                         "Got a coupon code? ",
-                        style: TextStyle(fontSize: 18),
+                        style: TextStyle(fontSize: 15),
                       ),
                       TextButton(
                         onPressed: () {},
                         child: Text(
                           "Add coupon into Wallet",
                           style: TextStyle(
-                            fontSize: 18,
+                            fontSize: 15,
                             color: GuzoTheme.primaryGreen,
                             fontWeight: FontWeight.bold,
                           ),
@@ -66,7 +66,7 @@ class RewardWalletPage extends StatelessWidget {
                       Text(
                         "What's Rewards & Wallet?",
                         style: TextStyle(
-                          fontSize: 30,
+                          fontSize: 20,
                           fontWeight: FontWeight.bold,
                         ),
                       ),
@@ -229,7 +229,7 @@ Widget _buildGeniusRewardCard() {
         ),
         const Divider(height: 1),
         Padding(
-          padding: const EdgeInsets.only(top: 16, bottom: 16, left: 6),
+          padding: const EdgeInsets.only(top: 16, bottom: 16, left: 2),
           child: Row(
             children: [
               TextButton(
@@ -238,7 +238,7 @@ Widget _buildGeniusRewardCard() {
                   "Browse Rewards and Wallet activity",
                   style: TextStyle(
                     color: GuzoTheme.primaryGreen,
-                    fontSize: 20,
+                    fontSize: 16,
                     fontWeight: FontWeight.bold,
                   ),
                 ),

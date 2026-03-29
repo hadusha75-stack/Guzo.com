@@ -2,6 +2,8 @@ import 'package:booking/controllers/flights_with_api_controller.dart';
 import 'package:booking/theam/app_color.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
+import 'package:flutter_credit_card_scanner/credit_card_scanner.dart'
+    show CameraScannerWidget;
 import 'package:get/get.dart';
 
 class PaymentPage extends StatefulWidget {
@@ -27,6 +29,60 @@ class _PaymentPageState extends State<PaymentPage> {
     _expiryCtrl.dispose();
     _cvvCtrl.dispose();
     super.dispose();
+  }
+
+  Future<void> _scanCard() async {
+    await Get.to(
+      () => Scaffold(
+        appBar: AppBar(
+          backgroundColor: GuzoTheme.primaryGreen,
+          leading: IconButton(
+            icon: const Icon(Icons.arrow_back, color: Colors.white),
+            onPressed: () => Get.back(),
+          ),
+          title: const Text(
+            'Scan your card',
+            style: TextStyle(color: Colors.white),
+          ),
+        ),
+        body: CameraScannerWidget(
+          loadingHolder: const Center(
+            child: CircularProgressIndicator(
+              strokeWidth: 5,
+              color: GuzoTheme.primaryGreen,
+            ),
+          ),
+          onNoCamera: () {
+            Get.back();
+            Get.snackbar(
+              'No camera',
+              'Camera not available on this device',
+              snackPosition: SnackPosition.BOTTOM,
+            );
+          },
+          onScan: (context, card) {
+            if (card != null) {
+              setState(() {
+                if (card.number.isNotEmpty) {
+                  _cardNumberCtrl.text = card.number.replaceAll(' ', '');
+                }
+                if (card.holderName.isNotEmpty) {
+                  _cardHolderCtrl.text = card.holderName;
+                }
+                if (card.expirationMonth.isNotEmpty &&
+                    card.expirationYear.isNotEmpty) {
+                  final year = card.expirationYear.length == 4
+                      ? card.expirationYear.substring(2)
+                      : card.expirationYear;
+                  _expiryCtrl.text = '${card.expirationMonth}/$year';
+                }
+              });
+              Get.back();
+            }
+          },
+        ),
+      ),
+    );
   }
 
   Future<void> _confirmPayment() async {
@@ -118,12 +174,32 @@ class _PaymentPageState extends State<PaymentPage> {
                       return const SizedBox.shrink();
                     }),
 
-                    const Text(
-                      'Card details',
-                      style: TextStyle(
-                        fontSize: 26,
-                        fontWeight: FontWeight.bold,
-                      ),
+                    Row(
+                      mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                      children: [
+                        const Text(
+                          'Card details',
+                          style: TextStyle(
+                            fontSize: 26,
+                            fontWeight: FontWeight.bold,
+                          ),
+                        ),
+                        TextButton.icon(
+                          onPressed: _scanCard,
+                          icon: const Icon(
+                            Icons.camera_alt_outlined,
+                            color: GuzoTheme.primaryGreen,
+                            size: 40.0,
+                          ),
+                          label: const Text(
+                            'Scan card',
+                            style: TextStyle(
+                              color: GuzoTheme.primaryGreen,
+                              fontWeight: FontWeight.w600,
+                            ),
+                          ),
+                        ),
+                      ],
                     ),
                     const SizedBox(height: 24),
 
@@ -272,7 +348,7 @@ class _PaymentPageState extends State<PaymentPage> {
                             const SizedBox(width: 10),
                             Expanded(
                               child: Text(
-                                'Booking reference: $locator',
+                                'Booking reference:\n $locator',
                                 style: const TextStyle(
                                   fontWeight: FontWeight.w600,
                                   fontSize: 14,
@@ -288,7 +364,6 @@ class _PaymentPageState extends State<PaymentPage> {
               ),
             ),
 
-            // Pay button
             Container(
               padding: const EdgeInsets.fromLTRB(20, 12, 20, 32),
               decoration: BoxDecoration(

@@ -102,30 +102,41 @@ class _SelectYourSeatsPageState extends State<SelectYourSeatsPage> {
             child: ListView(
               padding: const EdgeInsets.all(16),
               children: [
-                const SizedBox(height: 15),
-                Obx(
-                  () => SeatFlightGroup(
-                    mainTitle: "Flight to Arba Minch",
-                    route: "Addis Ababa to Arba Minch",
-                    details: "1h 10m · Ethiopian Airlines",
-                    selectionStatus:
-                        "${flightDataController.numberOfselectedSeats.value} of ${flightDataController.numberOfTravelers.value} seat selected . \$${flightDataController.numberOfselectedSeats.value * _pricePerSeat}",
-                  ),
-                ),
-
-                Obx(
-                  () => SeatFlightGroup(
-                    mainTitle: "Flight to Addis Ababa",
-                    route: "Arba Minch to Addis Ababa",
-                    details: "1h 10m · Ethiopian Airlines",
-                    selectionStatus:
-                        "${flightDataController.numberOfselectedSeats2.value} of ${flightDataController.numberOfTravelers.value} seat selected . \$${flightDataController.numberOfselectedSeats2.value * _pricePerSeat}",
-                  ),
-                ),
+                const SizedBox(height: 8),
+                // Build a SeatFlightGroup for each flight in the offer
+                ...() {
+                  final flights = flightApicontroller.selectedOffer.value?['flights'] as List? ?? [];
+                  final fromName = flightDataController.recievedFromFromName.value;
+                  final toName = flightDataController.recievedFromToName.value;
+                  return List.generate(flights.length, (i) {
+                    final flight = flights[i] as Map<String, dynamic>;
+                    final segs = flight['segments'] as List? ?? [];
+                    final firstSeg = segs.isNotEmpty ? segs.first : null;
+                    final lastSeg = segs.isNotEmpty ? segs.last : null;
+                    final airline = firstSeg?['airlineName'] ?? '';
+                    final dur = flight['duration'] as String? ?? '';
+                    final durMatch = RegExp(r'PT(?:(\d+)H)?(?:(\d+)M)?').firstMatch(dur);
+                    final durStr = durMatch != null
+                        ? '${durMatch.group(1) ?? '0'}h ${durMatch.group(2) ?? '0'}m'
+                        : dur;
+                    final origin = i == 0 ? fromName : toName;
+                    final dest = i == 0 ? toName : fromName;
+                    final travelers = flightDataController.numberOfTravelers.value;
+                    final selected = i == 0
+                        ? flightDataController.numberOfselectedSeats.value
+                        : flightDataController.numberOfselectedSeats2.value;
+                    return SeatFlightGroup(
+                      mainTitle: 'Flight to $dest',
+                      route: '$origin to $dest',
+                      details: '$durStr · $airline',
+                      selectionStatus: '$selected of $travelers seat selected . \$0.0',
+                    );
+                  });
+                }(),
               ],
             ),
           ),
-          Container(
+                       Container(
             padding: const EdgeInsets.symmetric(horizontal: 16, vertical: 12),
             decoration: BoxDecoration(
               color: Colors.white,
@@ -260,7 +271,7 @@ class _SelectYourSeatsPageState extends State<SelectYourSeatsPage> {
                                         ),
                                       ),
 
-                                    const Divider(height: 30),
+                                    const Divider(height: 10),
                                     Row(
                                       mainAxisAlignment:
                                           MainAxisAlignment.spaceBetween,
@@ -276,7 +287,7 @@ class _SelectYourSeatsPageState extends State<SelectYourSeatsPage> {
                                                 fontSize: 15,
                                               ),
                                             ),
-                                            SizedBox(height: 15),
+                                            SizedBox(height: 7),
 
                                             Text(
                                               "Flexible ticket",
@@ -285,7 +296,7 @@ class _SelectYourSeatsPageState extends State<SelectYourSeatsPage> {
                                                 color: Colors.grey[600],
                                               ),
                                             ),
-                                            SizedBox(height: 15),
+                                            SizedBox(height: 7),
 
                                             Text(
                                               "Travel protection",
@@ -303,12 +314,12 @@ class _SelectYourSeatsPageState extends State<SelectYourSeatsPage> {
                                           child: Column(
                                             children: [
                                               Text(""),
-                                              SizedBox(height: 15),
+                                              SizedBox(height: 7),
                                               const Text(
                                                 "\$ 34.06",
                                                 style: TextStyle(fontSize: 15),
                                               ),
-                                              SizedBox(height: 15),
+                                              SizedBox(height: 7),
 
                                               const Text(
                                                 "\$ 36.06",
@@ -319,7 +330,7 @@ class _SelectYourSeatsPageState extends State<SelectYourSeatsPage> {
                                         ),
                                       ],
                                     ),
-                                    const Divider(height: 30),
+                                    const Divider(height: 10),
 
                                     Row(
                                       mainAxisAlignment:
@@ -336,7 +347,7 @@ class _SelectYourSeatsPageState extends State<SelectYourSeatsPage> {
                                                 fontSize: 16,
                                               ),
                                             ),
-                                            SizedBox(height: 15),
+                                            SizedBox(height: 7),
                                             Text(
                                               "Guzo.com pays",
                                               style: TextStyle(
@@ -363,7 +374,7 @@ class _SelectYourSeatsPageState extends State<SelectYourSeatsPage> {
                                         ),
                                       ],
                                     ),
-                                    const Divider(height: 30),
+                                    const Divider(height: 10),
 
                                     Row(
                                       mainAxisAlignment:
@@ -387,7 +398,7 @@ class _SelectYourSeatsPageState extends State<SelectYourSeatsPage> {
                                                 color: Colors.grey[600],
                                               ),
                                             ),
-                                            SizedBox(height: 15),
+                                            SizedBox(height: 6),
                                           ],
                                         ),
                                         Padding(
@@ -398,7 +409,7 @@ class _SelectYourSeatsPageState extends State<SelectYourSeatsPage> {
                                             "$currency ${flightDataController.totalPrice.value}",
                                             style: TextStyle(
                                               fontWeight: FontWeight.bold,
-                                              fontSize: 24,
+                                              fontSize: 17,
                                             ),
                                           ),
                                         ),
@@ -407,14 +418,14 @@ class _SelectYourSeatsPageState extends State<SelectYourSeatsPage> {
 
                                     const Spacer(),
                                     Divider(height: 1),
-                                    SizedBox(height: 25),
+                                    // SizedBox(height: 25),
                                     Padding(
                                       padding: const EdgeInsets.only(
                                         bottom: 20.0,
                                       ),
                                       child: SizedBox(
                                         width: double.infinity,
-                                        height: 70,
+                                        height: 55,
                                         child: ElevatedButton(
                                           onPressed: () =>
                                               Navigator.pop(context),
@@ -449,7 +460,7 @@ class _SelectYourSeatsPageState extends State<SelectYourSeatsPage> {
                           '$currency ${flightDataController.totalPrice.value}',
                           style: TextStyle(
                             fontWeight: FontWeight.bold,
-                            fontSize: 18,
+                            fontSize: 16,
                           ),
                         ),
                         const SizedBox(width: 6),
@@ -462,7 +473,7 @@ class _SelectYourSeatsPageState extends State<SelectYourSeatsPage> {
                     ),
                   ),
                   SizedBox(
-                    width: 180,
+                    width: 140,
                     height: 60,
                     child: ElevatedButton(
                       onPressed: () {
@@ -471,7 +482,7 @@ class _SelectYourSeatsPageState extends State<SelectYourSeatsPage> {
                       style: ElevatedButton.styleFrom(
                         backgroundColor: GuzoTheme.primaryGreen,
                         padding: const EdgeInsets.symmetric(
-                          horizontal: 60,
+                          horizontal: 40,
                           vertical: 16,
                         ),
                         shape: RoundedRectangleBorder(
@@ -655,11 +666,11 @@ class SeatFlightGroup extends StatelessWidget {
                             fontSize: 16,
                           ),
                         ),
-                        SizedBox(width: 180),
+                        // SizedBox(width: 180),
                         Icon(
                           Icons.arrow_forward_ios,
                           size: 16,
-                          color: Color(0xFF1672EC),
+                          color: Color.fromARGB(255, 22, 236, 72),
                         ),
                       ],
                     ),

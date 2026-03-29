@@ -358,8 +358,8 @@ class _CheckoutPageState extends State<CheckoutPage> {
                           Get.to(() => const PaymentPage());
                         },
                         child: Container(
-                          width: 100,
-                          height: 100,
+                          width: 80,
+                          height: 80,
                           decoration: BoxDecoration(
                             boxShadow: const [
                               BoxShadow(
@@ -377,12 +377,12 @@ class _CheckoutPageState extends State<CheckoutPage> {
                               children: [
                                 Padding(
                                   padding: const EdgeInsets.only(
-                                    right: 10.0,
+                                    right: 5.0,
                                     bottom: 14,
                                   ),
                                   child: Icon(
                                     Icons.note_alt_outlined,
-                                    size: 70,
+                                    size: 40,
                                     color: GuzoTheme.primaryGreen,
                                   ),
                                 ),
@@ -393,13 +393,13 @@ class _CheckoutPageState extends State<CheckoutPage> {
                                     decoration: BoxDecoration(
                                       border: Border.all(
                                         color: Colors.green,
-                                        width: 5,
+                                        width: 3,
                                       ),
                                       borderRadius: BorderRadius.circular(30),
                                     ),
                                     child: Icon(
                                       Icons.add,
-                                      size: 25,
+                                      size: 10,
                                       color: GuzoTheme.primaryGreen,
                                     ),
                                   ),
@@ -483,8 +483,8 @@ class _CheckoutPageState extends State<CheckoutPage> {
                           });
                         },
                         child: Container(
-                          width: 100,
-                          height: 100,
+                          width: 90,
+                          height: 90,
                           decoration: BoxDecoration(
                             boxShadow: const [
                               BoxShadow(
@@ -519,19 +519,23 @@ class _CheckoutPageState extends State<CheckoutPage> {
                   ),
                   SizedBox(height: 15),
 
-                  Row(
-                    children: [
-                      SizedBox(width: 20),
-                      Text("New card"),
-                      SizedBox(width: 89),
-
-                      Text("Google Pay"),
-                      SizedBox(width: 75),
-
-                      Text("PayPal"),
-                    ],
+                  Padding(
+                    padding: const EdgeInsets.only(left: 20.0, right: 20.0),
+                    child: Row(
+                      mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                      children: [
+                        // SizedBox(width: 20),
+                        Text("New card"),
+                    
+                        // SizedBox(width: 89),
+                        Text("Google Pay"),
+                    
+                        // SizedBox(width: 75),
+                        Text("PayPal"),
+                      ],
+                    ),
                   ),
-                  SizedBox(height: 20),
+                  // SizedBox(height: 20),
                 ],
               ),
             ),
@@ -602,7 +606,8 @@ class _CheckoutPageState extends State<CheckoutPage> {
                     SizedBox(height: 30),
                     Center(
                       child: InkWell(
-                        onTap: () => _showFlightDetailsSheet(context, firstFlight),
+                        onTap: () =>
+                            _showFlightDetailsSheet(context, firstFlight),
                         child: Text(
                           "View flight details",
                           style: TextStyle(
@@ -678,7 +683,8 @@ class _CheckoutPageState extends State<CheckoutPage> {
 
                       Center(
                         child: InkWell(
-                          onTap: () => _showFlightDetailsSheet(context, secondFlight),
+                          onTap: () =>
+                              _showFlightDetailsSheet(context, secondFlight),
                           child: Text(
                             "View flight details",
                             style: TextStyle(
@@ -759,7 +765,8 @@ class _CheckoutPageState extends State<CheckoutPage> {
                     SizedBox(height: 30),
                     Center(
                       child: InkWell(
-                        onTap: () => _showFlightDetailsSheet(context, firstFlight),
+                        onTap: () =>
+                            _showFlightDetailsSheet(context, firstFlight),
                         child: Text(
                           "View flight details",
                           style: TextStyle(
@@ -1771,11 +1778,11 @@ class _CheckoutPageState extends State<CheckoutPage> {
                       Text(
                         '$currency ${flightDatacontroller.totalPrice.value}',
                         style: TextStyle(
-                          fontSize: 20,
+                          fontSize: 16,
                           fontWeight: FontWeight.w700,
                         ),
                       ),
-                      SizedBox(width: 7),
+                      SizedBox(width: 4),
                       Icon(Icons.info_outline, size: 30),
                     ],
                   ),
@@ -1787,7 +1794,7 @@ class _CheckoutPageState extends State<CheckoutPage> {
               padding: const EdgeInsets.only(bottom: 20.0),
               child: SizedBox(
                 height: 60,
-                width: 180,
+                width: 140,
                 child: Obx(
                   () => ElevatedButton(
                     onPressed: flightApicontroller.isLoading.value
@@ -1795,16 +1802,22 @@ class _CheckoutPageState extends State<CheckoutPage> {
                         : () async {
                             try {
                               // Ensure pricing is loaded before holding
-                              if (flightApicontroller.executionId.value.isEmpty) {
+                              if (flightApicontroller
+                                  .executionId
+                                  .value
+                                  .isEmpty) {
                                 final offer =
                                     flightApicontroller.selectedOffer.value ??
-                                        (flightApicontroller.offers.isNotEmpty
-                                            ? flightApicontroller.offers.first
-                                                as Map<String, dynamic>
-                                            : null);
+                                    (flightApicontroller.offers.isNotEmpty
+                                        ? flightApicontroller.offers.first
+                                              as Map<String, dynamic>
+                                        : null);
                                 if (offer == null) {
-                                  Get.snackbar('Error', 'No flight selected.',
-                                      snackPosition: SnackPosition.BOTTOM);
+                                  Get.snackbar(
+                                    'Error',
+                                    'No flight selected.',
+                                    snackPosition: SnackPosition.BOTTOM,
+                                  );
                                   return;
                                 }
                                 await flightApicontroller
@@ -1814,17 +1827,33 @@ class _CheckoutPageState extends State<CheckoutPage> {
                               // holdFlight reads passenger data from UserNameController internally
                               await flightApicontroller.holdFlight([]);
 
-                              if (flightApicontroller.bookingLocator.value.isNotEmpty) {
+                              if (flightApicontroller
+                                  .bookingLocator
+                                  .value
+                                  .isNotEmpty) {
                                 Get.to(() => const PaymentPage());
                               } else {
-                                Get.snackbar('Error', 'Hold failed. Please try again.',
-                                    snackPosition: SnackPosition.BOTTOM);
+                                Get.snackbar(
+                                  'Error',
+                                  'Hold failed. Please try again.',
+                                  snackPosition: SnackPosition.BOTTOM,
+                                );
                               }
                             } catch (e) {
-                              Get.snackbar('Error', 'Something went wrong: $e',
-                                  snackPosition: SnackPosition.BOTTOM);
+                              Get.snackbar(
+                                'Error',
+                                'Something went wrong: $e',
+                                snackPosition: SnackPosition.BOTTOM,
+                              );
                             }
                           },
+                    style: ElevatedButton.styleFrom(
+                      foregroundColor: GuzoTheme.White,
+                      backgroundColor: GuzoTheme.primaryGreen,
+                      shape: RoundedRectangleBorder(
+                        borderRadius: BorderRadius.circular(8),
+                      ),
+                    ),
                     child: Obx(
                       () => flightApicontroller.isLoading.value
                           ? const SizedBox(
@@ -1839,13 +1868,6 @@ class _CheckoutPageState extends State<CheckoutPage> {
                               "Hold Flight",
                               style: TextStyle(fontSize: 20),
                             ),
-                    ),
-                    style: ElevatedButton.styleFrom(
-                      foregroundColor: GuzoTheme.White,
-                      backgroundColor: GuzoTheme.primaryGreen,
-                      shape: RoundedRectangleBorder(
-                        borderRadius: BorderRadius.circular(8),
-                      ),
                     ),
                   ),
                 ),
@@ -1969,8 +1991,12 @@ class _CheckoutPageState extends State<CheckoutPage> {
                   const SizedBox(height: 12),
                   Center(
                     child: Container(
-                      width: 60, height: 6,
-                      decoration: BoxDecoration(color: Colors.grey, borderRadius: BorderRadius.circular(10)),
+                      width: 60,
+                      height: 6,
+                      decoration: BoxDecoration(
+                        color: Colors.grey,
+                        borderRadius: BorderRadius.circular(10),
+                      ),
                     ),
                   ),
                   const SizedBox(height: 16),
@@ -1978,9 +2004,21 @@ class _CheckoutPageState extends State<CheckoutPage> {
                     padding: const EdgeInsets.symmetric(horizontal: 20),
                     child: Row(
                       children: [
-                        const Text('Flight details', style: TextStyle(fontSize: 20, fontWeight: FontWeight.bold)),
+                        const Text(
+                          'Flight details',
+                          style: TextStyle(
+                            fontSize: 20,
+                            fontWeight: FontWeight.bold,
+                          ),
+                        ),
                         const Spacer(),
-                        Text(formatDuration(duration), style: TextStyle(color: Colors.grey[600], fontSize: 15)),
+                        Text(
+                          formatDuration(duration),
+                          style: TextStyle(
+                            color: Colors.grey[600],
+                            fontSize: 15,
+                          ),
+                        ),
                       ],
                     ),
                   ),
@@ -1989,14 +2027,19 @@ class _CheckoutPageState extends State<CheckoutPage> {
                   Expanded(
                     child: ListView.builder(
                       controller: scrollCtrl,
-                      padding: const EdgeInsets.symmetric(horizontal: 20, vertical: 16),
+                      padding: const EdgeInsets.symmetric(
+                        horizontal: 20,
+                        vertical: 16,
+                      ),
                       itemCount: segments.length,
                       itemBuilder: (ctx, i) {
                         final seg = segments[i] as Map<String, dynamic>;
-                        final airline = seg['airlineName'] ?? seg['airlineCode'] ?? '';
+                        final airline =
+                            seg['airlineName'] ?? seg['airlineCode'] ?? '';
                         final flightNum = seg['flightNumber'] ?? '';
                         final depAirport = seg['departureAirport'] ?? '';
-                        final depName = seg['departureAirportName'] ?? depAirport;
+                        final depName =
+                            seg['departureAirportName'] ?? depAirport;
                         final arrAirport = seg['arrivalAirport'] ?? '';
                         final arrName = seg['arrivalAirportName'] ?? arrAirport;
                         final depTime = formatTime(seg['departureDateTime']);
@@ -2007,27 +2050,46 @@ class _CheckoutPageState extends State<CheckoutPage> {
                         // layover between segments
                         Widget? layover;
                         if (i > 0) {
-                          final prevArr = segments[i - 1]['arrivalDateTime'] as String?;
+                          final prevArr =
+                              segments[i - 1]['arrivalDateTime'] as String?;
                           final thisDep = seg['departureDateTime'] as String?;
                           if (prevArr != null && thisDep != null) {
-                            final diff = DateTime.tryParse(thisDep)?.difference(DateTime.tryParse(prevArr) ?? DateTime.now());
+                            final diff = DateTime.tryParse(thisDep)?.difference(
+                              DateTime.tryParse(prevArr) ?? DateTime.now(),
+                            );
                             if (diff != null) {
                               final h = diff.inHours;
                               final m = diff.inMinutes % 60;
                               layover = Container(
-                                margin: const EdgeInsets.symmetric(vertical: 12),
-                                padding: const EdgeInsets.symmetric(horizontal: 12, vertical: 8),
+                                margin: const EdgeInsets.symmetric(
+                                  vertical: 12,
+                                ),
+                                padding: const EdgeInsets.symmetric(
+                                  horizontal: 12,
+                                  vertical: 8,
+                                ),
                                 decoration: BoxDecoration(
                                   color: Colors.orange.shade50,
                                   borderRadius: BorderRadius.circular(8),
-                                  border: Border.all(color: Colors.orange.shade200),
+                                  border: Border.all(
+                                    color: Colors.orange.shade200,
+                                  ),
                                 ),
                                 child: Row(
                                   children: [
-                                    const Icon(Icons.access_time, size: 16, color: Colors.orange),
+                                    const Icon(
+                                      Icons.access_time,
+                                      size: 16,
+                                      color: Colors.orange,
+                                    ),
                                     const SizedBox(width: 6),
-                                    Text('Layover: ${h}h ${m}m in $depAirport',
-                                        style: const TextStyle(fontSize: 13, color: Colors.orange)),
+                                    Text(
+                                      'Layover: ${h}h ${m}m in $depAirport',
+                                      style: const TextStyle(
+                                        fontSize: 13,
+                                        color: Colors.orange,
+                                      ),
+                                    ),
                                   ],
                                 ),
                               );
@@ -2042,20 +2104,34 @@ class _CheckoutPageState extends State<CheckoutPage> {
                             // Airline + flight number
                             Row(
                               children: [
-                                const Icon(Icons.flight_takeoff, size: 18, color: Colors.grey),
+                                const Icon(
+                                  Icons.flight_takeoff,
+                                  size: 18,
+                                  color: Colors.grey,
+                                ),
                                 const SizedBox(width: 6),
-                                Text('$airline  $flightNum',
-                                    style: const TextStyle(fontWeight: FontWeight.w600, fontSize: 15)),
+                                Text(
+                                  '$airline  $flightNum',
+                                  style: const TextStyle(
+                                    fontWeight: FontWeight.w600,
+                                    fontSize: 15,
+                                  ),
+                                ),
                                 const Spacer(),
                                 if (cabin.isNotEmpty)
                                   Container(
-                                    padding: const EdgeInsets.symmetric(horizontal: 8, vertical: 3),
+                                    padding: const EdgeInsets.symmetric(
+                                      horizontal: 8,
+                                      vertical: 3,
+                                    ),
                                     decoration: BoxDecoration(
                                       color: Colors.grey.shade100,
                                       borderRadius: BorderRadius.circular(4),
                                     ),
-                                    child: Text('$cabin${rbd.isNotEmpty ? ' ($rbd)' : ''}',
-                                        style: const TextStyle(fontSize: 12)),
+                                    child: Text(
+                                      '$cabin${rbd.isNotEmpty ? ' ($rbd)' : ''}',
+                                      style: const TextStyle(fontSize: 12),
+                                    ),
                                   ),
                               ],
                             ),
@@ -2068,23 +2144,65 @@ class _CheckoutPageState extends State<CheckoutPage> {
                                   // dot-line-dot
                                   Column(
                                     children: [
-                                      Container(width: 10, height: 10,
-                                          decoration: const BoxDecoration(color: GuzoTheme.primaryGreen, shape: BoxShape.circle)),
-                                      Expanded(child: Container(width: 2, color: Colors.grey.shade300)),
-                                      Container(width: 10, height: 10,
-                                          decoration: BoxDecoration(color: Colors.grey.shade400, shape: BoxShape.circle)),
+                                      Container(
+                                        width: 10,
+                                        height: 10,
+                                        decoration: const BoxDecoration(
+                                          color: GuzoTheme.primaryGreen,
+                                          shape: BoxShape.circle,
+                                        ),
+                                      ),
+                                      Expanded(
+                                        child: Container(
+                                          width: 2,
+                                          color: Colors.grey.shade300,
+                                        ),
+                                      ),
+                                      Container(
+                                        width: 10,
+                                        height: 10,
+                                        decoration: BoxDecoration(
+                                          color: Colors.grey.shade400,
+                                          shape: BoxShape.circle,
+                                        ),
+                                      ),
                                     ],
                                   ),
                                   const SizedBox(width: 12),
                                   Expanded(
                                     child: Column(
-                                      crossAxisAlignment: CrossAxisAlignment.start,
+                                      crossAxisAlignment:
+                                          CrossAxisAlignment.start,
                                       children: [
-                                        Text(depTime, style: const TextStyle(fontWeight: FontWeight.bold, fontSize: 16)),
-                                        Text('$depAirport  $depName', style: TextStyle(color: Colors.grey[600], fontSize: 13)),
+                                        Text(
+                                          depTime,
+                                          style: const TextStyle(
+                                            fontWeight: FontWeight.bold,
+                                            fontSize: 16,
+                                          ),
+                                        ),
+                                        Text(
+                                          '$depAirport  $depName',
+                                          style: TextStyle(
+                                            color: Colors.grey[600],
+                                            fontSize: 13,
+                                          ),
+                                        ),
                                         const SizedBox(height: 20),
-                                        Text(arrTime, style: const TextStyle(fontWeight: FontWeight.bold, fontSize: 16)),
-                                        Text('$arrAirport  $arrName', style: TextStyle(color: Colors.grey[600], fontSize: 13)),
+                                        Text(
+                                          arrTime,
+                                          style: const TextStyle(
+                                            fontWeight: FontWeight.bold,
+                                            fontSize: 16,
+                                          ),
+                                        ),
+                                        Text(
+                                          '$arrAirport  $arrName',
+                                          style: TextStyle(
+                                            color: Colors.grey[600],
+                                            fontSize: 13,
+                                          ),
+                                        ),
                                       ],
                                     ),
                                   ),
@@ -2092,7 +2210,8 @@ class _CheckoutPageState extends State<CheckoutPage> {
                               ),
                             ),
                             const SizedBox(height: 16),
-                            if (i < segments.length - 1) const Divider(height: 1),
+                            if (i < segments.length - 1)
+                              const Divider(height: 1),
                           ],
                         );
                       },

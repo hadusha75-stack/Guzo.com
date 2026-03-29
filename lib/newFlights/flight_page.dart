@@ -1,6 +1,7 @@
 import 'package:booking/controllers/flights_with_api_controller.dart';
 import 'package:booking/newFlights/searched_flights_page.dart';
 import 'package:booking/newFlights/when_when_clicked_page.dart';
+import 'package:booking/newFlights/who_flying_page.dart';
 import 'package:booking/screens/myAccounts/my_account_page.dart';
 import 'package:booking/theam/app_color.dart';
 import 'package:flutter/material.dart';
@@ -9,7 +10,6 @@ import 'package:get/get.dart';
 import 'package:intl/intl.dart';
 import 'package:booking/controllers/FlightsController.dart';
 import 'package:booking/newFlights/airport_search_page.dart';
-import 'package:booking/newFlights/who_flying_page.dart';
 import 'package:syncfusion_flutter_datepicker/datepicker.dart';
 
 class FlightsPage extends StatefulWidget {
@@ -302,7 +302,11 @@ class _FlightsPageState extends State<FlightsPage> {
         : text;
 
     return InkWell(
-      onTap: () => Get.to(() => AirportSearchPage(title: displayResult)),
+      onTap: () => Get.to(() => AirportSearchPage(
+            title: displayResult,
+            isFrom: isFromField,
+            segmentIndex: index,
+          )),
       child: Padding(
         padding: const EdgeInsets.all(16),
         child: Row(
@@ -371,163 +375,228 @@ class _FlightsPageState extends State<FlightsPage> {
     BuildContext context,
     FlightDataController controller,
   ) {
-    var tempStart = "".obs;
-    var tempEnd = "".obs;
-    PickerDateRange? selectedRange;
+    DateTime? depDate;
+    DateTime? retDate;
+    bool selectingReturn = false;
 
-    showModalBottomSheet(
-      context: context,
-      isScrollControlled: true,
-      backgroundColor: Colors.white,
-      shape: const RoundedRectangleBorder(
-        borderRadius: BorderRadius.vertical(top: Radius.circular(20)),
-      ),
-      builder: (context) {
-        return SizedBox(
-          height: MediaQuery.of(context).size.height * 0.9,
-          child: Column(
-            children: [
-              Padding(
-                padding: const EdgeInsets.fromLTRB(20, 10, 10, 0),
-                child: Row(
-                  mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                  crossAxisAlignment: CrossAxisAlignment.start,
-                  children: [
-                    const Text(
-                      "\nWhen?",
-                      style: TextStyle(
-                        fontSize: 32,
-                        fontWeight: FontWeight.bold,
-                        color: Colors.black,
-                      ),
+    Get.to(
+      () => StatefulBuilder(
+        builder: (ctx, setS) {
+          final months = List.generate(
+              18, (i) => DateTime(DateTime.now().year, DateTime.now().month + i, 1));
+
+          bool inRange(DateTime d) {
+            if (depDate == null || retDate == null) return false;
+            return d.isAfter(depDate!) && d.isBefore(retDate!);
+          }
+
+          void onTap(DateTime d) {
+            if (d.isBefore(DateTime.now().subtract(const Duration(days: 1)))) return;
+            setS(() {
+              if (!selectingReturn) {
+                depDate = d;
+                retDate = null;
+                selectingReturn = true;
+              } else {
+                if (d.isBefore(depDate!)) {
+                  depDate = d;
+                  retDate = null;
+                } else {
+                  retDate = d;
+                  selectingReturn = false;
+                }
+              }
+            });
+          }
+
+          Widget buildMonth(DateTime m) {
+            final days = DateUtils.getDaysInMonth(m.year, m.month);
+            final firstDay = DateTime(m.year, m.month, 1).weekday % 7;
+            final rows = ((days + firstDay) / 7).ceil();
+            return Column(
+              crossAxisAlignment: CrossAxisAlignment.start,
+              children: [
+                Padding(
+                  padding: const EdgeInsets.fromLTRB(16, 20, 16, 8),
+                  child: Text(DateFormat('MMMM yyyy').format(m),
+                      style: const TextStyle(fontWeight: FontWeight.bold, fontSize: 17)),
+                ),
+                for (int row = 0; row < rows; row++)
+                  Container(
+                    color: row.isOdd ? Colors.grey.shade100 : Colors.white,
+                    child: Row(
+                      children: List.generate(7, (col) {
+                        final idx = row * 7 + col;
+                        if (idx < firstDay || idx >= days + firstDay) {
+                          return const Expanded(child: SizedBox(height: 52));
+                        }
+                        final day = idx - firstDay + 1;
+                        final date = DateTime(m.year, m.month, day);
+                        final isDep = depDate != null && DateUtils.isSameDay(date, depDate);
+                        final isRet = retDate != null && DateUtils.isSameDay(date, retDate);
+                        final range = inRange(date);
+                        final past = date.isBefore(DateTime.now().subtract(const Duration(days: 1)));
+                        return Expanded(
+                          child: GestureDetector(
+                            onTap: () => onTap(date),
+                            child: Container(
+                              height: 52,
+                              color: range ? Colors.green.withOpacity(0.12) : Colors.transparent,
+                              child: Center(
+                                child: Container(
+                                  width: 40,
+                                  height: 40,
+                                  decoration: BoxDecoration(
+                                    color: (isDep || isRet) ? GuzoTheme.primaryGreen : Colors.transparent,
+                                    borderRadius: BorderRadius.circular(6),
+                                  ),
+                                  child: Center(
+                                    child: Text('$day',
+                                        style: TextStyle(
+                                          fontSize: 15,
+                                          fontWeight: FontWeight.bold,
+                                          color: past
+                                              ? Colors.grey.shade400
+                                              : (isDep || isRet)
+                                                  ? Colors.white
+                                                  : Colors.black,
+                                        )),
+                                  ),
+                                ),
+                              ),
+                            ),
+                          ),
+                        );
+                      }),
                     ),
-                    TextButton(
-                      onPressed: () => Get.back(),
-                      child: const Text(
-                        "Cancel",
-                        style: TextStyle(
-                          color: GuzoTheme.primaryGreen,
-                          fontWeight: FontWeight.w600,
-                          fontSize: 18,
+                  ),
+                const SizedBox(height: 8),
+              ],
+            );
+          }
+
+          return Scaffold(
+            backgroundColor: Colors.white,
+            appBar: AppBar(
+              backgroundColor: Colors.white,
+              elevation: 0,
+              leading: const SizedBox(),
+              actions: [
+                TextButton(
+                  onPressed: () => Get.back(),
+                  child:  Text('Cancel',
+                      style: TextStyle(color: GuzoTheme.primaryGreen, fontSize: 16, fontWeight: FontWeight.bold)),
+                ),
+              ],
+            ),
+            body: Column(
+              children: [
+                const Padding(
+                  padding: EdgeInsets.symmetric(horizontal: 20),
+                  child: Align(
+                    alignment: Alignment.centerLeft,
+                    child: Text('When?',
+                        style: TextStyle(fontSize: 32, fontWeight: FontWeight.bold)),
+                  ),
+                ),
+                const SizedBox(height: 8),
+                Padding(
+                  padding: const EdgeInsets.symmetric(horizontal: 8),
+                  child: Row(
+                    mainAxisAlignment: MainAxisAlignment.spaceAround,
+                    children: ['Sun', 'Mon', 'Tue', 'Wed', 'Thu', 'Fri', 'Sat']
+                        .map((d) => SizedBox(
+                              width: 42,
+                              child: Center(
+                                  child: Text(d,
+                                      style: const TextStyle(color: Colors.grey, fontSize: 13))),
+                            ))
+                        .toList(),
+                  ),
+                ),
+                const Divider(height: 1),
+                Expanded(
+                  child: ListView.builder(
+                    itemCount: months.length,
+                    itemBuilder: (_, i) => buildMonth(months[i]),
+                  ),
+                ),
+                Container(
+                  padding: const EdgeInsets.fromLTRB(16, 12, 16, 32),
+                  decoration: BoxDecoration(
+                    color: Colors.white,
+                    border: Border(top: BorderSide(color: Colors.grey.shade200)),
+                  ),
+                  child: Column(
+                    mainAxisSize: MainAxisSize.min,
+                    children: [
+                      Row(
+                        children: [
+                          Expanded(child: _pickerDateBox('Departure date', depDate)),
+                          const SizedBox(width: 12),
+                          Expanded(child: _pickerDateBox('Return date', retDate)),
+                        ],
+                      ),
+                      const SizedBox(height: 12),
+                      SizedBox(
+                        width: double.infinity,
+                        height: 56,
+                        child: ElevatedButton(
+                          style: ElevatedButton.styleFrom(
+                            backgroundColor: GuzoTheme.primaryGreen,
+                            disabledBackgroundColor: Colors.grey.shade300,
+                            shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(8)),
+                          ),
+                          onPressed: depDate != null && retDate != null
+                              ? () {
+                                  controller.updateDateRange(depDate!, retDate!);
+                                  Get.back();
+                                }
+                              : null,
+                          child: const Text('Done',
+                              style: TextStyle(color: Colors.white, fontSize: 18)),
                         ),
                       ),
-                    ),
-                  ],
+                    ],
+                  ),
+                ),
+              ],
+            ),
+          );
+        },
+      ),
+      transition: Transition.downToUp,
+    );
+  }
+
+  Widget _pickerDateBox(String label, DateTime? date) {
+    return Column(
+      crossAxisAlignment: CrossAxisAlignment.start,
+      children: [
+        Text(label, style: const TextStyle(fontSize: 13, fontWeight: FontWeight.w500)),
+        const SizedBox(height: 6),
+        Container(
+          padding: const EdgeInsets.symmetric(horizontal: 10, vertical: 12),
+          decoration: BoxDecoration(
+            border: Border.all(color: Colors.grey.shade400),
+            borderRadius: BorderRadius.circular(8),
+          ),
+          child: Row(
+            children: [
+              const Icon(Icons.calendar_today_outlined, size: 16, color: Colors.grey),
+              const SizedBox(width: 8),
+              Text(
+                date == null ? '--' : DateFormat('EEE, MMM d').format(date),
+                style: TextStyle(
+                  fontSize: 13,
+                  color: date == null ? Colors.grey : Colors.black,
+                  fontWeight: date == null ? FontWeight.normal : FontWeight.w500,
                 ),
               ),
-              Expanded(
-                child: SfDateRangePicker(
-                  backgroundColor: Colors.white,
-                  // hoverColor: Colors.transparent,
-                  navigationDirection:
-                      DateRangePickerNavigationDirection.vertical,
-                  enableMultiView: true,
-                  navigationMode: DateRangePickerNavigationMode.scroll,
-                  selectionMode: DateRangePickerSelectionMode.range,
-                  showNavigationArrow: false,
-
-                  selectionShape: DateRangePickerSelectionShape.rectangle,
-                  selectionRadius: 30,
-                  monthCellStyle: const DateRangePickerMonthCellStyle(
-                    // hoverColor: Colors.transparent,
-                    cellDecoration: BoxDecoration(color: Colors.white),
-                    textStyle: TextStyle(
-                      fontSize: 18,
-                      fontWeight: FontWeight.bold,
-                      color: Colors.black,
-                    ),
-                    todayTextStyle: TextStyle(
-                      fontSize: 18,
-                      fontWeight: FontWeight.bold,
-                      color: Color(0xFF006D5B),
-                    ),
-                    leadingDatesTextStyle: TextStyle(color: Colors.grey),
-                    trailingDatesTextStyle: TextStyle(color: Colors.grey),
-                  ),
-
-                  selectionTextStyle: const TextStyle(
-                    fontSize: 18,
-                    fontWeight: FontWeight.bold,
-                    color: Colors.white,
-                  ),
-
-                  rangeTextStyle: const TextStyle(
-                    fontSize: 18,
-                    fontWeight: FontWeight.bold,
-                    color: Colors.black,
-                  ),
-
-                  headerStyle: const DateRangePickerHeaderStyle(
-                    backgroundColor: Colors.white,
-                    // hoverColor: Colors.transparent,
-                    textAlign: TextAlign.left,
-                    textStyle: TextStyle(
-                      fontSize: 20,
-                      fontWeight: FontWeight.bold,
-                      color: Colors.black,
-                    ),
-                  ),
-
-                  monthViewSettings: const DateRangePickerMonthViewSettings(
-                    viewHeaderHeight: 80,
-                    dayFormat: 'EEE',
-                    enableSwipeSelection: false,
-                    viewHeaderStyle: DateRangePickerViewHeaderStyle(
-                      textStyle: TextStyle(
-                        fontWeight: FontWeight.w400,
-                        color: Colors.grey,
-                        fontSize: 16,
-                      ),
-                    ),
-                  ),
-
-                  rangeSelectionColor: Colors.grey.withOpacity(0.12),
-                  startRangeSelectionColor: const Color(0xFF006D5B),
-                  endRangeSelectionColor: const Color(0xFF006D5B),
-                  todayHighlightColor: Colors.white,
-
-                  minDate: DateTime.now(),
-                  onSelectionChanged:
-                      (DateRangePickerSelectionChangedArgs args) {
-                        if (args.value is PickerDateRange) {
-                          selectedRange = args.value;
-                          tempStart.value = selectedRange?.startDate != null
-                              ? DateFormat(
-                                  'EEE, MMM dd',
-                                ).format(selectedRange!.startDate!)
-                              : "";
-                          tempEnd.value = selectedRange?.endDate != null
-                              ? DateFormat(
-                                  'EEE, MMM dd',
-                                ).format(selectedRange!.endDate!)
-                              : "";
-                        }
-                      },
-                ),
-              ),
-
-              _buildPickerFooter(context, controller, tempStart, tempEnd, () {
-                if (selectedRange?.startDate != null &&
-                    selectedRange?.endDate != null) {
-                  controller.updateDateRange(
-                    selectedRange!.startDate!,
-                    selectedRange!.endDate!,
-                  );
-                  Navigator.pop(context);
-                } else {
-                  Get.snackbar(
-                    "Selection Required",
-                    "Please select both departure and return dates.",
-                    snackPosition: SnackPosition.BOTTOM,
-                    backgroundColor: Colors.black87,
-                    colorText: Colors.white,
-                  );
-                }
-              }),
             ],
           ),
-        );
-      },
+        ),
+      ],
     );
   }
 
@@ -678,7 +747,7 @@ class _FlightsPageState extends State<FlightsPage> {
           Row(
             children: [
               _buildRadioOption(controller, 'Round-trip'),
-              const SizedBox(width: 40, height: 50),
+              const Spacer(),
               _buildRadioOption(controller, 'One-way'),
             ],
           ),

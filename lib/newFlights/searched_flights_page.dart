@@ -1325,7 +1325,8 @@ class _SearchedFlightsPageState extends State<SearchedFlightsPage> {
                                     ),
                                     onPressed: () => Get.back(),
                                   ),
-                                  Column(
+                                  Expanded(
+                                    child: Column(
                                     mainAxisAlignment: MainAxisAlignment.center,
                                     crossAxisAlignment:
                                         CrossAxisAlignment.start,
@@ -1364,54 +1365,21 @@ class _SearchedFlightsPageState extends State<SearchedFlightsPage> {
                                           ],
                                         ),
                                       ),
-                                      Row(
-                                        children: [
-                                          if (uppercontroller
-                                                  .selectedTripType
-                                                  .value ==
-                                              "Round-trip") ...[
-                                            Text(
-                                              flightDataController
-                                                  .selectedDateRoundTripStart
-                                                  .value,
-                                              style: TextStyle(
-                                                fontSize: 11,
-                                                color: Colors.black,
-                                              ),
-                                            ),
-                                          ] else ...[
-                                            Text(
-                                              flightDataController
-                                                  .selectedDateOneWay
-                                                  .value,
-                                              style: TextStyle(
-                                                fontSize: 11,
-                                                color: Colors.black,
-                                              ),
-                                            ),
-                                          ],
-                                          if (uppercontroller
-                                                  .selectedTripType
-                                                  .value ==
-                                              "Round-trip") ...[
-                                            Text(" - "),
-                                            Text(
-                                              flightDataController
-                                                  .selectedDateRoundTripend
-                                                  .value,
-                                            ),
-                                            Text(
-                                              " - ${uppercontroller.adults.value} adult . ${uppercontroller.cabinClass.value}",
-                                            ),
-                                          ] else ...[
-                                            Text(
-                                              " . ${uppercontroller.adults.value} adult . ${uppercontroller.cabinClass.value}",
-                                            ),
-                                          ],
-                                        ],
-                                      ),
+                                      Obx(() {
+                                        final isRound = uppercontroller.selectedTripType.value == "Round-trip";
+                                        final dateText = isRound
+                                            ? "${flightDataController.selectedDateRoundTripStart.value} - ${flightDataController.selectedDateRoundTripend.value} · ${uppercontroller.adults.value} adult · ${uppercontroller.cabinClass.value}"
+                                            : "${flightDataController.selectedDateOneWay.value} · ${uppercontroller.adults.value} adult · ${uppercontroller.cabinClass.value}";
+                                        return Text(
+                                          dateText,
+                                          style: const TextStyle(fontSize: 11, color: Colors.black),
+                                          overflow: TextOverflow.ellipsis,
+                                          maxLines: 1,
+                                        );
+                                      }),
                                     ],
                                   ),
+                                  ), // close Expanded
                                 ],
                               ),
                             ),
@@ -1827,7 +1795,11 @@ class _SearchedFlightsPageState extends State<SearchedFlightsPage> {
         : text;
 
     return InkWell(
-      onTap: () => Get.to(() => AirportSearchPage(title: displayResult)),
+      onTap: () => Get.to(() => AirportSearchPage(
+            title: displayResult,
+            isFrom: isFromField,
+            segmentIndex: index,
+          )),
       child: Padding(
         padding: const EdgeInsets.all(16),
         child: Row(
@@ -2177,7 +2149,7 @@ class _SearchedFlightsPageState extends State<SearchedFlightsPage> {
           Row(
             children: [
               _buildRadioOption(controller, 'Round-trip'),
-              const SizedBox(width: 40, height: 50),
+              const Spacer(),
               _buildRadioOption(controller, 'One-way'),
             ],
           ),

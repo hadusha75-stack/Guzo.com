@@ -15,10 +15,10 @@ class WhenWhenClickedPage extends StatefulWidget {
 class _WhenWhenClickedPageState extends State<WhenWhenClickedPage> {
   final FlightDataController controller = Get.find<FlightDataController>();
   DateTime? tempSelectedDate;
-  final DateTime today = DateTime(2026, 2, 24);
+  final DateTime today = DateTime.now();
 
   List<DateTime> _getMonths() {
-    return List.generate(12, (index) => DateTime(2026, 2 + index, 1));
+    return List.generate(18, (i) => DateTime(today.year, today.month + i, 1));
   }
 
   @override
@@ -98,6 +98,7 @@ class _WhenWhenClickedPageState extends State<WhenWhenClickedPage> {
           padding: const EdgeInsets.symmetric(horizontal: 12),
           gridDelegate: const SliverGridDelegateWithFixedCrossAxisCount(
             crossAxisCount: 7,
+            childAspectRatio: 1.0,
           ),
           itemCount: daysInMonth + firstWeekday,
           itemBuilder: (context, index) {
@@ -110,7 +111,7 @@ class _WhenWhenClickedPageState extends State<WhenWhenClickedPage> {
                 date.month == today.month &&
                 date.day == today.day;
             return GestureDetector(
-              onTap: () => setState(() => tempSelectedDate = date),
+              onTap: date.isBefore(today) ? null : () => setState(() => tempSelectedDate = date),
               child: Container(
                 margin: const EdgeInsets.all(4),
                 decoration: BoxDecoration(
@@ -118,14 +119,19 @@ class _WhenWhenClickedPageState extends State<WhenWhenClickedPage> {
                       ? const Color.fromARGB(255, 2, 106, 35)
                       : Colors.transparent,
                   borderRadius: BorderRadius.circular(8),
+                  border: isToday && !isSelected
+                      ? Border.all(color: Colors.green, width: 2)
+                      : null,
                 ),
                 child: Center(
                   child: Text(
                     "$day",
                     style: TextStyle(
-                      color: isSelected
-                          ? Colors.white
-                          : (isToday ? Colors.green : Colors.black),
+                      color: date.isBefore(today)
+                          ? Colors.grey.shade400
+                          : isSelected
+                              ? Colors.white
+                              : (isToday ? Colors.green : Colors.black),
                       fontWeight: isSelected || isToday
                           ? FontWeight.bold
                           : FontWeight.normal,

@@ -491,7 +491,7 @@ class _FlightCustomizeScreenState extends State<FlightCustomizeScreen> {
                   Text(
                     "$currency ${flightDatacontroller.totalPrice.value}",
                     style: const TextStyle(
-                      fontSize: 15,
+                      fontSize: 16,
                       fontWeight: FontWeight.bold,
                     ),
                   ),
@@ -501,7 +501,7 @@ class _FlightCustomizeScreenState extends State<FlightCustomizeScreen> {
               ),
             ),
             SizedBox(
-              width: 180,
+              width: 140,
               height: 60,
               child: ElevatedButton(
                 style: ElevatedButton.styleFrom(

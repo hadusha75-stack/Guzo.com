@@ -321,7 +321,7 @@ class _SelectTicketScreenState extends State<SelectTicketScreen> {
                     ),
                     const Spacer(),
                     SizedBox(
-                      width: 180,
+                      width: 140,
                       height: 60,
                       child: ElevatedButton(
                         style: ElevatedButton.styleFrom(
@@ -330,7 +330,7 @@ class _SelectTicketScreenState extends State<SelectTicketScreen> {
                           ),
                           backgroundColor: GuzoTheme.primaryGreen,
                           padding: const EdgeInsets.symmetric(
-                            horizontal: 45,
+                            horizontal: 40,
                             vertical: 14,
                           ),
                         ),
@@ -476,20 +476,13 @@ class _TicketCard extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    final ctrl = Get.find<TicketController>();
-    final flightDataController = Get.find<FlightDataController>();
-
     return GestureDetector(
-      // onTap: () {
-      //   ctrl.selectTicket(index);
-      //   // to be updtaed!
-      // } ,
       child: Container(
         padding: const EdgeInsets.all(16),
         decoration: BoxDecoration(
           color: Colors.white,
           border: Border.all(
-            color: selected ? Colors.blue : Colors.grey.shade300,
+            color: selected ? GuzoTheme.primaryGreen : Colors.grey.shade300,
             width: 2,
           ),
           borderRadius: BorderRadius.circular(12),
@@ -512,7 +505,7 @@ class _TicketCard extends StatelessWidget {
                   selected
                       ? Icons.radio_button_checked
                       : Icons.radio_button_off,
-                  color: selected ? Colors.blue : Colors.grey,
+                  color: selected ? GuzoTheme.primaryGreen : Colors.grey,
                 ),
               ],
             ),
@@ -565,7 +558,7 @@ class _TicketCard extends StatelessWidget {
                     Text(
                       "What does this mean for me?",
                       style: TextStyle(
-                        color: Colors.blue.shade700,
+                        color: GuzoTheme.primaryGreen,
                         fontWeight: FontWeight.w600,
                         fontSize: 14,
                       ),

@@ -372,14 +372,14 @@ class _TravelProtectionScreenState extends State<TravelProtectionScreen> {
                     Text(
                       "$currency ${flightDatacontroller.totalPrice.value}",
                       style: TextStyle(
-                        fontSize: 18,
+                        fontSize: 16,
                         fontWeight: FontWeight.bold,
                       ),
                     ),
 
                     const Spacer(),
                     SizedBox(
-                      width: 160,
+                      width: 140,
                       height: 60,
                       child: ElevatedButton(
                         style: ElevatedButton.styleFrom(

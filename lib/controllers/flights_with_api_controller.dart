@@ -2,6 +2,7 @@ import 'package:booking/apiServies/booking_api_service.dart';
 import 'package:booking/controllers/FlightsController.dart';
 import 'package:booking/controllers/user_name_controller.dart';
 import 'package:booking/model/booking_models.dart';
+import 'package:booking/newFlights/booking_confirmation_page.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 
@@ -19,6 +20,7 @@ class FlightUpdaredController extends GetxController {
   var offerPriceId = ''.obs;
 
   var bookingLocator = ''.obs;
+  var airlinePnr = ''.obs; 
 
   var paymentOptions = <dynamic>[].obs;
   var cardPaymentId = Rxn<dynamic>();
@@ -172,17 +174,17 @@ class FlightUpdaredController extends GetxController {
 
   void setSortMode(String mode) { sortMode.value = mode; _applyAll(); }
   void setFilterStops(int? v) { filterMaxStops.value = v; _applyAll(); }
-  void setFilterAirlines(Set<String> v) { filterAirlines.value = v; _applyAll(); }
-  void setFilterDepSlots(Set<int> v) { filterDepSlots.value = v; _applyAll(); }
-  void setFilterArrSlots(Set<int> v) { filterArrSlots.value = v; _applyAll(); }
+  void setFilterAirlines(Set<String> v) { filterAirlines..clear()..addAll(v); _applyAll(); }
+  void setFilterDepSlots(Set<int> v) { filterDepSlots..clear()..addAll(v); _applyAll(); }
+  void setFilterArrSlots(Set<int> v) { filterArrSlots..clear()..addAll(v); _applyAll(); }
   void setFilterMaxDuration(double? v) { filterMaxDurationHours.value = v; _applyAll(); }
 
   void clearFilters() {
     filterMaxStops.value = null;
     filterMaxDurationHours.value = null;
-    filterAirlines.value = {};
-    filterDepSlots.value = {};
-    filterArrSlots.value = {};
+    filterAirlines.clear();
+    filterDepSlots.clear();
+    filterArrSlots.clear();
     _applyAll();
   }
 
@@ -201,6 +203,35 @@ class FlightUpdaredController extends GetxController {
   Map<String, dynamic>? _priceResponseData;
 
   List<PassengerInfo> _passengers = [];
+
+  /// Recursively searches a response map for any PNR-like field
+  String _extractPnr(dynamic data) {
+    if (data == null) return '';
+    if (data is Map) {
+      const pnrKeys = [
+        'pnr', 'PNR', 'airlinePNR', 'airlinePnr', 'pnrCode',
+        'bookingReference', 'confirmationCode', 'recordLocator',
+        'ticketNumber', 'eticket', 'ticketDoc', 'ticketDocNumber',
+        'airlineConfirmation', 'gdsLocator', 'reservationCode',
+        'locatorCode', 'airlineLocator', 'carrierLocator',
+        'flightReference', 'bookingCode', 'referenceNumber',
+      ];
+      for (final key in pnrKeys) {
+        final val = data[key]?.toString() ?? '';
+        if (val.isNotEmpty && val.length <= 10) return val; // PNRs are short
+      }
+      for (final val in data.values) {
+        final found = _extractPnr(val);
+        if (found.isNotEmpty) return found;
+      }
+    } else if (data is List) {
+      for (final item in data) {
+        final found = _extractPnr(item);
+        if (found.isNotEmpty) return found;
+      }
+    }
+    return '';
+  }
 
   void resetBookingState() {
     bookingLocator.value = '';
@@ -543,16 +574,43 @@ class FlightUpdaredController extends GetxController {
         return;
       } else {
         debugPrint('CONFIRMATION SUCCESS: $response');
-        Get.snackbar(
-          'Booking Confirmed',
-          'Your flight has been booked successfully!',
-          backgroundColor: const Color(0xFF0B5D39),
-          colorText: Colors.white,
-          duration: const Duration(seconds: 4),
-          snackPosition: SnackPosition.BOTTOM,
-        );
 
-        Get.until((route) => route.isFirst);
+        final order = response['data']?['order'] as Map<String, dynamic>?;
+        final traceNumber = order?['traceNumber']?.toString() ?? '';
+        final txnref = order?['tracking']?.toString() ?? '';
+        final orderId = order?['orderId']?.toString() ?? '';
+
+        debugPrint('traceNumber: $traceNumber');
+        debugPrint('txnref: $txnref');
+        debugPrint('orderId: $orderId');
+
+        // Use orderId as fallback while we wait for PNR
+        airlinePnr.value = orderId;
+
+        // Step 7: call payment-callback with REAL traceNumber to trigger ticketing
+        if (traceNumber.isNotEmpty) {
+          try {
+            final callbackRes = await _api.paymentCallback(
+              status: '0001',
+              traceNumber: traceNumber,
+              txnref: txnref,
+            );
+            debugPrint('PAYMENT-CALLBACK FULL RESPONSE: $callbackRes');
+
+            // Search recursively for PNR in the entire response
+            final pnr = _extractPnr(callbackRes);
+            if (pnr.isNotEmpty) {
+              airlinePnr.value = pnr;
+              debugPrint('PNR FOUND: $pnr');
+            } else {
+              debugPrint('No PNR found. Full response: $callbackRes');
+            }
+          } catch (e) {
+            debugPrint('PAYMENT-CALLBACK ERROR: $e');
+          }
+        }
+
+        Get.offAll(() => const BookingConfirmationPage());
       }
       debugPrint('CONFIRM RESPONSE: $response');
     } catch (e) {

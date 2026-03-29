@@ -92,175 +92,107 @@ class _YourFlightToPageState extends State<YourFlightToPage> {
                       var flightData = entry.value;
                       final segmentsList =
                           flightData['segments'] as List? ?? [];
+                      final stops = segmentsList.length - 1;
+
+                      // Use first and last segment for overall dep/arr
+                      final firstSeg = segmentsList.isNotEmpty ? segmentsList.first : null;
+                      final lastSeg = segmentsList.isNotEmpty ? segmentsList.last : null;
+                      final totalDuration = formatDurationFromTimes(
+                        firstSeg?['departureDateTime'] ?? '',
+                        lastSeg?['arrivalDateTime'] ?? '',
+                      );
 
                       return Column(
                         crossAxisAlignment: CrossAxisAlignment.start,
                         children: [
-                          ...segmentsList.map<Widget>((segment) {
+                          SizedBox(height: 10),
+                          Text(
+                            flightIndex == 0
+                                ? 'Flight to ${flightDatacontroller.recievedFromToName.value}'
+                                : 'Flight to ${flightDatacontroller.recievedFromFromName.value}',
+                            style: const TextStyle(
+                              fontWeight: FontWeight.bold,
+                              fontSize: 18,
+                            ),
+                          ),
+                          Row(
+                            children: [
+                              Text(stops == 0 ? 'Direct' : '$stops stop${stops > 1 ? 's' : ''}'),
+                              Text(' . $totalDuration',
+                                  style: TextStyle(color: Colors.grey.shade600)),
+                            ],
+                          ),
+                          const SizedBox(height: 20),
+                          ...segmentsList.asMap().entries.map<Widget>((segEntry) {
+                            final segment = segEntry.value;
                             final depDate = segment['departureDateTime'] ?? '';
                             final depCode = segment['departureAirport'] ?? '';
-                            final depCity =
-                                segment['departureAirportName'] ?? '';
+                            final depCity = segment['departureAirportName'] ?? '';
                             final depTerminal = segment['departureTerminal'];
                             final arrDate = segment['arrivalDateTime'] ?? '';
                             final arrCode = segment['arrivalAirport'] ?? '';
                             final arrCity = segment['arrivalAirportName'] ?? '';
                             final titleAirline = segment['airlineName'] ?? '';
                             final airlineCode = segment['airlineCode'] ?? '';
-                            final classOfService =
-                                segment['classOfService'] ?? '';
+                            final classOfService = segment['classOfService'] ?? '';
                             final flightNum = segment['flightNumber'] ?? '';
-                            final duration = formatDurationFromTimes(
-                              depDate,
-                              arrDate,
-                            );
-                            final stops = segmentsList.length - 1;
+                            final duration = formatDurationFromTimes(depDate, arrDate);
 
                             return Container(
                               color: Colors.white,
                               margin: const EdgeInsets.only(bottom: 20),
-                              child: Column(
+                              child: Row(
                                 crossAxisAlignment: CrossAxisAlignment.start,
                                 children: [
-                                  SizedBox(height: 10),
-                                  Text(
-                                    flightIndex == 0
-                                        ? 'Flight to ${flightDatacontroller.recievedFromToName.value}'
-                                        : 'Flight to ${flightDatacontroller.recievedFromFromName.value}',
-                                    style: const TextStyle(
-                                      fontWeight: FontWeight.bold,
-                                      fontSize: 18,
-                                    ),
-                                  ),
-                                  Row(
+                                  Column(
                                     children: [
-                                      Text(
-                                        stops == 0
-                                            ? 'Direct'
-                                            : '$stops stop${stops > 1 ? 's' : ''}',
-                                      ),
-                                      Text(
-                                        " . $duration",
-                                        style: TextStyle(
-                                          color: Colors.grey.shade600,
-                                        ),
-                                      ),
+                                      const Icon(Icons.circle_outlined, size: 20, color: Colors.black),
+                                      const SizedBox(height: 5),
+                                      Container(width: 1.5, height: 110, color: Colors.grey.shade300),
+                                      const SizedBox(height: 5),
+                                      const Icon(Icons.circle_outlined, size: 18, color: Colors.black54),
                                     ],
                                   ),
-                                  const SizedBox(height: 20),
-                                  Row(
-                                    crossAxisAlignment:
-                                        CrossAxisAlignment.start,
-                                    children: [
-                                      Column(
-                                        children: [
-                                          const Icon(
-                                            Icons.circle_outlined,
-                                            size: 20,
-                                            color: Colors.black,
-                                          ),
-                                          const SizedBox(height: 5),
-                                          Container(
-                                            width: 1.5,
-                                            height: 110,
-                                            color: Colors.grey.shade300,
-                                          ),
-                                          const SizedBox(height: 5),
-                                          const Icon(
-                                            Icons.circle_outlined,
-                                            size: 18,
-                                            color: Colors.black54,
-                                          ),
-                                        ],
-                                      ),
-                                      const SizedBox(width: 16),
-                                      Expanded(
-                                        child: Column(
-                                          crossAxisAlignment:
-                                              CrossAxisAlignment.start,
+                                  const SizedBox(width: 16),
+                                  Expanded(
+                                    child: Column(
+                                      crossAxisAlignment: CrossAxisAlignment.start,
+                                      children: [
+                                        Text(formatTime(depDate),
+                                            style: const TextStyle(fontSize: 13, color: Colors.black54)),
+                                        Text('$depCode · $depCity',
+                                            style: const TextStyle(fontWeight: FontWeight.bold, fontSize: 16)),
+                                        if (depTerminal != null)
+                                          Text(depTerminal, style: const TextStyle(color: Colors.black54)),
+                                        const SizedBox(height: 20),
+                                        Row(
                                           children: [
-                                            Text(
-                                              formatTime(depDate),
-                                              style: const TextStyle(
-                                                fontSize: 13,
-                                                color: Colors.black54,
-                                              ),
+                                            CachedNetworkImage(
+                                              imageUrl: "https://content.airhex.com/content/logos/airlines_${airlineCode}_350_100_r.png",
+                                              width: 60, height: 30,
+                                              errorWidget: (_, __, ___) => const Icon(Icons.flight),
                                             ),
-                                            Text(
-                                              '$depCode · $depCity',
-                                              style: const TextStyle(
-                                                fontWeight: FontWeight.bold,
-                                                fontSize: 16,
-                                              ),
-                                            ),
-                                            if (depTerminal != null)
-                                              Text(
-                                                depTerminal,
-                                                style: const TextStyle(
-                                                  color: Colors.black54,
-                                                ),
-                                              ),
-                                            const SizedBox(height: 20),
-                                            Row(
+                                            const SizedBox(width: 12),
+                                            Column(
+                                              crossAxisAlignment: CrossAxisAlignment.start,
                                               children: [
-                                                CachedNetworkImage(
-                                                  imageUrl:
-                                                      "https://content.airhex.com/content/logos/airlines_${airlineCode}_350_100_r.png",
-                                                  width: 60,
-                                                  height: 30,
-                                                  errorWidget:
-                                                      (context, url, error) =>
-                                                          const Icon(
-                                                            Icons.flight,
-                                                          ),
-                                                ),
-                                                const SizedBox(width: 12),
-                                                Column(
-                                                  crossAxisAlignment:
-                                                      CrossAxisAlignment.start,
-                                                  children: [
-                                                    Text(
-                                                      titleAirline,
-                                                      style: const TextStyle(
-                                                        color: Colors.black54,
-                                                      ),
-                                                    ),
-                                                    Text(
-                                                      'Flight $airlineCode$flightNum · $classOfService',
-                                                      style: const TextStyle(
-                                                        color: Colors.black54,
-                                                      ),
-                                                    ),
-                                                    Text(
-                                                      "Flight time $duration",
-                                                      style: const TextStyle(
-                                                        color: Colors.black54,
-                                                      ),
-                                                    ),
-                                                  ],
-                                                ),
+                                                Text(titleAirline, style: const TextStyle(color: Colors.black54)),
+                                                Text('Flight $airlineCode$flightNum · $classOfService',
+                                                    style: const TextStyle(color: Colors.black54)),
+                                                Text('Flight time $duration',
+                                                    style: const TextStyle(color: Colors.black54)),
                                               ],
                                             ),
-                                            const SizedBox(height: 20),
-                                            Text(
-                                              formatTime(arrDate),
-                                              style: const TextStyle(
-                                                fontSize: 13,
-                                                color: Colors.black54,
-                                              ),
-                                            ),
-                                            Text(
-                                              '$arrCode · $arrCity',
-                                              style: const TextStyle(
-                                                fontWeight: FontWeight.bold,
-                                                fontSize: 16,
-                                              ),
-                                            ),
-                                            SizedBox(height: 20),
                                           ],
                                         ),
-                                      ),
-                                    ],
+                                        const SizedBox(height: 20),
+                                        Text(formatTime(arrDate),
+                                            style: const TextStyle(fontSize: 13, color: Colors.black54)),
+                                        Text('$arrCode · $arrCity',
+                                            style: const TextStyle(fontWeight: FontWeight.bold, fontSize: 16)),
+                                        const SizedBox(height: 20),
+                                      ],
+                                    ),
                                   ),
                                 ],
                               ),
@@ -589,15 +521,15 @@ class _YourFlightToPageState extends State<YourFlightToPage> {
                           '$currency $price',
                           style: const TextStyle(
                             fontWeight: FontWeight.bold,
-                            fontSize: 18,
+                            fontSize: 16,
                           ),
                         ),
                         const SizedBox(width: 4),
-                        const Icon(Icons.info_outline, size: 18),
+                        const Icon(Icons.info_outline, size: 16),
                       ],
                     ),
                     SizedBox(
-                      width: 180,
+                      width: 140,
                       height: 60,
                       child: ElevatedButton(
                         onPressed: () {
