@@ -51,7 +51,7 @@ class BookingConfirmationPage extends StatelessWidget {
     final locator = flightCtrl.bookingLocator.value;
 
     return Scaffold(
-      backgroundColor: Colors.grey.shade50,
+      backgroundColor: Theme.of(context).scaffoldBackgroundColor,
       body: SafeArea(
         child: Column(
           children: [
@@ -93,7 +93,7 @@ class BookingConfirmationPage extends StatelessWidget {
                     ),
                     const SizedBox(height: 24),
 
-                    _card(
+                    _card(context,
                       child: Column(
                         crossAxisAlignment: CrossAxisAlignment.start,
                         children: [
@@ -120,7 +120,7 @@ class BookingConfirmationPage extends StatelessWidget {
                     ),
                     const SizedBox(height: 12),
 
-                    _card(
+                    _card(context,
                       child: Row(
                         children: [
                           const Icon(
@@ -174,7 +174,7 @@ class BookingConfirmationPage extends StatelessWidget {
                       const SizedBox(height: 12),
                     ],
 
-                    _card(
+                    _card(context,
                       child: Row(
                         mainAxisAlignment: MainAxisAlignment.spaceBetween,
                         children: [
@@ -257,16 +257,15 @@ class BookingConfirmationPage extends StatelessWidget {
     );
   }
 
-  Widget _card({required Widget child}) {
+  Widget _card(BuildContext context, {required Widget child}) {
     return Container(
       width: double.infinity,
       padding: const EdgeInsets.all(16),
       decoration: BoxDecoration(
-        color: Colors.white,
+        color: Theme.of(context).cardColor,
         borderRadius: BorderRadius.circular(12),
         boxShadow: [
           BoxShadow(
-            // ignore: deprecated_member_use
             color: Colors.black.withOpacity(0.06),
             blurRadius: 8,
             offset: const Offset(0, 2),
@@ -298,7 +297,7 @@ class BookingConfirmationPage extends StatelessWidget {
       width: double.infinity,
       padding: const EdgeInsets.all(16),
       decoration: BoxDecoration(
-        color: Colors.white,
+        color: Theme.of(context).cardColor,
         borderRadius: BorderRadius.circular(12),
         boxShadow: [
           BoxShadow(
@@ -454,3 +453,5 @@ class BookingConfirmationPage extends StatelessWidget {
     );
   }
 }
+
+

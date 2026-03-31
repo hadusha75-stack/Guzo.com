@@ -53,15 +53,15 @@ class _MyAccountPageState extends State<MyAccountPage> {
                 Text(
                   'Hi, ${userNameController.email.value.split('@')[0]}',
                   style: const TextStyle(
-                    color:GuzoTheme.White,
+                    color: Colors.white,
                     fontSize: 22,
                     fontWeight: FontWeight.bold,
                   ),
                 ),
                 const Text(
                   'Genius Level 1',
-                  style: TextStyle(
-                    color:GuzoTheme.White,
+                  style: const TextStyle(
+                    color: Colors.white,
                     fontSize: 14,
                     fontWeight: FontWeight.bold,
                   ),
@@ -186,7 +186,7 @@ class _MyAccountPageState extends State<MyAccountPage> {
               }),
             ]),
             Container(
-              color:GuzoTheme.White,
+              color: Theme.of(context).cardColor,
               child: Padding(
                 padding: const EdgeInsets.symmetric(
                   horizontal: 16,
@@ -196,7 +196,7 @@ class _MyAccountPageState extends State<MyAccountPage> {
                   width: double.infinity,
                   height: 55,
                   decoration: BoxDecoration(
-                    color: Colors.white,
+                    color: Theme.of(context).cardColor,
                     borderRadius: BorderRadius.circular(8),
                     border: Border.all(color: Colors.grey.shade300),
                   ),
@@ -218,7 +218,7 @@ class _MyAccountPageState extends State<MyAccountPage> {
                 ),
               ),
             ),
-            Container(color:GuzoTheme.White, width: 20),
+            Container(color: Theme.of(context).cardColor, width: 20),
           ],
         ),
       ),
@@ -261,13 +261,13 @@ class _MyAccountPageState extends State<MyAccountPage> {
 
   Widget _buildSection(String title, List<Widget> rows) {
     return Container(
-      color:GuzoTheme.White,
+      color: Theme.of(context).cardColor,
       child: Padding(
         padding: const EdgeInsets.only(top: 20),
         child: Stack(
           children: [
             Container(
-              color:GuzoTheme.White,
+              color: Theme.of(context).cardColor,
               child: Column(
                 crossAxisAlignment: CrossAxisAlignment.start,
                 children: [
@@ -301,10 +301,10 @@ class _MyAccountPageState extends State<MyAccountPage> {
 
   Widget _buildRow(IconData icon, String label, VoidCallback onTap) {
     return ListTile(
-      leading: Icon(icon, color: Colors.black87, size: 24),
+      leading: Icon(icon, color: Theme.of(context).textTheme.bodyMedium?.color, size: 24),
       title: Text(
         label,
-        style: const TextStyle(fontSize: 15, color: Colors.black87),
+        style: TextStyle(fontSize: 15, color: Theme.of(context).textTheme.bodyMedium?.color),
       ),
       trailing: const Icon(Icons.chevron_right, color: Colors.grey, size: 20),
       onTap: onTap,
@@ -318,7 +318,7 @@ class _MyAccountPageState extends State<MyAccountPage> {
         Container(
           margin: const EdgeInsets.symmetric(horizontal: 16),
           decoration: BoxDecoration(
-            color: Colors.white,
+            color: Theme.of(context).cardColor,
             borderRadius: BorderRadius.circular(12),
             boxShadow: [
               // ignore: deprecated_member_use
@@ -386,7 +386,7 @@ class _MyAccountPageState extends State<MyAccountPage> {
           ),
           padding: const EdgeInsets.symmetric(horizontal: 16, vertical: 20),
           decoration: BoxDecoration(
-            color: Colors.white,
+            color: Theme.of(context).cardColor,
             borderRadius: BorderRadius.circular(12),
             border: Border.all(color: Colors.grey.shade300),
           ),
@@ -414,3 +414,4 @@ class _MyAccountPageState extends State<MyAccountPage> {
     );
   }
 }
+

@@ -11,6 +11,8 @@ import 'package:get/get.dart';
 
 class PersonalDetailsPage extends StatelessWidget {
   const PersonalDetailsPage({super.key});
+  
+   get context => null;
 
   @override
   Widget build(BuildContext context) {
@@ -18,7 +20,7 @@ class PersonalDetailsPage extends StatelessWidget {
     final userNameController = Get.find<UserNameController>();
 
     return Scaffold(
-      backgroundColor: Colors.white,
+      backgroundColor: Theme.of(context).scaffoldBackgroundColor,
       appBar: AppBar(
         backgroundColor: GuzoTheme.primaryGreen,
         leading: IconButton(
@@ -33,9 +35,9 @@ class PersonalDetailsPage extends StatelessWidget {
       body: ListView(
         padding: const EdgeInsets.all(16.0),
         children: [
-          const Text(
+            Text(
             "We'll remember this info to make it faster when you book.",
-            style: TextStyle(fontSize: 16, color: Colors.black87),
+            style: TextStyle(fontSize: 16, color: Theme.of(context).textTheme.bodyMedium?.color),
           ),
           const SizedBox(height: 20),
 
@@ -134,7 +136,7 @@ class PersonalDetailsPage extends StatelessWidget {
           const SizedBox(height: 8),
           const Text(
             "Properties or providers you book with will use this info if they need to contact you.",
-            style: TextStyle(color: Colors.black54),
+            style: TextStyle(color: Colors.grey),
           ),
           const SizedBox(height: 20),
 
@@ -172,7 +174,7 @@ class PersonalDetailsPage extends StatelessWidget {
           const SizedBox(height: 8),
           const Text(
             "This info will be shown next to reviews you write and any forum posts you make.",
-            style: TextStyle(color: Colors.black54),
+            style: TextStyle(color: Colors.grey),
           ),
           const SizedBox(height: 20),
           Obx(() {
@@ -239,12 +241,12 @@ class PersonalDetailsPage extends StatelessWidget {
                   const SizedBox(height: 8),
                   Text(
                     value,
-                    style: const TextStyle(fontSize: 16, color: Colors.black54),
+                    style: const TextStyle(fontSize: 16, color: Colors.grey),
                   ),
                 ],
               ),
             ),
-            const Icon(Icons.chevron_right, color: Colors.black),
+              Icon(Icons.chevron_right, color: Theme.of(context).iconTheme.color),
           ],
         ),
       ),
@@ -304,3 +306,4 @@ class PersonalDetailsPage extends StatelessWidget {
     );
   }
 }
+

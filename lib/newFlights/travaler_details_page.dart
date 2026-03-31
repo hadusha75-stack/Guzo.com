@@ -241,9 +241,9 @@ class _TravelerDetailsPageState extends State<TravelerDetailsPage> {
                                   return Container(
                                     padding: const EdgeInsets.all(20),
                                     height: 320,
-                                    decoration: const BoxDecoration(
-                                      color: Colors.white,
-                                      borderRadius: BorderRadius.vertical(
+                                    decoration: BoxDecoration(
+                                      color: Theme.of(context).cardColor,
+                                      borderRadius: const BorderRadius.vertical(
                                         top: Radius.circular(20),
                                       ),
                                     ),
@@ -554,7 +554,7 @@ class _TravelerDetailsPageState extends State<TravelerDetailsPage> {
               child: Container(
                 padding: const EdgeInsets.all(20),
                 decoration: BoxDecoration(
-                  color: Colors.white,
+                  color: Theme.of(context).cardColor,
                   border: Border(top: BorderSide(color: Colors.grey.shade300)),
                 ),
                 child: ElevatedButton(

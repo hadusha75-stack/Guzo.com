@@ -119,7 +119,7 @@ class _PaymentPageState extends State<PaymentPage> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      backgroundColor: Colors.white,
+      backgroundColor: Theme.of(context).scaffoldBackgroundColor,
       appBar: AppBar(
         backgroundColor: GuzoTheme.primaryGreen,
         centerTitle: false,
@@ -336,7 +336,7 @@ class _PaymentPageState extends State<PaymentPage> {
             Container(
               padding: const EdgeInsets.fromLTRB(20, 12, 20, 32),
               decoration: BoxDecoration(
-                color: Colors.white,
+                color: Theme.of(context).cardColor,
                 border: Border(top: BorderSide(color: Colors.grey.shade200)),
               ),
               child: Obx(() {

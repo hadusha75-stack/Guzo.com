@@ -26,9 +26,9 @@ class _WhenWhenClickedPageState extends State<WhenWhenClickedPage> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      backgroundColor: Colors.white,
+      backgroundColor: Theme.of(context).scaffoldBackgroundColor,
       appBar: AppBar(
-        backgroundColor: Colors.white,
+        backgroundColor: Theme.of(context).scaffoldBackgroundColor,
         elevation: 0,
         leading: const SizedBox(),
         actions: [
@@ -133,7 +133,7 @@ class _WhenWhenClickedPageState extends State<WhenWhenClickedPage> {
                           ? Colors.grey.shade400
                           : isSelected
                               ? Colors.white
-                              : (isToday ? Colors.green : Colors.black),
+                              : (isToday ? Colors.green : Theme.of(context).textTheme.bodyLarge?.color),
                       fontWeight: isSelected || isToday
                           ? FontWeight.bold
                           : FontWeight.normal,
@@ -156,7 +156,7 @@ class _WhenWhenClickedPageState extends State<WhenWhenClickedPage> {
     return Container(
       padding: const EdgeInsets.fromLTRB(20, 15, 20, 40),
       decoration: BoxDecoration(
-        color: Colors.white,
+        color: Theme.of(context).cardColor,
         border: Border(top: BorderSide(color: Colors.grey.shade200)),
       ),
       child: Column(

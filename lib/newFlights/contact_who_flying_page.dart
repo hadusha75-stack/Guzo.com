@@ -445,7 +445,7 @@ class _ContactWhoFlyingPageState extends State<ContactWhoFlyingPage> {
                                               "Flexible ticket",
                                               style: TextStyle(
                                                 fontSize: 15,
-                                                color: Colors.grey[600],
+                                                color: Colors.grey,
                                               ),
                                             ),
                                             SizedBox(height: 7),
@@ -454,7 +454,7 @@ class _ContactWhoFlyingPageState extends State<ContactWhoFlyingPage> {
                                               "Travel protection",
                                               style: TextStyle(
                                                 fontSize: 15,
-                                                color: Colors.grey[600],
+                                                color: Colors.grey,
                                               ),
                                             ),
                                           ],
@@ -504,7 +504,7 @@ class _ContactWhoFlyingPageState extends State<ContactWhoFlyingPage> {
                                               "Guzo.com pays",
                                               style: TextStyle(
                                                 fontSize: 15,
-                                                color: Colors.grey[600],
+                                                color: Colors.grey,
                                               ),
                                             ),
                                           ],
@@ -547,7 +547,7 @@ class _ContactWhoFlyingPageState extends State<ContactWhoFlyingPage> {
                                               "Includes taxes and fees",
                                               style: TextStyle(
                                                 fontSize: 15,
-                                                color: Colors.grey[600],
+                                                color: Colors.grey,
                                               ),
                                             ),
                                             SizedBox(height: 6),
@@ -748,3 +748,4 @@ Widget _buildLine(bool isActive, {bool isDotted = false}) {
     ),
   );
 }
+

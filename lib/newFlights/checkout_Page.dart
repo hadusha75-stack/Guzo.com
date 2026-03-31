@@ -127,7 +127,7 @@ class _CheckoutPageState extends State<CheckoutPage> {
 
           children: [
             Container(
-              color: GuzoTheme.White,
+              color: Theme.of(context).cardColor,
               child: Column(
                 crossAxisAlignment: CrossAxisAlignment.start,
                 children: [
@@ -166,7 +166,7 @@ class _CheckoutPageState extends State<CheckoutPage> {
                                             offset: Offset(0, 2),
                                           ),
                                         ],
-                                        color: Colors.white,
+                                        color: Theme.of(context).cardColor,
                                         border: Border.all(
                                           color: Colors.black12,
                                         ),
@@ -259,7 +259,7 @@ class _CheckoutPageState extends State<CheckoutPage> {
                                             offset: Offset(0, 2),
                                           ),
                                         ],
-                                        color: Colors.white,
+                                        color: Theme.of(context).cardColor,
                                         border: Border.all(
                                           color: Colors.black12,
                                         ),
@@ -290,7 +290,7 @@ class _CheckoutPageState extends State<CheckoutPage> {
                                                           .primaryGreen,
                                                       width: 1.5,
                                                     ),
-                                                    color: GuzoTheme.White,
+                                                    color: Theme.of(context).cardColor,
                                                   ),
                                                   child: Row(
                                                     children: [
@@ -366,7 +366,7 @@ class _CheckoutPageState extends State<CheckoutPage> {
                                 offset: Offset(0, 2),
                               ),
                             ],
-                            color: Colors.white,
+                            color: Theme.of(context).cardColor,
                             border: Border.all(color: Colors.black12),
                             borderRadius: BorderRadius.circular(8),
                           ),
@@ -424,7 +424,7 @@ class _CheckoutPageState extends State<CheckoutPage> {
                                 offset: Offset(0, 2),
                               ),
                             ],
-                            color: Colors.white,
+                            color: Theme.of(context).cardColor,
                             border: Border.all(color: Colors.black12),
                             borderRadius: BorderRadius.circular(8),
                           ),
@@ -449,7 +449,7 @@ class _CheckoutPageState extends State<CheckoutPage> {
                                       color: GuzoTheme.primaryGreen,
                                       width: 1.5,
                                     ),
-                                    color: GuzoTheme.White,
+                                    color: Theme.of(context).cardColor,
                                   ),
                                   child: Row(
                                     children: [
@@ -491,7 +491,7 @@ class _CheckoutPageState extends State<CheckoutPage> {
                                 offset: Offset(0, 2),
                               ),
                             ],
-                            color: Colors.white,
+                            color: Theme.of(context).cardColor,
                             border: Border.all(color: Colors.black12),
                             borderRadius: BorderRadius.circular(8),
                           ),
@@ -541,7 +541,7 @@ class _CheckoutPageState extends State<CheckoutPage> {
             if (flightDatacontroller.selectedTripType.value ==
                 "Round-trip") ...[
               Container(
-                color: GuzoTheme.White,
+                color: Theme.of(context).cardColor,
                 child: Column(
                   children: [
                     Padding(
@@ -623,7 +623,7 @@ class _CheckoutPageState extends State<CheckoutPage> {
               SizedBox(height: 15),
 
               Container(
-                color: GuzoTheme.White,
+                color: Theme.of(context).cardColor,
                 child: Padding(
                   padding: const EdgeInsets.only(top: 20.0, left: 15),
                   child: Column(
@@ -700,7 +700,7 @@ class _CheckoutPageState extends State<CheckoutPage> {
               ),
             ] else ...[
               Container(
-                color: GuzoTheme.White,
+                color: Theme.of(context).cardColor,
                 child: Column(
                   children: [
                     Padding(
@@ -783,7 +783,7 @@ class _CheckoutPageState extends State<CheckoutPage> {
             ],
             SizedBox(height: 15),
             Container(
-              color: GuzoTheme.White,
+              color: Theme.of(context).cardColor,
               child: Padding(
                 padding: const EdgeInsets.only(
                   left: 15,
@@ -851,7 +851,7 @@ class _CheckoutPageState extends State<CheckoutPage> {
             SizedBox(height: 15),
 
             Container(
-              color: GuzoTheme.White,
+              color: Theme.of(context).cardColor,
               child: Padding(
                 padding: const EdgeInsets.only(
                   left: 15,
@@ -907,7 +907,7 @@ class _CheckoutPageState extends State<CheckoutPage> {
 
             const SizedBox(height: 4),
             Container(
-              color: GuzoTheme.White,
+              color: Theme.of(context).cardColor,
               child: Padding(
                 padding: const EdgeInsets.only(
                   left: 15,
@@ -981,9 +981,9 @@ class _CheckoutPageState extends State<CheckoutPage> {
                               maxChildSize: 0.95,
                               builder: (context, scrollController) {
                                 return Container(
-                                  decoration: const BoxDecoration(
-                                    color: Colors.white,
-                                    borderRadius: BorderRadius.vertical(
+                                  decoration: BoxDecoration(
+                                  color: Theme.of(context).cardColor,
+                                  borderRadius: const BorderRadius.vertical(
                                       top: Radius.circular(20),
                                     ),
                                   ),
@@ -1052,7 +1052,7 @@ class _CheckoutPageState extends State<CheckoutPage> {
 
             const SizedBox(height: 15),
             Container(
-              color: GuzoTheme.White,
+              color: Theme.of(context).cardColor,
               child: Padding(
                 padding: const EdgeInsets.only(
                   left: 15,
@@ -1129,7 +1129,7 @@ class _CheckoutPageState extends State<CheckoutPage> {
 
             const SizedBox(height: 24),
             Container(
-              color: GuzoTheme.White,
+              color: Theme.of(context).cardColor,
               child: Column(
                 crossAxisAlignment: CrossAxisAlignment.start,
                 children: [
@@ -1226,9 +1226,9 @@ class _CheckoutPageState extends State<CheckoutPage> {
                                       maxChildSize: 0.95,
                                       builder: (context, scrollController) {
                                         return Container(
-                                          decoration: const BoxDecoration(
-                                            color: Colors.white,
-                                            borderRadius: BorderRadius.vertical(
+                                          decoration: BoxDecoration(
+                                  color: Theme.of(context).cardColor,
+                                  borderRadius: const BorderRadius.vertical(
                                               top: Radius.circular(20),
                                             ),
                                           ),
@@ -1324,7 +1324,7 @@ class _CheckoutPageState extends State<CheckoutPage> {
             ),
             SizedBox(height: 15),
             Container(
-              color: GuzoTheme.White,
+              color: Theme.of(context).cardColor,
               padding: EdgeInsets.all(16.0),
               child: Column(
                 crossAxisAlignment: CrossAxisAlignment.start,
@@ -1383,7 +1383,7 @@ class _CheckoutPageState extends State<CheckoutPage> {
                   SizedBox(height: 20),
                   Text(
                     "Taxes and charges may be refundable separately from fare refunds if you didn't board your flight. For details, view airline terms.",
-                    style: TextStyle(color: Colors.grey[600], fontSize: 12),
+                    style: TextStyle(color: Colors.grey, fontSize: 12),
                   ),
                 ],
               ),
@@ -1393,7 +1393,7 @@ class _CheckoutPageState extends State<CheckoutPage> {
               padding: const EdgeInsets.only(left: 12, right: 12, bottom: 30),
               child: Container(
                 decoration: BoxDecoration(
-                  color: GuzoTheme.White,
+                  color: Theme.of(context).cardColor,
                   border: Border.all(color: Colors.black12),
                   borderRadius: BorderRadius.circular(8),
                   boxShadow: const [
@@ -1450,7 +1450,7 @@ class _CheckoutPageState extends State<CheckoutPage> {
       ),
       bottomNavigationBar: Container(
         decoration: BoxDecoration(
-          color: Colors.white,
+          color: Theme.of(context).cardColor,
           border: Border(top: BorderSide(color: Colors.grey.shade300)),
           boxShadow: [
             BoxShadow(
@@ -1487,9 +1487,9 @@ class _CheckoutPageState extends State<CheckoutPage> {
                               duration: const Duration(milliseconds: 0),
                               height: priceDetailSelected ? 880 : 695,
                               padding: const EdgeInsets.all(20),
-                              decoration: const BoxDecoration(
-                                color: Colors.white,
-                                borderRadius: BorderRadius.vertical(
+                              decoration: BoxDecoration(
+                                  color: Theme.of(context).cardColor,
+                                  borderRadius: const BorderRadius.vertical(
                                   top: Radius.circular(20),
                                 ),
                               ),
@@ -1551,7 +1551,7 @@ class _CheckoutPageState extends State<CheckoutPage> {
                                             priceDetailSelected
                                                 ? Icons.keyboard_arrow_up
                                                 : Icons.keyboard_arrow_down,
-                                            color: Colors.black54,
+                                            color: Colors.grey,
                                           ),
                                         ],
                                       ),
@@ -1610,7 +1610,7 @@ class _CheckoutPageState extends State<CheckoutPage> {
                                             "Flexible ticket",
                                             style: TextStyle(
                                               fontSize: 15,
-                                              color: Colors.grey[600],
+                                              color: Colors.grey,
                                             ),
                                           ),
                                           SizedBox(height: 15),
@@ -1619,7 +1619,7 @@ class _CheckoutPageState extends State<CheckoutPage> {
                                             "Travel protection",
                                             style: TextStyle(
                                               fontSize: 15,
-                                              color: Colors.grey[600],
+                                              color: Colors.grey,
                                             ),
                                           ),
                                         ],
@@ -1669,7 +1669,7 @@ class _CheckoutPageState extends State<CheckoutPage> {
                                             "Guzo.com pays",
                                             style: TextStyle(
                                               fontSize: 15,
-                                              color: Colors.grey[600],
+                                              color: Colors.grey,
                                             ),
                                           ),
                                         ],
@@ -1712,7 +1712,7 @@ class _CheckoutPageState extends State<CheckoutPage> {
                                             "Includes taxes and fees",
                                             style: TextStyle(
                                               fontSize: 15,
-                                              color: Colors.grey[600],
+                                              color: Colors.grey,
                                             ),
                                           ),
                                           SizedBox(height: 15),
@@ -1726,7 +1726,7 @@ class _CheckoutPageState extends State<CheckoutPage> {
                                           "$currency ${flightDatacontroller.totalPrice.value}",
                                           style: TextStyle(
                                             fontWeight: FontWeight.bold,
-                                            fontSize: 24,
+                                            fontSize: 15,
                                           ),
                                         ),
                                       ),
@@ -1846,7 +1846,7 @@ class _CheckoutPageState extends State<CheckoutPage> {
                             }
                           },
                     style: ElevatedButton.styleFrom(
-                      foregroundColor: GuzoTheme.White,
+                      foregroundColor: Colors.white,
                       backgroundColor: GuzoTheme.primaryGreen,
                       shape: RoundedRectangleBorder(
                         borderRadius: BorderRadius.circular(8),
@@ -1895,7 +1895,7 @@ class _CheckoutPageState extends State<CheckoutPage> {
               children: [
                 Text(
                   "Adult(${flightDatacontroller.adults.value})",
-                  style: TextStyle(fontSize: 16, color: Colors.grey[700]),
+                  style: TextStyle(fontSize: 16, color: Colors.grey),
                 ),
                 Row(
                   children: [
@@ -1957,7 +1957,7 @@ class _CheckoutPageState extends State<CheckoutPage> {
       child: Row(
         mainAxisAlignment: MainAxisAlignment.spaceBetween,
         children: [
-          Text(label, style: TextStyle(color: Colors.grey[700], fontSize: 15)),
+          Text(label, style: TextStyle(color: Colors.grey, fontSize: 15)),
           Text(price, style: const TextStyle(fontSize: 15)),
         ],
       ),
@@ -1980,9 +1980,9 @@ class _CheckoutPageState extends State<CheckoutPage> {
           maxChildSize: 0.95,
           builder: (ctx, scrollCtrl) {
             return Container(
-              decoration: const BoxDecoration(
-                color: Colors.white,
-                borderRadius: BorderRadius.vertical(top: Radius.circular(20)),
+              decoration: BoxDecoration(
+                                  color: Theme.of(context).cardColor,
+                                  borderRadius: const BorderRadius.vertical(top: Radius.circular(20)),
               ),
               child: Column(
                 children: [
@@ -2013,7 +2013,7 @@ class _CheckoutPageState extends State<CheckoutPage> {
                         Text(
                           formatDuration(duration),
                           style: TextStyle(
-                            color: Colors.grey[600],
+                            color: Colors.grey,
                             fontSize: 15,
                           ),
                         ),
@@ -2181,7 +2181,7 @@ class _CheckoutPageState extends State<CheckoutPage> {
                                         Text(
                                           '$depAirport  $depName',
                                           style: TextStyle(
-                                            color: Colors.grey[600],
+                                            color: Colors.grey,
                                             fontSize: 13,
                                           ),
                                         ),
@@ -2196,7 +2196,7 @@ class _CheckoutPageState extends State<CheckoutPage> {
                                         Text(
                                           '$arrAirport  $arrName',
                                           style: TextStyle(
-                                            color: Colors.grey[600],
+                                            color: Colors.grey,
                                             fontSize: 13,
                                           ),
                                         ),
@@ -2286,7 +2286,7 @@ Widget _priceRow(
           child: Text(
             label,
             style: TextStyle(
-              color: isSubItem ? Colors.grey[600] : Colors.black87,
+              color: isSubItem ? Colors.grey : Colors.black87,
               fontSize: isSubItem ? 14 : 15,
             ),
           ),
@@ -2345,3 +2345,7 @@ Widget _buildLine(bool isActive, {bool isDotted = false}) {
     ),
   );
 }
+
+
+
+

@@ -8,7 +8,7 @@ class RewardWalletPage extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      backgroundColor: Colors.white,
+      backgroundColor: Theme.of(context).scaffoldBackgroundColor,
       appBar: AppBar(
         leading: IconButton(
           icon: const Icon(Icons.arrow_back, color: Colors.white),
@@ -31,7 +31,7 @@ class RewardWalletPage extends StatelessWidget {
                   height: 80,
                 ),
                 Column(
-                  children: [_buildGeniusRewardCard(), SizedBox(height: 15)],
+                  children: [_buildGeniusRewardCard(context), SizedBox(height: 15)],
                 ),
               ],
             ),
@@ -165,7 +165,7 @@ Widget _texts(
               const SizedBox(height: 4),
               Text(
                 "$secondLabel$thirdLabel",
-                style: const TextStyle(fontSize: 20, color: Colors.black87),
+                //style: TextStyle(fontSize: 20, color: Theme.of(context).textTheme.bodyMedium?.color),
                 softWrap: true,
                 overflow: TextOverflow.visible,
               ),
@@ -177,11 +177,11 @@ Widget _texts(
   );
 }
 
-Widget _buildGeniusRewardCard() {
+Widget _buildGeniusRewardCard(BuildContext context) {
   return Container(
     margin: const EdgeInsets.symmetric(horizontal: 16),
     decoration: BoxDecoration(
-      color: Colors.white,
+      color: Theme.of(context).cardColor,
       borderRadius: BorderRadius.circular(12),
       boxShadow: [
         BoxShadow(

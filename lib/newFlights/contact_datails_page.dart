@@ -61,7 +61,7 @@ class _ContactDetailsPageState extends State<ContactDetailsPage> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      backgroundColor: Colors.white,
+      backgroundColor: Theme.of(context).scaffoldBackgroundColor,
       appBar: AppBar(
         elevation: 0,
         centerTitle: false,
@@ -195,7 +195,7 @@ class _ContactDetailsPageState extends State<ContactDetailsPage> {
                   vertical: 20,
                 ),
                 decoration: BoxDecoration(
-                  color: Colors.white,
+                  color: Theme.of(context).cardColor,
                   border: Border(top: BorderSide(color: Colors.grey.shade200)),
                 ),
                 child: ElevatedButton(

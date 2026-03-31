@@ -422,7 +422,7 @@ class _FlightsPageState extends State<FlightsPage> {
                 ),
                 for (int row = 0; row < rows; row++)
                   Container(
-                    color: row.isOdd ? Colors.grey.shade100 : Colors.white,
+                    color: row.isOdd ? Theme.of(ctx).dividerColor.withOpacity(0.3) : Theme.of(ctx).scaffoldBackgroundColor,
                     child: Row(
                       children: List.generate(7, (col) {
                         final idx = row * 7 + col;
@@ -459,7 +459,7 @@ class _FlightsPageState extends State<FlightsPage> {
                                               ? Colors.grey.shade400
                                               : (isDep || isRet)
                                                   ? Colors.white
-                                                  : Colors.black,
+                                                  : Theme.of(ctx).textTheme.bodyLarge?.color,
                                         )),
                                   ),
                                 ),
@@ -476,9 +476,9 @@ class _FlightsPageState extends State<FlightsPage> {
           }
 
           return Scaffold(
-            backgroundColor: Colors.white,
+            backgroundColor: Theme.of(ctx).scaffoldBackgroundColor,
             appBar: AppBar(
-              backgroundColor: Colors.white,
+              backgroundColor: Theme.of(ctx).scaffoldBackgroundColor,
               elevation: 0,
               leading: const SizedBox(),
               actions: [
@@ -524,7 +524,7 @@ class _FlightsPageState extends State<FlightsPage> {
                 Container(
                   padding: const EdgeInsets.fromLTRB(16, 12, 16, 32),
                   decoration: BoxDecoration(
-                    color: Colors.white,
+                    color: Theme.of(ctx).cardColor,
                     border: Border(top: BorderSide(color: Colors.grey.shade200)),
                   ),
                   child: Column(
@@ -589,7 +589,7 @@ class _FlightsPageState extends State<FlightsPage> {
                 date == null ? '--' : DateFormat('EEE, MMM d').format(date),
                 style: TextStyle(
                   fontSize: 13,
-                  color: date == null ? Colors.grey : Colors.black,
+                  color: date == null ? Colors.grey : Theme.of(context).textTheme.bodyLarge?.color,
                   fontWeight: date == null ? FontWeight.normal : FontWeight.w500,
                 ),
               ),
