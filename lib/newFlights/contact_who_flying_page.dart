@@ -77,136 +77,114 @@ class _ContactWhoFlyingPageState extends State<ContactWhoFlyingPage> {
       ),
       body: Column(
         children: [
-          Column(
-            children: [
-              InkWell(
-                onTap: () =>
-                    Get.to(() => TravelerDetailsPage(travelerNumber: 2)),
-                child: Container(
-                  padding: const EdgeInsets.symmetric(
-                    horizontal: 15,
-                    vertical: 20,
-                  ),
-                  color: GuzoTheme.White,
-                  child: Row(
-                    children: [
-                      Obx(() {
-                        bool isComplete =
-                            userNameController.firstNameOf.isNotEmpty &&
-                            userNameController.gender.isNotEmpty;
-                        return Stack(
-                          children: [
-                            Padding(
-                              padding: const EdgeInsets.only(
-                                right: 8.0,
-                                bottom: 8,
+          Expanded(
+            child: SingleChildScrollView(
+              child: Column(
+                children: [
+                  // One traveler card per traveler
+          ...List.generate(flightDataController.numberOfTravelers.value, (i) {
+            return Column(
+              children: [
+                Obx(() {
+                  final t = userNameController.getTraveler(i);
+                  final firstName = i == 0
+                      ? userNameController.firstNameOf.value
+                      : (t['firstName'] ?? '');
+                  final lastName = i == 0
+                      ? userNameController.lastNameOf.value
+                      : (t['lastName'] ?? '');
+                  final gender = i == 0
+                      ? userNameController.gender.value
+                      : (t['gender'] ?? '');
+                  final dob = i == 0
+                      ? userNameController.dateOfBirth.value
+                      : (t['dob'] ?? '');
+                  final type = i == 0
+                      ? (userNameController.travelerType.value.isEmpty
+                          ? 'Adult'
+                          : userNameController.travelerType.value)
+                      : (t['type'] ?? 'Adult');
+                  final isComplete = firstName.isNotEmpty && gender.isNotEmpty;
+
+                  return InkWell(
+                    onTap: () => Get.to(() =>
+                        TravelerDetailsPage(travelerNumber: i)),
+                    child: Container(
+                      padding: const EdgeInsets.symmetric(
+                          horizontal: 15, vertical: 20),
+                      color: Theme.of(context).cardColor,
+                      child: Row(
+                        children: [
+                          Stack(
+                            children: [
+                              Padding(
+                                padding:
+                                    EdgeInsets.only(right: 8.0, bottom: 8),
+                                child: Icon(Icons.person_3_outlined,
+                                    size: 50, color: Theme.of(context).iconTheme.color),
                               ),
-                              child: const Icon(
-                                Icons.person_3_outlined,
-                                size: 50,
-                                color: Colors.black,
-                              ),
-                            ),
-                            Positioned(
-                              right: 0,
-                              bottom: 0,
-                              child: Container(
-                                width: 20,
-                                height: 20,
-                                decoration: BoxDecoration(
-                                  color: isComplete
-                                      // ignore: deprecated_member_use
-                                      ? Colors.greenAccent.withOpacity(0.25)
-                                      : Colors.white,
-                                  borderRadius: BorderRadius.circular(20),
-                                  border: isComplete
-                                      ? null
-                                      : Border.all(
-                                          color: isComplete
-                                              ? Colors.grey.shade300
-                                              : Colors.white,
-                                        ),
+                              Positioned(
+                                right: 0,
+                                bottom: 0,
+                                child: Container(
+                                  width: 20,
+                                  height: 20,
+                                  decoration: BoxDecoration(
+                                    color: isComplete
+                                        ? Colors.greenAccent.withOpacity(0.25)
+                                        : Colors.white,
+                                    borderRadius: BorderRadius.circular(20),
+                                    border: isComplete
+                                        ? null
+                                        : Border.all(color: Colors.white),
+                                  ),
+                                  child: Icon(
+                                    isComplete
+                                        ? Icons.check_rounded
+                                        : Icons.clear,
+                                    size: 20,
+                                    color: isComplete
+                                        ? Colors.black
+                                        : Colors.white,
+                                  ),
                                 ),
-                                child: isComplete
-                                    ? Icon(
-                                        Icons.check_rounded,
-                                        size: 20,
-                                        color: isComplete
-                                            ? Colors.black
-                                            : Colors.transparent,
-                                      )
-                                    : Icon(
-                                        Icons.clear,
-                                        color: isComplete
-                                            ? Colors.red
-                                            : Colors.white,
-                                      ),
                               ),
-                            ),
-                          ],
-                        );
-                      }),
-
-                      const SizedBox(width: 15),
-
-                      Expanded(
-                        child: Column(
-                          crossAxisAlignment: CrossAxisAlignment.start,
-                          mainAxisSize: MainAxisSize.min,
-                          children: [
-                            Obx(() {
-                              bool hasData =
-                                  userNameController.lastNameOf.isNotEmpty &&
-                                  userNameController.firstNameOf.isNotEmpty;
-
-                              return hasData
-                                  ? Text(
-                                      "${capitalize(userNameController.firstNameOf.value)} ${capitalize(userNameController.lastNameOf.value)}",
-                                      style: const TextStyle(
-                                        fontWeight: FontWeight.bold,
-                                      ),
-                                    )
-                                  : Text(
-                                      "Traveler ${1}",
-                                      style: const TextStyle(
-                                        fontSize: 18,
-                                        fontWeight: FontWeight.bold,
-                                      ),
-                                    );
-                            }),
-                            const SizedBox(height: 4),
-                            Obx(() {
-                              final type =
-                                  userNameController.travelerType.value.isEmpty
-                                  ? "Adult"
-                                  : userNameController.travelerType.value;
-                              final gender = userNameController.gender;
-                              final dob = userNameController.dateOfBirth;
-
-                              return Text(
-                                "$type${gender.isNotEmpty ? ' • $gender' : ''}${dob.isNotEmpty ? ' • $dob' : ''}",
-                                style: TextStyle(
-                                  fontSize: 14,
-                                  color: Colors.grey[600],
+                            ],
+                          ),
+                          const SizedBox(width: 15),
+                          Expanded(
+                            child: Column(
+                              crossAxisAlignment: CrossAxisAlignment.start,
+                              children: [
+                                Text(
+                                  firstName.isEmpty && lastName.isEmpty
+                                      ? 'Traveler ${i + 1}'
+                                      : '${capitalize(firstName)} ${capitalize(lastName)}',
+                                  style: const TextStyle(
+                                      fontSize: 18,
+                                      fontWeight: FontWeight.bold),
                                 ),
-                                overflow: TextOverflow.ellipsis,
-                              );
-                            }),
-                          ],
-                        ),
+                                const SizedBox(height: 4),
+                                Text(
+                                  '$type${gender.isNotEmpty ? ' • $gender' : ''}${dob.isNotEmpty ? ' • $dob' : ''}',
+                                  style: TextStyle(
+                                      fontSize: 14, color: Theme.of(context).textTheme.bodySmall?.color),
+                                  overflow: TextOverflow.ellipsis,
+                                ),
+                              ],
+                            ),
+                          ),
+                          const Icon(Icons.keyboard_arrow_right,
+                              size: 30, color: null),
+                        ],
                       ),
-                      const Icon(
-                        Icons.keyboard_arrow_right,
-                        size: 30,
-                        color: Colors.black,
-                      ),
-                    ],
-                  ),
-                ),
-              ),
-              SizedBox(height: 15),
-            ],
-          ),
+                    ),
+                  );
+                }),
+                const SizedBox(height: 8),
+              ],
+            );
+          }),
 
           SizedBox(height: 15),
           InkWell(
@@ -216,7 +194,7 @@ class _ContactWhoFlyingPageState extends State<ContactWhoFlyingPage> {
             child: Padding(
               padding: const EdgeInsets.only(top: 0, bottom: 0),
               child: Container(
-                color: GuzoTheme.White,
+                color: Theme.of(context).cardColor,
                 child: Padding(
                   padding: const EdgeInsets.only(top: 15.0, bottom: 15),
                   child: Obx(() {
@@ -307,7 +285,10 @@ class _ContactWhoFlyingPageState extends State<ContactWhoFlyingPage> {
               ),
             ),
           ),
-          const Spacer(),
+                ],
+              ),
+            ),
+          ), // close Expanded + SingleChildScrollView
           Divider(height: 1),
           Padding(
             padding: const EdgeInsets.only(bottom: 20.0, left: 12, right: 12),
@@ -337,9 +318,9 @@ class _ContactWhoFlyingPageState extends State<ContactWhoFlyingPage> {
                                 duration: const Duration(milliseconds: 0),
                                 height: priceDetailSelected ? 800 : 615,
                                 padding: const EdgeInsets.all(20),
-                                decoration: const BoxDecoration(
-                                  color: Colors.white,
-                                  borderRadius: BorderRadius.vertical(
+                                decoration: BoxDecoration(
+                                  color: Theme.of(context).cardColor,
+                                  borderRadius: const BorderRadius.vertical(
                                     top: Radius.circular(20),
                                   ),
                                 ),
@@ -403,7 +384,7 @@ class _ContactWhoFlyingPageState extends State<ContactWhoFlyingPage> {
                                               priceDetailSelected
                                                   ? Icons.keyboard_arrow_up
                                                   : Icons.keyboard_arrow_down,
-                                              color: Colors.black54,
+                                              color: Theme.of(context).iconTheme.color,
                                             ),
                                           ],
                                         ),
@@ -693,7 +674,7 @@ class _ContactWhoFlyingPageState extends State<ContactWhoFlyingPage> {
       child: Row(
         mainAxisAlignment: MainAxisAlignment.spaceBetween,
         children: [
-          Text(label, style: TextStyle(color: Colors.grey[700], fontSize: 15)),
+          Text(label, style: TextStyle(color: Theme.of(context).textTheme.bodySmall?.color, fontSize: 15)),
           Text(price, style: const TextStyle(fontSize: 15)),
         ],
       ),

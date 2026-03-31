@@ -48,7 +48,7 @@ class _YourFlightToPageState extends State<YourFlightToPage> {
     final currency = offer['pricing']?['currency'] ?? '';
 
     return Scaffold(
-      backgroundColor: GuzoTheme.White,
+      backgroundColor: Theme.of(context).scaffoldBackgroundColor,
       appBar: AppBar(
         backgroundColor: GuzoTheme.primaryGreen,
         leading: IconButton(
@@ -139,18 +139,18 @@ class _YourFlightToPageState extends State<YourFlightToPage> {
                             final duration = formatDurationFromTimes(depDate, arrDate);
 
                             return Container(
-                              color: Colors.white,
+                              color: Theme.of(context).scaffoldBackgroundColor,
                               margin: const EdgeInsets.only(bottom: 20),
                               child: Row(
                                 crossAxisAlignment: CrossAxisAlignment.start,
                                 children: [
                                   Column(
                                     children: [
-                                      const Icon(Icons.circle_outlined, size: 20, color: Colors.black),
+                                      Icon(Icons.circle_outlined, size: 20, color: Theme.of(context).iconTheme.color),
                                       const SizedBox(height: 5),
                                       Container(width: 1.5, height: 110, color: Colors.grey.shade300),
                                       const SizedBox(height: 5),
-                                      const Icon(Icons.circle_outlined, size: 18, color: Colors.black54),
+                                      Icon(Icons.circle_outlined, size: 18, color: Theme.of(context).iconTheme.color?.withOpacity(0.5)),
                                     ],
                                   ),
                                   const SizedBox(width: 16),
@@ -159,11 +159,11 @@ class _YourFlightToPageState extends State<YourFlightToPage> {
                                       crossAxisAlignment: CrossAxisAlignment.start,
                                       children: [
                                         Text(formatTime(depDate),
-                                            style: const TextStyle(fontSize: 13, color: Colors.black54)),
+                                            style: TextStyle(fontSize: 13, color: Theme.of(context).textTheme.bodySmall?.color)),
                                         Text('$depCode · $depCity',
                                             style: const TextStyle(fontWeight: FontWeight.bold, fontSize: 16)),
                                         if (depTerminal != null)
-                                          Text(depTerminal, style: const TextStyle(color: Colors.black54)),
+                                          Text(depTerminal, style: TextStyle(color: Theme.of(context).textTheme.bodySmall?.color)),
                                         const SizedBox(height: 20),
                                         Row(
                                           children: [
@@ -176,18 +176,18 @@ class _YourFlightToPageState extends State<YourFlightToPage> {
                                             Column(
                                               crossAxisAlignment: CrossAxisAlignment.start,
                                               children: [
-                                                Text(titleAirline, style: const TextStyle(color: Colors.black54)),
+                                                Text(titleAirline, style: TextStyle(color: Theme.of(context).textTheme.bodySmall?.color)),
                                                 Text('Flight $airlineCode$flightNum · $classOfService',
-                                                    style: const TextStyle(color: Colors.black54)),
+                                                    style: TextStyle(color: Theme.of(context).textTheme.bodySmall?.color)),
                                                 Text('Flight time $duration',
-                                                    style: const TextStyle(color: Colors.black54)),
+                                                    style: TextStyle(color: Theme.of(context).textTheme.bodySmall?.color)),
                                               ],
                                             ),
                                           ],
                                         ),
                                         const SizedBox(height: 20),
                                         Text(formatTime(arrDate),
-                                            style: const TextStyle(fontSize: 13, color: Colors.black54)),
+                                            style: TextStyle(fontSize: 13, color: Theme.of(context).textTheme.bodySmall?.color)),
                                         Text('$arrCode · $arrCity',
                                             style: const TextStyle(fontWeight: FontWeight.bold, fontSize: 16)),
                                         const SizedBox(height: 20),
@@ -206,10 +206,10 @@ class _YourFlightToPageState extends State<YourFlightToPage> {
                 }),
                 const SizedBox(height: 30),
                 Container(
-                  color: GuzoTheme.White,
+                  color: Theme.of(context).cardColor,
                   child: Column(
                     crossAxisAlignment: CrossAxisAlignment.start,
-                    children: const [
+                    children: [
                       SizedBox(height: 20),
                       Text(
                         "Included baggage",
@@ -262,10 +262,10 @@ class _YourFlightToPageState extends State<YourFlightToPage> {
                 ),
                 const SizedBox(height: 20),
                 Container(
-                  color: GuzoTheme.White,
+                  color: Theme.of(context).cardColor,
                   child: Column(
                     crossAxisAlignment: CrossAxisAlignment.start,
-                    children: const [
+                    children: [
                       SizedBox(height: 20),
                       Text(
                         "Extras you might like",
@@ -298,10 +298,10 @@ class _YourFlightToPageState extends State<YourFlightToPage> {
                 ),
                 const SizedBox(height: 20),
                 Container(
-                  color: GuzoTheme.White,
+                  color: Theme.of(context).cardColor,
                   child: Column(
                     crossAxisAlignment: CrossAxisAlignment.start,
-                    children: const [
+                    children: [
                       SizedBox(height: 20),
                       Text(
                         "Need extra baggage?",
@@ -334,7 +334,7 @@ class _YourFlightToPageState extends State<YourFlightToPage> {
           Container(
             padding: const EdgeInsets.symmetric(horizontal: 16, vertical: 12),
             decoration: BoxDecoration(
-              color: Colors.white,
+              color: Theme.of(context).cardColor,
               boxShadow: [BoxShadow(color: Colors.black12, blurRadius: 4)],
             ),
             child: SafeArea(
@@ -357,9 +357,9 @@ class _YourFlightToPageState extends State<YourFlightToPage> {
                             duration: const Duration(milliseconds: 0),
                             height: priceDetailSelected ? 500 : 380,
                             padding: const EdgeInsets.all(20),
-                            decoration: const BoxDecoration(
-                              color: Colors.white,
-                              borderRadius: BorderRadius.vertical(
+                            decoration: BoxDecoration(
+                              color: Theme.of(context).cardColor,
+                              borderRadius: const BorderRadius.vertical(
                                 top: Radius.circular(20),
                               ),
                             ),
@@ -421,7 +421,6 @@ class _YourFlightToPageState extends State<YourFlightToPage> {
                                           priceDetailSelected
                                               ? Icons.keyboard_arrow_up
                                               : Icons.keyboard_arrow_down,
-                                          color: Colors.black54,
                                         ),
                                       ],
                                     ),
@@ -585,7 +584,7 @@ class PolicyItem extends StatelessWidget {
       padding: const EdgeInsets.symmetric(vertical: 8.0),
       child: Row(
         children: [
-          Icon(icon, size: 27, color: Colors.black),
+          Icon(icon, size: 27, color: Theme.of(context).iconTheme.color),
           const SizedBox(width: 12),
           Text(text, style: const TextStyle(fontSize: 15)),
         ],
@@ -606,3 +605,5 @@ Widget _buildPriceRow(String label, String price) {
     ),
   );
 }
+
+

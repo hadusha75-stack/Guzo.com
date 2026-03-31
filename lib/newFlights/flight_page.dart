@@ -45,7 +45,7 @@ class _FlightsPageState extends State<FlightsPage> {
             Expanded(
               child: Container(
                 width: double.infinity,
-                color: Colors.grey[100],
+                color: Theme.of(context).scaffoldBackgroundColor,
                 child: SingleChildScrollView(
                   physics: const BouncingScrollPhysics(),
                   child: Column(
@@ -175,7 +175,7 @@ class _FlightsPageState extends State<FlightsPage> {
         Container(
           margin: const EdgeInsets.only(left: 16, right: 16),
           decoration: BoxDecoration(
-            color: Colors.white,
+            color: Theme.of(context).cardColor,
             borderRadius: BorderRadius.circular(8),
             border: Border.all(color: const Color(0xFFFFC107), width: 6),
           ),
@@ -310,7 +310,7 @@ class _FlightsPageState extends State<FlightsPage> {
         padding: const EdgeInsets.all(16),
         child: Row(
           children: [
-            Icon(icon, color: const Color.fromARGB(255, 41, 42, 42)),
+            Icon(icon, color: Theme.of(context).iconTheme.color),
             const SizedBox(width: 16),
             Expanded(
               child: Text(
@@ -319,7 +319,7 @@ class _FlightsPageState extends State<FlightsPage> {
                   fontSize: 16,
                   color: displayResult.contains('?')
                       ? Colors.grey
-                      : Colors.black,
+                      : Theme.of(context).textTheme.bodyLarge?.color,
                   fontWeight: displayResult.contains('?')
                       ? FontWeight.normal
                       : FontWeight.w500,
@@ -695,15 +695,19 @@ class _FlightsPageState extends State<FlightsPage> {
     return Row(
       children: [
         SizedBox(width: 20),
-        Container(height: 45, width: 2, color: Colors.grey),
+        Container(height: 45, width: 2,
+            color: Theme.of(context).dividerColor),
         const Expanded(child: Divider(indent: 55, endIndent: 10)),
-
         IconButton(
           onPressed: () => apicontroller.toggleSort(),
           icon: SvgPicture.network(
             "https://unpkg.com/lucide-static/icons/arrow-up-down.svg",
             width: 24,
             height: 24,
+            colorFilter: ColorFilter.mode(
+              Theme.of(context).iconTheme.color ?? Colors.black,
+              BlendMode.srcIn,
+            ),
           ),
         ),
       ],
@@ -826,6 +830,7 @@ class _FlightsPageState extends State<FlightsPage> {
       onTap: (i) => controller.updateIndex(i),
       type: BottomNavigationBarType.fixed,
       selectedItemColor: const Color(0xFF0071C2),
+      backgroundColor: Theme.of(context).cardColor,
       items: [
         const BottomNavigationBarItem(
           icon: Icon(Icons.search),

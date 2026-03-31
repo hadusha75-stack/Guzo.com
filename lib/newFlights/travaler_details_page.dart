@@ -561,16 +561,34 @@ class _TravelerDetailsPageState extends State<TravelerDetailsPage> {
                   onPressed: () {
                     setState(() => _submitted = true);
                     if (_formKey.currentState!.validate()) {
-                      userNameController.setName(
-                        _firstNameController.text.trim(),
-                        _lastNameController.text.trim(),
-                      );
-                      userNameController.setDateOfBirthFromTravel(
-                        _dateController.text,
-                        _monthController.text,
-                        _yearController.text,
-                      );
-                      userNameController.setGender(_genderController.text);
+                      if (widget.travelerNumber == 0) {
+                        userNameController.setName(
+                          _firstNameController.text.trim(),
+                          _lastNameController.text.trim(),
+                        );
+                        userNameController.setDateOfBirthFromTravel(
+                          _dateController.text,
+                          _monthController.text,
+                          _yearController.text,
+                        );
+                        userNameController.setGender(_genderController.text);
+                      } else {
+                        // compute dob display and raw
+                        userNameController.setDateOfBirthFromTravel(
+                          _dateController.text,
+                          _monthController.text,
+                          _yearController.text,
+                        );
+                        userNameController.setExtraTraveler(
+                          widget.travelerNumber - 1,
+                          _firstNameController.text.trim(),
+                          _lastNameController.text.trim(),
+                          _genderController.text,
+                          userNameController.dateOfBirth.value,
+                          userNameController.dateOfBirth2.value,
+                          userNameController.travelerType.value,
+                        );
+                      }
                       Get.back();
                     }
                   },

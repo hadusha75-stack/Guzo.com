@@ -84,7 +84,7 @@ class _SearchedFlightsPageState extends State<SearchedFlightsPage> {
           Container(
             width: double.infinity,
             height: double.infinity,
-            color: Colors.white,
+            color: Theme.of(context).scaffoldBackgroundColor,
             child: Obx(() {
               if (flightApicontroller.isLoading.value) {
                 return const Center(child: CircularProgressIndicator());
@@ -132,8 +132,7 @@ class _SearchedFlightsPageState extends State<SearchedFlightsPage> {
                                 right: 15,
                                 top: 15,
                               ),
-                              child: const Card(
-                                color: Colors.white,
+                              child: Card(
                                 margin: EdgeInsets.symmetric(vertical: 10),
                                 shape: RoundedRectangleBorder(
                                   borderRadius: BorderRadiusGeometry.all(
@@ -148,7 +147,6 @@ class _SearchedFlightsPageState extends State<SearchedFlightsPage> {
                                     children: [
                                       Icon(
                                         Icons.info_outline,
-                                        color: Colors.black,
                                         size: 28,
                                       ),
                                       SizedBox(width: 12),
@@ -157,7 +155,7 @@ class _SearchedFlightsPageState extends State<SearchedFlightsPage> {
                                           "Please review any travel advisories provided by your government to make an informed decision about your travel to this area, which may be considered conflict-affected.",
                                           style: TextStyle(
                                             fontSize: 16,
-                                            color: Colors.black,
+                                            
                                             height: 1.4,
                                           ),
                                         ),
@@ -180,7 +178,7 @@ class _SearchedFlightsPageState extends State<SearchedFlightsPage> {
                             Padding(
                               padding: const EdgeInsets.only(left: 12.0),
                               child: Container(
-                                color: Colors.white,
+                                color: Theme.of(context).cardColor,
                                 child: Row(
                                   children: [
                                     Container(
@@ -258,7 +256,7 @@ class _SearchedFlightsPageState extends State<SearchedFlightsPage> {
                         Get.to(() => YourFlightToPage());
                       },
                       child: Card(
-                        color: Colors.white,
+                        color: Theme.of(context).cardColor,
 
                         margin: const EdgeInsets.only(bottom: 15),
                         elevation: 2,
@@ -629,7 +627,7 @@ class _SearchedFlightsPageState extends State<SearchedFlightsPage> {
                                               style: const TextStyle(
                                                 fontWeight: FontWeight.bold,
                                                 fontSize: 20,
-                                                color: Colors.black,
+                                                
                                               ),
                                             ),
                                             const SizedBox(width: 7),
@@ -710,8 +708,7 @@ class _SearchedFlightsPageState extends State<SearchedFlightsPage> {
                                 right: 15,
                                 top: 15,
                               ),
-                              child: const Card(
-                                color: Colors.white,
+                              child: Card(
                                 margin: EdgeInsets.symmetric(vertical: 10),
                                 shape: RoundedRectangleBorder(
                                   borderRadius: BorderRadiusGeometry.all(
@@ -726,7 +723,6 @@ class _SearchedFlightsPageState extends State<SearchedFlightsPage> {
                                     children: [
                                       Icon(
                                         Icons.info_outline,
-                                        color: Colors.black,
                                         size: 28,
                                       ),
                                       SizedBox(width: 12),
@@ -735,7 +731,7 @@ class _SearchedFlightsPageState extends State<SearchedFlightsPage> {
                                           "Please review any travel advisories provided by your government to make an informed decision about your travel to this area, which may be considered conflict-affected.",
                                           style: TextStyle(
                                             fontSize: 16,
-                                            color: Colors.black,
+                                            
                                             height: 1.4,
                                           ),
                                         ),
@@ -758,7 +754,7 @@ class _SearchedFlightsPageState extends State<SearchedFlightsPage> {
                             Padding(
                               padding: const EdgeInsets.only(left: 12.0),
                               child: Container(
-                                color: Colors.white,
+                                color: Theme.of(context).cardColor,
                                 child: Row(
                                   children: [
                                     Container(
@@ -841,7 +837,7 @@ class _SearchedFlightsPageState extends State<SearchedFlightsPage> {
                         }
                       },
                       child: Card(
-                        color: Colors.white,
+                        color: Theme.of(context).cardColor,
 
                         margin: const EdgeInsets.only(bottom: 15),
                         elevation: 2,
@@ -1242,7 +1238,7 @@ class _SearchedFlightsPageState extends State<SearchedFlightsPage> {
                                               style: const TextStyle(
                                                 fontWeight: FontWeight.bold,
                                                 fontSize: 20,
-                                                color: Colors.black,
+                                                
                                               ),
                                             ),
                                             const SizedBox(width: 7),
@@ -1289,8 +1285,8 @@ class _SearchedFlightsPageState extends State<SearchedFlightsPage> {
                   top: MediaQuery.of(context).padding.top + 10,
                   bottom: 15,
                 ),
-                decoration: const BoxDecoration(
-                  color: GuzoTheme.White,
+                decoration: BoxDecoration(
+                  color: Theme.of(context).cardColor,
                   boxShadow: [BoxShadow(color: Colors.black26, blurRadius: 6)],
                 ),
                 child: Column(
@@ -1313,9 +1309,9 @@ class _SearchedFlightsPageState extends State<SearchedFlightsPage> {
                               child: Row(
                                 children: [
                                   IconButton(
-                                    icon: const Icon(
+                                    icon: Icon(
                                       Icons.arrow_back,
-                                      color: Colors.black,
+                                      color: Theme.of(context).iconTheme.color,
                                     ),
                                     onPressed: () => Get.back(),
                                   ),
@@ -1334,7 +1330,7 @@ class _SearchedFlightsPageState extends State<SearchedFlightsPage> {
                                                   .value,
                                               style: TextStyle(
                                                 fontSize: 14,
-                                                color: Colors.black,
+                                                color: Theme.of(context).textTheme.bodyLarge?.color,
                                               ),
                                             ),
                                             Padding(
@@ -1343,7 +1339,7 @@ class _SearchedFlightsPageState extends State<SearchedFlightsPage> {
                                               ),
                                               child: Icon(
                                                 Icons.swap_horiz,
-                                                color: Colors.black,
+                                                color: Theme.of(context).iconTheme.color,
                                                 size: 16,
                                               ),
                                             ),
@@ -1353,7 +1349,7 @@ class _SearchedFlightsPageState extends State<SearchedFlightsPage> {
                                                   .value,
                                               style: TextStyle(
                                                 fontSize: 14,
-                                                color: Colors.black,
+                                                color: Theme.of(context).textTheme.bodyLarge?.color,
                                               ),
                                             ),
                                           ],
@@ -1366,7 +1362,7 @@ class _SearchedFlightsPageState extends State<SearchedFlightsPage> {
                                             : "${flightDataController.selectedDateOneWay.value} · ${uppercontroller.adults.value} adult · ${uppercontroller.cabinClass.value}";
                                         return Text(
                                           dateText,
-                                          style: const TextStyle(fontSize: 11, color: Colors.black),
+                                          style: TextStyle(fontSize: 11, color: Theme.of(context).textTheme.bodySmall?.color),
                                           overflow: TextOverflow.ellipsis,
                                           maxLines: 1,
                                         );
@@ -1396,17 +1392,17 @@ class _SearchedFlightsPageState extends State<SearchedFlightsPage> {
                                 const SizedBox(width: 4),
                                 Column(
                                   mainAxisAlignment: MainAxisAlignment.center,
-                                  children: const [
+                                  children: [
                                     Icon(
                                       Icons.keyboard_arrow_up,
                                       size: 12,
-                                      color: Colors.black54,
+                                      color: Theme.of(context).iconTheme.color,
                                     ),
                                     SizedBox(
                                       child: Icon(
                                         Icons.keyboard_arrow_down,
                                         size: 10,
-                                        color: Colors.black54,
+                                        color: Theme.of(context).iconTheme.color,
                                       ),
                                     ),
                                   ],
@@ -1429,18 +1425,18 @@ class _SearchedFlightsPageState extends State<SearchedFlightsPage> {
                                 const SizedBox(width: 4),
                                 Column(
                                   mainAxisAlignment: MainAxisAlignment.center,
-                                  children: const [
+                                  children: [
                                     Icon(
                                       Icons.keyboard_arrow_up,
                                       size: 12,
-                                      color: Colors.black54,
+                                      color: Theme.of(context).iconTheme.color,
                                     ),
                                     SizedBox(
                                       height: 4,
                                       child: Icon(
                                         Icons.keyboard_arrow_down,
                                         size: 10,
-                                        color: Colors.black54,
+                                        color: Theme.of(context).iconTheme.color,
                                       ),
                                     ),
                                   ],
@@ -1473,11 +1469,11 @@ class _SearchedFlightsPageState extends State<SearchedFlightsPage> {
                             fontSize: 16,
                           ),
                         ),
-                        subtitle: const Text(
+                        subtitle: Text(
                           'Get price alerts on your device',
                           style: TextStyle(
                             fontWeight: FontWeight.bold,
-                            color: Colors.black,
+                            color: Theme.of(context).textTheme.bodyMedium?.color,
                           ),
                         ),
                         trailing: Switch(
@@ -1584,12 +1580,12 @@ class _SearchedFlightsPageState extends State<SearchedFlightsPage> {
                 right: 16,
                 bottom: 20,
               ),
-              decoration: const BoxDecoration(
-                color: Colors.white,
-                borderRadius: BorderRadius.vertical(
+              decoration: BoxDecoration(
+                color: Theme.of(context).cardColor,
+                borderRadius: const BorderRadius.vertical(
                   bottom: Radius.circular(30),
                 ),
-                boxShadow: [
+                boxShadow: const [
                   BoxShadow(
                     color: Colors.black38,
                     blurRadius: 25,
@@ -1678,7 +1674,7 @@ class _SearchedFlightsPageState extends State<SearchedFlightsPage> {
     return Container(
       margin: const EdgeInsets.all(16),
       decoration: BoxDecoration(
-        color: Colors.white,
+        color: Theme.of(context).cardColor,
         borderRadius: BorderRadius.circular(8),
         border: Border.all(color: const Color(0xFFFFC107), width: 6),
       ),
@@ -1799,7 +1795,7 @@ class _SearchedFlightsPageState extends State<SearchedFlightsPage> {
         padding: const EdgeInsets.all(16),
         child: Row(
           children: [
-            Icon(icon, color: const Color.fromARGB(255, 41, 42, 42)),
+            Icon(icon, color: Theme.of(context).iconTheme.color),
             const SizedBox(width: 16),
             Expanded(
               child: Text(
@@ -1808,7 +1804,7 @@ class _SearchedFlightsPageState extends State<SearchedFlightsPage> {
                   fontSize: 16,
                   color: displayResult.contains('?')
                       ? Colors.grey
-                      : Colors.black,
+                      : Theme.of(context).textTheme.bodyLarge?.color,
                   fontWeight: displayResult.contains('?')
                       ? FontWeight.normal
                       : FontWeight.w500,
@@ -1890,7 +1886,7 @@ class _SearchedFlightsPageState extends State<SearchedFlightsPage> {
                       style: TextStyle(
                         fontSize: 32,
                         fontWeight: FontWeight.bold,
-                        color: Colors.black,
+                        
                       ),
                     ),
                     TextButton(
@@ -1925,7 +1921,7 @@ class _SearchedFlightsPageState extends State<SearchedFlightsPage> {
                     textStyle: TextStyle(
                       fontSize: 18,
                       fontWeight: FontWeight.bold,
-                      color: Colors.black,
+                      
                     ),
                     todayTextStyle: TextStyle(
                       fontSize: 18,
@@ -1945,7 +1941,7 @@ class _SearchedFlightsPageState extends State<SearchedFlightsPage> {
                   rangeTextStyle: const TextStyle(
                     fontSize: 18,
                     fontWeight: FontWeight.bold,
-                    color: Colors.black,
+                    
                   ),
 
                   headerStyle: const DateRangePickerHeaderStyle(
@@ -1955,7 +1951,7 @@ class _SearchedFlightsPageState extends State<SearchedFlightsPage> {
                     textStyle: TextStyle(
                       fontSize: 20,
                       fontWeight: FontWeight.bold,
-                      color: Colors.black,
+                      
                     ),
                   ),
 
@@ -2098,7 +2094,7 @@ class _SearchedFlightsPageState extends State<SearchedFlightsPage> {
               decoration: InputDecoration(
                 hintText: dateObs.value.isEmpty ? hint : dateObs.value,
                 hintStyle: TextStyle(
-                  color: dateObs.value.isEmpty ? Colors.grey : Colors.black,
+                  color: dateObs.value.isEmpty ? Colors.grey : Theme.of(context).textTheme.bodyLarge?.color,
                 ),
                 prefixIcon: const Icon(Icons.calendar_today_outlined, size: 18),
                 contentPadding: const EdgeInsets.symmetric(
@@ -2185,13 +2181,16 @@ class _SearchedFlightsPageState extends State<SearchedFlightsPage> {
     return Row(
       children: [
         const Expanded(child: Divider(indent: 55, endIndent: 10)),
-
         IconButton(
           onPressed: () => uppercontroller.toggleSort(),
           icon: SvgPicture.network(
             "https://unpkg.com/lucide-static/icons/arrow-up-down.svg",
             width: 24,
             height: 24,
+            colorFilter: ColorFilter.mode(
+              Theme.of(context).iconTheme.color ?? Colors.black,
+              BlendMode.srcIn,
+            ),
           ),
         ),
       ],
@@ -2278,7 +2277,7 @@ class _SearchedFlightsPageState extends State<SearchedFlightsPage> {
   Widget _buildBaggageIcon(IconData icon) {
     return Stack(
       children: [
-        Icon(icon, size: 28, color: Colors.black87),
+        Icon(icon, size: 28, color: Theme.of(context).iconTheme.color),
         Positioned(
           right: 0,
           bottom: 0,
@@ -2733,3 +2732,7 @@ class _SearchedFlightsPageState extends State<SearchedFlightsPage> {
     );
   }
 }
+
+
+
+

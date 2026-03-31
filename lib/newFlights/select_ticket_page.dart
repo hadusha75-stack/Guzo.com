@@ -113,7 +113,7 @@ class _SelectTicketScreenState extends State<SelectTicketScreen> {
                   horizontal: 16,
                   vertical: 30,
                 ),
-                color: Colors.white,
+                color: Theme.of(context).cardColor,
                 child: Row(
                   children: [
                     InkWell(
@@ -135,9 +135,9 @@ class _SelectTicketScreenState extends State<SelectTicketScreen> {
                                   duration: const Duration(milliseconds: 0),
                                   height: priceDetailSelected ? 500 : 380,
                                   padding: const EdgeInsets.all(20),
-                                  decoration: const BoxDecoration(
-                                    color: Colors.white,
-                                    borderRadius: BorderRadius.vertical(
+                                  decoration: BoxDecoration(
+                                    color: Theme.of(context).cardColor,
+                                    borderRadius: const BorderRadius.vertical(
                                       top: Radius.circular(20),
                                     ),
                                   ),
@@ -203,7 +203,7 @@ class _SelectTicketScreenState extends State<SelectTicketScreen> {
                                                 priceDetailSelected
                                                     ? Icons.keyboard_arrow_up
                                                     : Icons.keyboard_arrow_down,
-                                                color: Colors.black54,
+                                                color: Theme.of(context).iconTheme.color,
                                               ),
                                             ],
                                           ),
@@ -313,7 +313,6 @@ class _SelectTicketScreenState extends State<SelectTicketScreen> {
                             style: const TextStyle(
                               fontSize: 16,
                               fontWeight: FontWeight.bold,
-                              color: Colors.black,
                             ),
                           ),
                           SizedBox(width: 5),
@@ -389,9 +388,9 @@ class _FlexibleNote extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return RichText(
-      text: const TextSpan(
-        style: TextStyle(fontSize: 16, color: Colors.black54, height: 1.4),
-        children: [
+      text: TextSpan(
+        style: TextStyle(fontSize: 16, color: Theme.of(context).textTheme.bodySmall?.color, height: 1.4),
+        children: const [
           TextSpan(
             text: "Flexible tickets are only available during booking. ",
           ),
@@ -437,7 +436,7 @@ class _PriceRow extends StatelessWidget {
           style: TextStyle(
             fontSize: isTotal ? 17 : 15,
             fontWeight: isTotal || bold ? FontWeight.w600 : FontWeight.w400,
-            color: isTotal ? Colors.black : Colors.black87,
+            color: isTotal ? Theme.of(context).textTheme.bodyLarge?.color : Theme.of(context).textTheme.bodyMedium?.color,
           ),
         ),
         Text(
@@ -447,7 +446,7 @@ class _PriceRow extends StatelessWidget {
             fontWeight: isTotal || bold ? FontWeight.w600 : FontWeight.w400,
             color: discount
                 ? Colors.green.shade700
-                : (positive ? Colors.black : Colors.black87),
+                : (positive ? Theme.of(context).textTheme.bodyLarge?.color : Theme.of(context).textTheme.bodyMedium?.color),
           ),
         ),
       ],
@@ -486,7 +485,7 @@ class _TicketCard extends StatelessWidget {
       child: Container(
         padding: const EdgeInsets.all(16),
         decoration: BoxDecoration(
-          color: Colors.white,
+          color: Theme.of(context).cardColor,
           border: Border.all(
             color: selected ? GuzoTheme.primaryGreen : Colors.grey.shade300,
             width: 2,
@@ -516,7 +515,7 @@ class _TicketCard extends StatelessWidget {
               ],
             ),
             const SizedBox(height: 6),
-            Text(price, style: const TextStyle(color: Colors.black54)),
+            Text(price, style: TextStyle(color: Theme.of(context).textTheme.bodySmall?.color)),
             if (highlight) ...[
               const SizedBox(height: 12),
               GestureDetector(
@@ -670,3 +669,4 @@ class _FlexibleExplanationList extends StatelessWidget {
     );
   }
 }
+

@@ -21,7 +21,7 @@ class _FlightCustomizeScreenState extends State<FlightCustomizeScreen> {
     final RxInt selectedFastTrack = 1.obs;
 
     return Scaffold(
-      backgroundColor: Colors.white,
+      backgroundColor: Theme.of(context).scaffoldBackgroundColor,
       appBar: PreferredSize(
         preferredSize: const Size.fromHeight(100),
         child: AppBar(
@@ -114,9 +114,9 @@ class _FlightCustomizeScreenState extends State<FlightCustomizeScreen> {
                     style: TextStyle(fontSize: 20, fontWeight: FontWeight.bold),
                   ),
                   const SizedBox(height: 8),
-                  const Text(
+                  Text(
                     "Use the fast lane at airport security to save time and stress less.",
-                    style: TextStyle(fontSize: 15, color: Colors.black54),
+                    style: TextStyle(fontSize: 15, color: Theme.of(context).textTheme.bodySmall?.color),
                   ),
                   const SizedBox(height: 20),
 
@@ -191,7 +191,7 @@ class _FlightCustomizeScreenState extends State<FlightCustomizeScreen> {
       child: Container(
         padding: const EdgeInsets.all(16),
         decoration: BoxDecoration(
-          color: Colors.white,
+          color: Theme.of(context).cardColor,
           borderRadius: BorderRadius.circular(12),
           border: Border.all(
             color: isSelected ? GuzoTheme.primaryGreen : Colors.grey.shade300,
@@ -205,7 +205,7 @@ class _FlightCustomizeScreenState extends State<FlightCustomizeScreen> {
                 Icon(
                   icon,
                   size: 28,
-                  color: isSelected ? GuzoTheme.primaryGreen : Colors.black54,
+                  color: isSelected ? GuzoTheme.primaryGreen : Theme.of(context).iconTheme.color,
                 ),
                 const SizedBox(width: 12),
                 Expanded(
@@ -221,9 +221,9 @@ class _FlightCustomizeScreenState extends State<FlightCustomizeScreen> {
                       ),
                       Text(
                         subtitle,
-                        style: const TextStyle(
+                        style: TextStyle(
                           fontSize: 14,
-                          color: Colors.black87,
+                          color: Theme.of(context).textTheme.bodyMedium?.color,
                         ),
                       ),
                     ],
@@ -302,10 +302,9 @@ class _FlightCustomizeScreenState extends State<FlightCustomizeScreen> {
       return Container(
         padding: const EdgeInsets.symmetric(horizontal: 16, vertical: 30),
         decoration: BoxDecoration(
-          color: Colors.white,
+          color: Theme.of(context).cardColor,
           boxShadow: [
             BoxShadow(
-              // ignore: deprecated_member_use
               color: Colors.black.withOpacity(0.15),
               blurRadius: 8,
               offset: const Offset(0, -3),
@@ -334,9 +333,9 @@ class _FlightCustomizeScreenState extends State<FlightCustomizeScreen> {
                           duration: const Duration(milliseconds: 0),
                           height: priceDetailSelected ? 500 : 380,
                           padding: const EdgeInsets.all(20),
-                          decoration: const BoxDecoration(
-                            color: Colors.white,
-                            borderRadius: BorderRadius.vertical(
+                          decoration: BoxDecoration(
+                            color: Theme.of(context).cardColor,
+                            borderRadius: const BorderRadius.vertical(
                               top: Radius.circular(20),
                             ),
                           ),
@@ -397,7 +396,7 @@ class _FlightCustomizeScreenState extends State<FlightCustomizeScreen> {
                                         priceDetailSelected
                                             ? Icons.keyboard_arrow_up
                                             : Icons.keyboard_arrow_down,
-                                        color: Colors.black54,
+                                        color: Theme.of(context).iconTheme.color,
                                       ),
                                     ],
                                   ),
@@ -536,7 +535,7 @@ class _FlightCustomizeScreenState extends State<FlightCustomizeScreen> {
       child: Row(
         mainAxisAlignment: MainAxisAlignment.spaceBetween,
         children: [
-          Text(label, style: TextStyle(color: Colors.grey[700], fontSize: 15)),
+          Text(label, style: TextStyle(color: Theme.of(context).textTheme.bodySmall?.color, fontSize: 15)),
           Text(price, style: const TextStyle(fontSize: 15)),
         ],
       ),
@@ -602,10 +601,10 @@ class _FlightCustomizeScreenState extends State<FlightCustomizeScreen> {
     return Container(
       padding: const EdgeInsets.all(16),
       decoration: BoxDecoration(
-        color: const Color.fromARGB(255, 243, 238, 238),
+        color: Theme.of(context).cardColor,
         border: Border.all(
           width: 3,
-          color: const Color.fromARGB(255, 208, 204, 204),
+          color: Theme.of(context).dividerColor,
         ),
         borderRadius: BorderRadius.circular(12),
       ),
@@ -632,7 +631,7 @@ class _FlightCustomizeScreenState extends State<FlightCustomizeScreen> {
                   subtitle,
                   style: TextStyle(
                     fontSize: 14,
-                    color: Colors.grey.shade700,
+                    color: Theme.of(context).textTheme.bodySmall?.color,
                     height: 1.3,
                   ),
                 ),
@@ -664,9 +663,9 @@ class _PriceDetailsSheetState extends State<PriceDetailsSheet> {
   @override
   Widget build(BuildContext context) {
     return Container(
-      decoration: const BoxDecoration(
-        color: Colors.white,
-        borderRadius: BorderRadius.vertical(top: Radius.circular(16)),
+      decoration: BoxDecoration(
+        color: Theme.of(context).cardColor,
+        borderRadius: const BorderRadius.vertical(top: Radius.circular(16)),
       ),
       child: Column(
         mainAxisSize: MainAxisSize.min,
@@ -829,7 +828,7 @@ class _PriceDetailsSheetState extends State<PriceDetailsSheet> {
       child: Row(
         mainAxisAlignment: MainAxisAlignment.spaceBetween,
         children: [
-          Text(label, style: TextStyle(color: Colors.grey[700])),
+          Text(label, style: TextStyle(color: Theme.of(context).textTheme.bodySmall?.color)),
           Text(amount),
         ],
       ),

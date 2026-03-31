@@ -84,7 +84,7 @@ class BookingConfirmationPage extends StatelessWidget {
                     ),
                     const SizedBox(height: 6),
                     Text(
-                      'Your flight has been booked successfully. ',
+                      'Your flight has been booked successfully. \nYou can find the details below.',
                       style: TextStyle(
                         fontSize: 15,
                         color: Colors.grey.shade600,

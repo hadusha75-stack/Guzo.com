@@ -48,6 +48,40 @@ class UserNameController extends GetxController {
   }
 
   var travelerType = "".obs;
+
+  // --- Multi-traveler support ---
+  var extraTravelers = <Map<String, String>>[].obs;
+
+  void setExtraTraveler(int index, String firstName, String lastName,
+      String gender, String dob, String dobRaw, String type) {
+    while (extraTravelers.length <= index) {
+      extraTravelers.add({});
+    }
+    extraTravelers[index] = {
+      'firstName': firstName,
+      'lastName': lastName,
+      'gender': gender,
+      'dob': dob,
+      'dobRaw': dobRaw,
+      'type': type,
+    };
+    extraTravelers.refresh();
+  }
+
+  Map<String, String> getTraveler(int index) {
+    if (index == 0) {
+      return {
+        'firstName': firstNameOf.value,
+        'lastName': lastNameOf.value,
+        'gender': gender.value,
+        'dob': dateOfBirth.value,
+        'dobRaw': dateOfBirth2.value,
+        'type': travelerType.value.isEmpty ? 'Adult' : travelerType.value,
+      };
+    }
+    if (index - 1 < extraTravelers.length) return extraTravelers[index - 1];
+    return {};
+  }
   void setDateOfBirthFromTravel(String day, String month, String year) {
     try {
       int monthInt = int.parse(month);

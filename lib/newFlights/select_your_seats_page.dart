@@ -50,7 +50,7 @@ class _SelectYourSeatsPageState extends State<SelectYourSeatsPage> {
     final currency = offer?['pricing']?['currency'] ?? '';
 
     return Scaffold(
-      backgroundColor: Colors.grey[50],
+      backgroundColor: Theme.of(context).scaffoldBackgroundColor,
       appBar: PreferredSize(
         preferredSize: const Size.fromHeight(100),
 
@@ -141,7 +141,7 @@ class _SelectYourSeatsPageState extends State<SelectYourSeatsPage> {
                        Container(
             padding: const EdgeInsets.symmetric(horizontal: 16, vertical: 12),
             decoration: BoxDecoration(
-              color: Colors.white,
+              color: Theme.of(context).cardColor,
               border: Border(top: BorderSide(color: Colors.grey.shade300)),
             ),
             child: SafeArea(
@@ -168,9 +168,9 @@ class _SelectYourSeatsPageState extends State<SelectYourSeatsPage> {
                                 duration: const Duration(milliseconds: 0),
                                 height: priceDetailSelected ? 800 : 615,
                                 padding: const EdgeInsets.all(20),
-                                decoration: const BoxDecoration(
-                                  color: Colors.white,
-                                  borderRadius: BorderRadius.vertical(
+                                decoration: BoxDecoration(
+                                  color: Theme.of(context).cardColor,
+                                  borderRadius: const BorderRadius.vertical(
                                     top: Radius.circular(20),
                                   ),
                                 ),
@@ -234,7 +234,7 @@ class _SelectYourSeatsPageState extends State<SelectYourSeatsPage> {
                                               priceDetailSelected
                                                   ? Icons.keyboard_arrow_up
                                                   : Icons.keyboard_arrow_down,
-                                              color: Colors.black54,
+                                              color: Theme.of(context).iconTheme.color,
                                             ),
                                           ],
                                         ),
@@ -516,7 +516,7 @@ class _SelectYourSeatsPageState extends State<SelectYourSeatsPage> {
       child: Row(
         mainAxisAlignment: MainAxisAlignment.spaceBetween,
         children: [
-          Text(label, style: TextStyle(color: Colors.grey[700], fontSize: 15)),
+          Text(label, style: TextStyle(color: Theme.of(context).textTheme.bodySmall?.color, fontSize: 15)),
           Text(price, style: const TextStyle(fontSize: 15)),
         ],
       ),
@@ -598,7 +598,7 @@ class SeatFlightGroup extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Container(
-      color: Colors.white,
+      color: Theme.of(context).scaffoldBackgroundColor,
       child: Column(
         crossAxisAlignment: CrossAxisAlignment.start,
         children: [
@@ -610,7 +610,7 @@ class SeatFlightGroup extends StatelessWidget {
           const SizedBox(height: 12),
           Container(
             decoration: BoxDecoration(
-              color: Colors.white,
+              color: Theme.of(context).cardColor,
               borderRadius: BorderRadius.circular(8),
               border: Border.all(color: Colors.grey.shade300),
             ),
@@ -633,12 +633,12 @@ class SeatFlightGroup extends StatelessWidget {
                       const SizedBox(height: 8),
                       Text(
                         details,
-                        style: TextStyle(color: Colors.grey[700], fontSize: 15),
+                        style: TextStyle(color: Theme.of(context).textTheme.bodySmall?.color, fontSize: 15),
                       ),
                       const SizedBox(height: 8),
                       Text(
                         selectionStatus,
-                        style: TextStyle(color: Colors.grey[700], fontSize: 15),
+                        style: TextStyle(color: Theme.of(context).textTheme.bodySmall?.color, fontSize: 15),
                       ),
                     ],
                   ),

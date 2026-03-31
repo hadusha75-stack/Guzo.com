@@ -26,7 +26,7 @@ class _TravelProtectionScreenState extends State<TravelProtectionScreen> {
     final flightDatacontroller = Get.find<FlightDataController>();
 
     return Scaffold(
-      backgroundColor: Colors.white,
+      backgroundColor: Theme.of(context).scaffoldBackgroundColor,
       appBar: PreferredSize(
         preferredSize: const Size.fromHeight(100),
         child: AppBar(
@@ -133,8 +133,8 @@ class _TravelProtectionScreenState extends State<TravelProtectionScreen> {
                   Expanded(
                     child: RichText(
                       text: TextSpan(
-                        style: const TextStyle(
-                          color: Colors.black87,
+                        style: TextStyle(
+                          color: Theme.of(context).textTheme.bodyMedium?.color,
                           fontSize: 14,
                           height: 1.4,
                         ),
@@ -184,11 +184,10 @@ class _TravelProtectionScreenState extends State<TravelProtectionScreen> {
             Container(
               padding: const EdgeInsets.all(16),
               decoration: BoxDecoration(
-                color: Colors.white,
+                color: Theme.of(context).cardColor,
                 boxShadow: [
                   BoxShadow(
                     blurRadius: 6,
-                    // ignore: deprecated_member_use
                     color: Colors.black.withOpacity(.08),
                   ),
                 ],
@@ -212,9 +211,9 @@ class _TravelProtectionScreenState extends State<TravelProtectionScreen> {
                             duration: const Duration(milliseconds: 0),
                             height: priceDetailSelected ? 500 : 380,
                             padding: const EdgeInsets.all(20),
-                            decoration: const BoxDecoration(
-                              color: Colors.white,
-                              borderRadius: BorderRadius.vertical(
+                            decoration: BoxDecoration(
+                              color: Theme.of(context).cardColor,
+                              borderRadius: const BorderRadius.vertical(
                                 top: Radius.circular(20),
                               ),
                             ),
@@ -276,7 +275,7 @@ class _TravelProtectionScreenState extends State<TravelProtectionScreen> {
                                           priceDetailSelected
                                               ? Icons.keyboard_arrow_up
                                               : Icons.keyboard_arrow_down,
-                                          color: Colors.black54,
+                                          color: Theme.of(context).iconTheme.color,
                                         ),
                                       ],
                                     ),
@@ -433,7 +432,7 @@ class _TravelProtectionScreenState extends State<TravelProtectionScreen> {
       child: Row(
         mainAxisAlignment: MainAxisAlignment.spaceBetween,
         children: [
-          Text(label, style: TextStyle(color: Colors.grey[700], fontSize: 15)),
+          Text(label, style: TextStyle(color: Theme.of(context).textTheme.bodySmall?.color, fontSize: 15)),
           Text(price, style: const TextStyle(fontSize: 15)),
         ],
       ),
@@ -468,7 +467,7 @@ class _TravelProtectionScreenState extends State<TravelProtectionScreen> {
             width: 1.5,
           ),
           borderRadius: BorderRadius.circular(10),
-          color: Colors.white,
+          color: Theme.of(context).cardColor,
         ),
         child: Row(
           children: [
@@ -513,7 +512,7 @@ class _TravelProtectionScreenState extends State<TravelProtectionScreen> {
             width: 1.5,
           ),
           borderRadius: BorderRadius.circular(12),
-          color: Colors.white,
+          color: Theme.of(context).cardColor,
         ),
         child: Column(
           crossAxisAlignment: CrossAxisAlignment.start,
@@ -538,7 +537,7 @@ class _TravelProtectionScreenState extends State<TravelProtectionScreen> {
                         SizedBox(height: 2),
                         Text(
                           "€ 36.84 per traveler",
-                          style: TextStyle(color: Colors.black54),
+                          style: TextStyle(color: Colors.grey),
                         ),
                       ],
                     ),
@@ -666,7 +665,7 @@ class _TravelProtectionScreenState extends State<TravelProtectionScreen> {
           Expanded(
             child: RichText(
               text: TextSpan(
-                style: const TextStyle(color: Colors.black87),
+                style: TextStyle(color: Theme.of(context).textTheme.bodyMedium?.color),
                 children: [
                   TextSpan(
                     text: "$title - ",
@@ -693,7 +692,7 @@ class _TravelProtectionScreenState extends State<TravelProtectionScreen> {
           Expanded(
             child: RichText(
               text: TextSpan(
-                style: const TextStyle(color: Colors.black87),
+                style: TextStyle(color: Theme.of(context).textTheme.bodyMedium?.color),
                 children: [
                   TextSpan(
                     text: "$title – ",
