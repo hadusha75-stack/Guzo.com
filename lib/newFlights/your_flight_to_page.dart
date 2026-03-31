@@ -170,7 +170,7 @@ class _YourFlightToPageState extends State<YourFlightToPage> {
                                             CachedNetworkImage(
                                               imageUrl: "https://content.airhex.com/content/logos/airlines_${airlineCode}_350_100_r.png",
                                               width: 60, height: 30,
-                                              errorWidget: (_, __, ___) => const Icon(Icons.flight),
+                                              errorWidget: (_, _, _) => const Icon(Icons.flight),
                                             ),
                                             const SizedBox(width: 12),
                                             Column(
@@ -197,6 +197,7 @@ class _YourFlightToPageState extends State<YourFlightToPage> {
                                 ],
                               ),
                             );
+                          // ignore: unnecessary_to_list_in_spreads
                           }).toList(),
                         ],
                       );

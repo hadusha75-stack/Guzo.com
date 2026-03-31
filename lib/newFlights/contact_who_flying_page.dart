@@ -28,7 +28,6 @@ class _ContactWhoFlyingPageState extends State<ContactWhoFlyingPage> {
   Widget build(BuildContext context) {
     final flightApicontroller = Get.find<FlightUpdaredController>();
     final offer = flightApicontroller.selectedOffer.value;
-    final price = offer?['pricing']?['total'] ?? '';
     final currency = offer?['pricing']?['currency'] ?? '';
 
     return Scaffold(
@@ -116,6 +115,7 @@ class _ContactWhoFlyingPageState extends State<ContactWhoFlyingPage> {
                                 height: 20,
                                 decoration: BoxDecoration(
                                   color: isComplete
+                                      // ignore: deprecated_member_use
                                       ? Colors.greenAccent.withOpacity(0.25)
                                       : Colors.white,
                                   borderRadius: BorderRadius.circular(20),
@@ -250,6 +250,7 @@ class _ContactWhoFlyingPageState extends State<ContactWhoFlyingPage> {
                                       height: 20,
                                       decoration: BoxDecoration(
                                         color: iscomplete
+                                            // ignore: deprecated_member_use
                                             ? Colors.greenAccent.withOpacity(
                                                 0.25,
                                               )
@@ -310,6 +311,7 @@ class _ContactWhoFlyingPageState extends State<ContactWhoFlyingPage> {
           Divider(height: 1),
           Padding(
             padding: const EdgeInsets.only(bottom: 20.0, left: 12, right: 12),
+            // ignore: sized_box_for_whitespace
             child: Container(
               height: 100,
               child: Row(
@@ -699,6 +701,7 @@ class _ContactWhoFlyingPageState extends State<ContactWhoFlyingPage> {
   }
 
   Widget _buildLineDotted() {
+    // ignore: sized_box_for_whitespace
     return Container(
       width: 40,
       child: Row(
@@ -710,6 +713,7 @@ class _ContactWhoFlyingPageState extends State<ContactWhoFlyingPage> {
               width: 4,
               height: 4,
               decoration: BoxDecoration(
+                // ignore: deprecated_member_use
                 color: Colors.white.withOpacity(0.39),
                 shape: BoxShape.circle,
               ),

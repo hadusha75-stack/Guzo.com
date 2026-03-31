@@ -7,11 +7,10 @@ import 'package:booking/theam/app_color.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_svg/svg.dart';
 import 'package:get/get.dart';
+// ignore: depend_on_referenced_packages
 import 'package:intl/intl.dart';
 import 'package:booking/controllers/FlightsController.dart';
 import 'package:booking/newFlights/airport_search_page.dart';
-import 'package:syncfusion_flutter_datepicker/datepicker.dart';
-
 class FlightsPage extends StatefulWidget {
   const FlightsPage({super.key});
 
@@ -441,6 +440,7 @@ class _FlightsPageState extends State<FlightsPage> {
                             onTap: () => onTap(date),
                             child: Container(
                               height: 52,
+                              // ignore: deprecated_member_use
                               color: range ? Colors.green.withOpacity(0.12) : Colors.transparent,
                               child: Center(
                                 child: Container(
@@ -600,99 +600,7 @@ class _FlightsPageState extends State<FlightsPage> {
     );
   }
 
-  Widget _buildPickerFooter(
-    BuildContext context,
-    FlightDataController controller,
-    RxString start,
-    RxString end,
-    VoidCallback onDone,
-  ) {
-    return Material(
-      elevation: 20,
-      color: Colors.white,
-      child: Container(
-        padding: const EdgeInsets.fromLTRB(16, 20, 16, 40),
-        child: Column(
-          mainAxisSize: MainAxisSize.min,
-          children: [
-            Row(
-              children: [
-                Expanded(
-                  child: _buildPickerFooterRound(
-                    "Departure date",
-                    start,
-                    "Departure",
-                  ),
-                ),
-                const SizedBox(width: 10),
-                Expanded(
-                  child: _buildPickerFooterRound("Return date", end, "Return"),
-                ),
-              ],
-            ),
-            const SizedBox(height: 20),
-            SizedBox(
-              width: double.infinity,
-              height: 60,
-              child: ElevatedButton(
-                onPressed: onDone,
-                style: ElevatedButton.styleFrom(
-                  shape: RoundedRectangleBorder(
-                    borderRadius: BorderRadius.circular(4),
-                  ),
-                  backgroundColor: const Color(0xFF006D5B),
-                ),
-                child: const Text(
-                  "Done",
-                  style: TextStyle(
-                    color: Colors.white,
-                    fontWeight: FontWeight.bold,
-                  ),
-                ),
-              ),
-            ),
-          ],
-        ),
-      ),
-    );
-  }
 
-  Widget _buildPickerFooterRound(String label, RxString dateObs, String hint) {
-    return Column(
-      crossAxisAlignment: CrossAxisAlignment.start,
-      children: [
-        Text(
-          label,
-          style: const TextStyle(fontWeight: FontWeight.w500, fontSize: 17),
-        ),
-        const SizedBox(height: 10),
-        Obx(
-          () => SizedBox(
-            height: 60,
-
-            child: TextFormField(
-              readOnly: true,
-              decoration: InputDecoration(
-                hintText: dateObs.value.isEmpty ? hint : dateObs.value,
-                hintStyle: TextStyle(
-                  color: dateObs.value.isEmpty ? Colors.grey : Colors.black,
-                ),
-                prefixIcon: const Icon(Icons.calendar_today_outlined, size: 18),
-                contentPadding: const EdgeInsets.symmetric(
-                  horizontal: 10,
-                  vertical: 20,
-                ),
-                enabledBorder: OutlineInputBorder(
-                  borderSide: const BorderSide(color: Colors.grey),
-                  borderRadius: BorderRadius.circular(8),
-                ),
-              ),
-            ),
-          ),
-        ),
-      ],
-    );
-  }
 
   Widget _buildAddFlightButton(FlightDataController controller) {
     return InkWell(
@@ -769,7 +677,9 @@ class _FlightsPageState extends State<FlightsPage> {
           children: [
             Radio<String>(
               value: label,
+              // ignore: deprecated_member_use
               groupValue: controller.selectedTripType.value,
+              // ignore: deprecated_member_use
               onChanged: (v) => controller.toggleTripType(v!),
               activeColor: const Color.fromARGB(255, 2, 89, 16),
               visualDensity: VisualDensity.compact,

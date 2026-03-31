@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
+// ignore: depend_on_referenced_packages
 import 'package:intl/intl.dart';
 import 'package:booking/controllers/FlightsController.dart'; 
 
@@ -9,6 +10,7 @@ class WhenWhenClickedPage extends StatefulWidget {
   const WhenWhenClickedPage({super.key, this.index = -1});
 
   @override
+  // ignore: library_private_types_in_public_api
   _WhenWhenClickedPageState createState() => _WhenWhenClickedPageState();
 }
 

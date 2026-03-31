@@ -70,6 +70,7 @@ class GeniusLoyalityProgramPage extends StatelessWidget {
           ),
           fit: BoxFit.cover,
           colorFilter: ColorFilter.mode(
+            // ignore: deprecated_member_use
             Colors.black.withOpacity(0.3),
             BlendMode.darken,
           ),
@@ -115,6 +116,7 @@ class GeniusLoyalityProgramPage extends StatelessWidget {
           borderRadius: BorderRadius.circular(12),
           boxShadow: [
             BoxShadow(
+              // ignore: deprecated_member_use
               color: Colors.black.withOpacity(0.1),
               blurRadius: 10,
               spreadRadius: 2,

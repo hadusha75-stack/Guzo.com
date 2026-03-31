@@ -1,4 +1,5 @@
-// ignore: file_names
+// ignore_for_file: file_names
+
 import 'package:get/get.dart';
 
 // ignore: depend_on_referenced_packages
@@ -36,8 +37,7 @@ class FlightDataController extends GetxController {
   void setPrice(double price) {
     totalPrice.value = (totalPriceFromApi.value + price).toStringAsFixed(2);
     totalPricecover.value = totalPrice.value;
-    print(totalPricecover + "\n");
-    print(totalPrice);
+  
   }
 
   void setPrice2(double price) {
@@ -107,7 +107,7 @@ class FlightDataController extends GetxController {
     String cityName,
     bool isFrom,
   ) {
-    if (selectedTripType == "Multi-city") {
+    if (selectedTripType.value == "Multi-city") {
       if (isFrom) {
         multiCitySegments[index].from.value = code;
         multiCitySegments[index].fromName.value = cityName;

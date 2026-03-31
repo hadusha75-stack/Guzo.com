@@ -188,6 +188,7 @@ class _TravelProtectionScreenState extends State<TravelProtectionScreen> {
                 boxShadow: [
                   BoxShadow(
                     blurRadius: 6,
+                    // ignore: deprecated_member_use
                     color: Colors.black.withOpacity(.08),
                   ),
                 ],
@@ -488,7 +489,9 @@ class _TravelProtectionScreenState extends State<TravelProtectionScreen> {
             ),
             Radio(
               value: index,
+              // ignore: deprecated_member_use
               groupValue: selectedOption,
+              // ignore: deprecated_member_use
               onChanged: (v) => setState(() => selectedOption = v as int),
             ),
           ],
@@ -542,7 +545,9 @@ class _TravelProtectionScreenState extends State<TravelProtectionScreen> {
                   ),
                   Radio(
                     value: 1,
+                    // ignore: deprecated_member_use
                     groupValue: selectedOption,
+                    // ignore: deprecated_member_use
                     onChanged: (v) => setState(() => selectedOption = v as int),
                   ),
                 ],
@@ -732,6 +737,7 @@ class _TravelProtectionScreenState extends State<TravelProtectionScreen> {
   }
 
   Widget _buildLineDotted() {
+    // ignore: sized_box_for_whitespace
     return Container(
       width: 40,
       child: Row(
@@ -748,6 +754,7 @@ class _TravelProtectionScreenState extends State<TravelProtectionScreen> {
                   231,
                   229,
                   229,
+                // ignore: deprecated_member_use
                 ).withOpacity(0.39),
                 shape: BoxShape.circle,
               ),

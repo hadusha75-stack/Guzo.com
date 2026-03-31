@@ -1,3 +1,4 @@
+import 'package:booking/theam/app_color.dart';
 import 'package:booking/utils/location_popup.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
@@ -182,12 +183,12 @@ class _FlightState extends State<Flight> {
                 child: Material(
                   child: TextButton(
                     onPressed: () {},
-                    child: Text('Check Price'),
                     style: TextButton.styleFrom(
-                      backgroundColor: Colors.blue,
+                      backgroundColor: GuzoTheme.primaryGreen,
                       foregroundColor: Colors.white,
                       shape: BeveledRectangleBorder(),
                     ),
+                    child: Text('Check Price'),
                   ),
                 ),
               ),
@@ -201,6 +202,7 @@ class _FlightState extends State<Flight> {
               Padding(
                 padding: const EdgeInsets.all(5.0),
                 child: Card(
+                  color: GuzoTheme.primaryGreen,
                   child: Padding(
                     padding: const EdgeInsets.all(8.0),
                     child: Text(
@@ -208,7 +210,6 @@ class _FlightState extends State<Flight> {
                       style: TextStyle(color: Colors.white),
                     ),
                   ),
-                  color: const Color.fromARGB(255, 2, 41, 237),
                 ),
               ),
               Card(child: Text('Genius\n XRESXSECCTTVYBIUU\n dtdt')),

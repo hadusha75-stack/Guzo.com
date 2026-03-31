@@ -1,5 +1,6 @@
 import 'package:get/get.dart';
 
+// ignore: depend_on_referenced_packages
 import 'package:intl/intl.dart';
 
 class UserNameController extends GetxController {

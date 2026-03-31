@@ -176,7 +176,7 @@ if (res.statusCode != 200) {
       'travellers': travellers.toJson(),
       'verifyRequest': {
         'fareId': verifyFareId,      
-        if (itineraryIdList != null) 'itineraryIdList': itineraryIdList,
+        'itineraryIdList': ?itineraryIdList,
       },
     };
 
@@ -226,7 +226,7 @@ if (res.statusCode != 200) {
       'travellers': travellers.toJson(),
       'verifyRequest': {
         'fareId': verifyFareId,
-        if (itineraryIdList != null) 'itineraryIdList': itineraryIdList,
+        'itineraryIdList': ?itineraryIdList,
       },
     };
 

@@ -1,3 +1,4 @@
+import 'package:booking/theam/app_color.dart';
 import 'package:booking/utils/location_popup.dart';
 import 'package:flutter/material.dart';
 
@@ -37,6 +38,7 @@ class _TaxiState extends State<Taxi> {
                     value: 1,
                     // ignore: deprecated_member_use
                     groupValue: selectedOption,
+                    // ignore: deprecated_member_use
                     onChanged: (value) {
                       setState(() {
                         selectedOption = value!;
@@ -47,7 +49,9 @@ class _TaxiState extends State<Taxi> {
                   SizedBox(width: 10),
                   Radio<int>(
                     value: 2,
+                    // ignore: deprecated_member_use
                     groupValue: selectedOption,
+                    // ignore: deprecated_member_use
                     onChanged: (value) {
                       setState(() {
                         selectedOption = value!;
@@ -161,12 +165,12 @@ class _TaxiState extends State<Taxi> {
                 child: Material(
                   child: TextButton(
                     onPressed: () {},
-                    child: Text('Check Price'),
                     style: TextButton.styleFrom(
-                      backgroundColor: Colors.blue,
+                      backgroundColor: GuzoTheme.primaryGreen,
                       foregroundColor: Colors.white,
                       shape: BeveledRectangleBorder(),
                     ),
+                    child: Text('Check Price'),
                   ),
                 ),
               ),
@@ -180,6 +184,7 @@ class _TaxiState extends State<Taxi> {
               Padding(
                 padding: const EdgeInsets.all(5.0),
                 child: Card(
+                  color: GuzoTheme.primaryGreen,
                   child: Padding(
                     padding: const EdgeInsets.all(8.0),
                     child: Text(
@@ -187,7 +192,6 @@ class _TaxiState extends State<Taxi> {
                       style: TextStyle(color: Colors.white),
                     ),
                   ),
-                  color: const Color.fromARGB(255, 2, 41, 237),
                 ),
               ),
               Card(child: Text('Genius\n XRESXSECCTTVYBIUU\n dtdt')),

@@ -1,3 +1,5 @@
+// ignore_for_file: unused_element_parameter
+
 import 'package:booking/controllers/FlightsController.dart';
 import 'package:booking/controllers/flights_with_api_controller.dart';
 import 'package:booking/controllers/ticket_controller.dart';
@@ -7,7 +9,7 @@ import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 
 class SelectTicketScreen extends StatefulWidget {
-  SelectTicketScreen({super.key});
+  const SelectTicketScreen({super.key});
 
   @override
   State<SelectTicketScreen> createState() => _SelectTicketScreenState();
@@ -416,8 +418,11 @@ class _PriceRow extends StatelessWidget {
   const _PriceRow(
     this.label,
     this.amount, {
+    // ignore: unused_element_paramet
     this.isTotal = false,
+    // ignore: unused_element_paramete
     this.bold = false,
+    // ignore: unused_element_paramete
     this.discount = false,
     this.positive = false,
   });

@@ -1,4 +1,4 @@
-import 'package:booking/newFlights/select_your_seats_inner_page.dart';
+
 import 'package:booking/theam/app_color.dart';
 import 'package:flutter/material.dart';
 
@@ -323,6 +323,7 @@ Widget _buildFilterChip(String label, IconData icon, VoidCallback tap) {
       margin: const EdgeInsets.only(right: 10),
       padding: const EdgeInsets.symmetric(horizontal: 16, vertical: 8),
       decoration: BoxDecoration(
+        // ignore: deprecated_member_use
         color: Colors.white.withOpacity(0.2),
         borderRadius: BorderRadius.circular(20),
         border: Border.all(color: Colors.white),

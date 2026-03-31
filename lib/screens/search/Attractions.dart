@@ -1,4 +1,6 @@
-// ignore: file_names
+// ignore_for_file: file_names
+
+import 'package:booking/theam/app_color.dart';
 import 'package:booking/utils/location_popup.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
@@ -92,13 +94,13 @@ class _AttractionsState extends State<Attractions> {
                   padding: const EdgeInsets.only(top: 10.0),
                   child: TextButton(
                     onPressed: () {},
+                    style: TextButton.styleFrom(
+                      backgroundColor: GuzoTheme.primaryGreen,
+                      shape: BeveledRectangleBorder(),
+                    ),
                     child: Text(
                       'Search',
                       style: TextStyle(color: Colors.white),
-                    ),
-                    style: TextButton.styleFrom(
-                      backgroundColor: Colors.blue,
-                      shape: BeveledRectangleBorder(),
                     ),
                   ),
                 ),
@@ -113,6 +115,7 @@ class _AttractionsState extends State<Attractions> {
             child: Row(
               children: [
                 Card(
+                  color: GuzoTheme.primaryGreen,  
                   child: Padding(
                     padding: const EdgeInsets.all(8.0),
                     child: Text(
@@ -120,7 +123,6 @@ class _AttractionsState extends State<Attractions> {
                       style: TextStyle(color: Colors.white),
                     ),
                   ),
-                  color: const Color.fromARGB(255, 2, 41, 237),
                 ),
                 Card(child: Text('Genius\n XRESXSECCTTVYBIUU\n dtdt')),
                 Card(child: Text('Genius\n XRESXSECCTTVYBIUU\n dtdt')),

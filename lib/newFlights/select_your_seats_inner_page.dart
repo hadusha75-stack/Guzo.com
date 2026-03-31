@@ -4,7 +4,9 @@ import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 
 class SelectYourSeatsInnerPage extends StatefulWidget {
+  // ignore: non_constant_identifier_names
   final String Title;
+  // ignore: non_constant_identifier_names
   const SelectYourSeatsInnerPage({super.key, required this.Title});
 
   @override
@@ -635,7 +637,7 @@ class _SelectYourSeatsInnerPageState extends State<SelectYourSeatsInnerPage> {
                       ? () {
                           flightDataController.setSeatNumber(_maxTravelers);
 
-                          if (Get.isSnackbarOpen ?? false) {
+                          if (Get.isSnackbarOpen) {
                             Get.closeCurrentSnackbar();
                           }
 
@@ -700,6 +702,7 @@ class _SelectYourSeatsInnerPageState extends State<SelectYourSeatsInnerPage> {
               subtitle: Text("Seat $seat"),
               trailing: Text("CAD $_pricePerSeat"),
             );
+          // ignore: unnecessary_to_list_in_spreads
           }).toList(),
           const Divider(),
           ListTile(

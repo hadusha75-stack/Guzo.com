@@ -214,8 +214,10 @@ class _WhoFlyingPageState extends State<WhoFlyingPage> {
                                 (mode) => RadioListTile<String>(
                                   title: Text(mode),
                                   value: mode,
+                                  // ignore: deprecated_member_use
                                   groupValue: selectedClass.value,
                                   activeColor: GuzoTheme.primaryGreen,
+                                  // ignore: deprecated_member_use
                                   onChanged: (val) {
                                     if (val != null) selectedClass.value = val;
                                   },

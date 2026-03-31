@@ -5,6 +5,7 @@ import 'package:booking/newFlights/flight_page.dart';
 import 'package:booking/theam/app_color.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
+// ignore: depend_on_referenced_packages
 import 'package:intl/intl.dart';
 
 class BookingConfirmationPage extends StatelessWidget {
@@ -203,9 +204,11 @@ class BookingConfirmationPage extends StatelessWidget {
                         vertical: 6,
                       ),
                       decoration: BoxDecoration(
+                        // ignore: deprecated_member_use
                         color: GuzoTheme.primaryGreen.withOpacity(0.1),
                         borderRadius: BorderRadius.circular(20),
                         border: Border.all(
+                          // ignore: deprecated_member_use
                           color: GuzoTheme.primaryGreen.withOpacity(0.3),
                         ),
                       ),
@@ -263,6 +266,7 @@ class BookingConfirmationPage extends StatelessWidget {
         borderRadius: BorderRadius.circular(12),
         boxShadow: [
           BoxShadow(
+            // ignore: deprecated_member_use
             color: Colors.black.withOpacity(0.06),
             blurRadius: 8,
             offset: const Offset(0, 2),
@@ -298,6 +302,7 @@ class BookingConfirmationPage extends StatelessWidget {
         borderRadius: BorderRadius.circular(12),
         boxShadow: [
           BoxShadow(
+            // ignore: deprecated_member_use
             color: Colors.black.withOpacity(0.06),
             blurRadius: 8,
             offset: const Offset(0, 2),
@@ -315,6 +320,7 @@ class BookingConfirmationPage extends StatelessWidget {
                   vertical: 4,
                 ),
                 decoration: BoxDecoration(
+                  // ignore: deprecated_member_use
                   color: GuzoTheme.primaryGreen.withOpacity(0.1),
                   borderRadius: BorderRadius.circular(6),
                 ),

@@ -284,10 +284,12 @@ class _TravelerDetailsPageState extends State<TravelerDetailsPage> {
                                                   scale: 1.5,
                                                   child: Radio<String>(
                                                     value: "Male",
+                                                    // ignore: deprecated_member_use
                                                     groupValue:
                                                         localSelectedGender,
                                                     activeColor:
                                                         GuzoTheme.primaryGreen,
+                                                    // ignore: deprecated_member_use
                                                     onChanged: (value) {
                                                       setModalState(
                                                         () =>
@@ -323,10 +325,12 @@ class _TravelerDetailsPageState extends State<TravelerDetailsPage> {
                                                   scale: 1.5,
                                                   child: Radio<String>(
                                                     value: "Female",
+                                                    // ignore: deprecated_member_use
                                                     groupValue:
                                                         localSelectedGender,
                                                     activeColor:
                                                         GuzoTheme.primaryGreen,
+                                                    // ignore: deprecated_member_use
                                                     onChanged: (value) {
                                                       setModalState(
                                                         () =>

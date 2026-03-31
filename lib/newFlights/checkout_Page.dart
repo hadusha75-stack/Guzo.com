@@ -1,3 +1,5 @@
+// ignore_for_file: file_names
+
 import 'package:booking/controllers/FlightsController.dart';
 import 'package:booking/controllers/flights_with_api_controller.dart';
 import 'package:booking/controllers/user_name_controller.dart';
@@ -5,6 +7,7 @@ import 'package:booking/newFlights/payment_page.dart';
 import 'package:booking/theam/app_color.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
+// ignore: depend_on_referenced_packages
 import 'package:intl/intl.dart';
 
 class CheckoutPage extends StatefulWidget {
@@ -55,13 +58,10 @@ class _CheckoutPageState extends State<CheckoutPage> {
     final flightApicontroller = Get.find<FlightUpdaredController>();
     final offer = flightApicontroller.selectedOffer.value;
     final flights = offer?['flights'] as List? ?? [];
-    final provider = offer?['provider'] ?? 'Unknown';
 
     final firstFlight = flights.isNotEmpty ? flights[0] : null;
     final firstSegments = firstFlight?['segments'] as List? ?? [];
     final firstSegment = firstSegments.isNotEmpty ? firstSegments[0] : null;
-    final firstAirlineCode = (firstSegment?['airlineCode'] ?? '').toLowerCase();
-    final firstAirlineName = firstSegment?['airlineName'] ?? provider;
     final firstDuration = firstFlight?['duration'] ?? 'unknown duration N/A';
     final firstDepartureTime = firstSegment?['departureDateTime'];
     final firstArrivalTime = firstSegment?['arrivalDateTime'];
@@ -71,9 +71,6 @@ class _CheckoutPageState extends State<CheckoutPage> {
     final secondFlight = flights.length > 1 ? flights[1] : null;
     final secondSegments = secondFlight?['segments'] as List? ?? [];
     final secondSegment = secondSegments.isNotEmpty ? secondSegments[0] : null;
-    final secondAirlineCode = (secondSegment?['airlineCode'] ?? '')
-        .toLowerCase();
-    final secondAirlineName = secondSegment?['airlineName'] ?? provider;
     final secondDuration = secondFlight?['duration'] ?? 'unknown duration N/A';
     final secondDepartureTime = secondSegment?['departureDateTime'];
     final secondArrivalTime = secondSegment?['arrivalDateTime'];
@@ -227,6 +224,7 @@ class _CheckoutPageState extends State<CheckoutPage> {
                                 },
                                 contentPadding: EdgeInsets.zero,
                                 activeThumbColor: GuzoTheme.accentGold,
+                                // ignore: deprecated_member_use
                                 activeColor: GuzoTheme.primaryGreen,
                               ),
                             ),
@@ -2100,8 +2098,7 @@ class _CheckoutPageState extends State<CheckoutPage> {
                         return Column(
                           crossAxisAlignment: CrossAxisAlignment.start,
                           children: [
-                            if (layover != null) layover,
-                            // Airline + flight number
+                            ?layover,
                             Row(
                               children: [
                                 const Icon(

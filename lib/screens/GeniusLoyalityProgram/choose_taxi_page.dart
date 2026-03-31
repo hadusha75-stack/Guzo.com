@@ -1,4 +1,4 @@
-import 'package:booking/newFlights/select_your_seats_inner_page.dart';
+
 import 'package:booking/theam/app_color.dart';
 import 'package:booking/utils/location_popup.dart';
 import 'package:flutter/material.dart';
@@ -86,7 +86,9 @@ class _ChooseTaxiPageState extends State<ChooseTaxiPage> {
                     children: [
                       Radio<int>(
                         value: 1,
+                        // ignore: deprecated_member_use
                         groupValue: selectedOption,
+                        // ignore: deprecated_member_use
                         onChanged: (value) =>
                             setState(() => selectedOption = value!),
                       ),
@@ -94,7 +96,9 @@ class _ChooseTaxiPageState extends State<ChooseTaxiPage> {
                       const SizedBox(width: 10),
                       Radio<int>(
                         value: 2,
+                        // ignore: deprecated_member_use
                         groupValue: selectedOption,
+                        // ignore: deprecated_member_use
                         onChanged: (value) =>
                             setState(() => selectedOption = value!),
                       ),
@@ -127,6 +131,7 @@ class _ChooseTaxiPageState extends State<ChooseTaxiPage> {
                     child: Material(
                       child: TextButton(
                         onPressed: () {},
+                        // ignore: sort_child_properties_last
                         child: Text(
                           'Check Price',
                           style: TextStyle(

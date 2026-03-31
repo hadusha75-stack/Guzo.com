@@ -1,3 +1,5 @@
+// ignore_for_file: sized_box_for_whitespace
+
 import 'package:booking/controllers/FlightsController.dart';
 import 'package:booking/controllers/flights_with_api_controller.dart';
 import 'package:booking/newFlights/contact_who_flying_page.dart';
@@ -15,8 +17,10 @@ class SelectYourSeatsPage extends StatefulWidget {
 
 class _SelectYourSeatsPageState extends State<SelectYourSeatsPage> {
   final flightDataController = Get.find<FlightDataController>();
+  // ignore: unused_field
   int _maxTravelers = 3;
   var _numberOfSelectedSeat = 0;
+  // ignore: unused_field
   var _numberOfSelectedSeat2 = 0;
   final double _pricePerSeat = 200.0;
 
@@ -43,7 +47,6 @@ class _SelectYourSeatsPageState extends State<SelectYourSeatsPage> {
   Widget build(BuildContext context) {
     final flightApicontroller = Get.find<FlightUpdaredController>();
     final offer = flightApicontroller.selectedOffer.value;
-    final price = offer?['pricing']?['total'] ?? '';
     final currency = offer?['pricing']?['currency'] ?? '';
 
     return Scaffold(
@@ -112,7 +115,6 @@ class _SelectYourSeatsPageState extends State<SelectYourSeatsPage> {
                     final flight = flights[i] as Map<String, dynamic>;
                     final segs = flight['segments'] as List? ?? [];
                     final firstSeg = segs.isNotEmpty ? segs.first : null;
-                    final lastSeg = segs.isNotEmpty ? segs.last : null;
                     final airline = firstSeg?['airlineName'] ?? '';
                     final dur = flight['duration'] as String? ?? '';
                     final durMatch = RegExp(r'PT(?:(\d+)H)?(?:(\d+)M)?').firstMatch(dur);
@@ -533,6 +535,7 @@ class _SelectYourSeatsPageState extends State<SelectYourSeatsPage> {
               width: 4,
               height: 4,
               decoration: BoxDecoration(
+                // ignore: deprecated_member_use
                 color: Colors.white.withOpacity(0.39),
                 shape: BoxShape.circle,
               ),

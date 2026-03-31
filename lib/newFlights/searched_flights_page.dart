@@ -6,6 +6,7 @@ import 'package:booking/newFlights/when_when_clicked_page.dart';
 import 'package:booking/newFlights/who_flying_page.dart';
 import 'package:booking/newFlights/your_flight_to_page.dart';
 import 'package:cached_network_image/cached_network_image.dart';
+// ignore: depend_on_referenced_packages
 import 'package:intl/intl.dart';
 import 'package:flutter_svg/svg.dart';
 
@@ -116,7 +117,6 @@ class _SearchedFlightsPageState extends State<SearchedFlightsPage> {
 
                     final departureTime = firstSegment?['departureDateTime'];
                     final arrivalTime = firstSegment?['arrivalDateTime'];
-                    print(firstSegment);
                     final stops = segments.length - 1;
 
                     if (index == 0) {
@@ -690,8 +690,6 @@ class _SearchedFlightsPageState extends State<SearchedFlightsPage> {
                         : null;
                     final secondAirlineCode =
                         (secondSegment?['airlineCode'] ?? '').toLowerCase();
-                    final secondAirlineName =
-                        secondSegment?['airlineName'] ?? provider;
                     final secondDuration =
                         secondFlight?['duration'] ?? 'unknown duration N/A';
                     final secondDepartureTime =
@@ -836,16 +834,11 @@ class _SearchedFlightsPageState extends State<SearchedFlightsPage> {
                         flightApicontroller.selectedOffer.value = offer;
 
                         await flightApicontroller.selectOfferAndGetPrice(offer);
-                        print(
-                          "executionId: ${flightApicontroller.executionId.value}",
-                        );
-                        print(
-                          "offerPriceId: ${flightApicontroller.offerPriceId.value}",
-                        );
-                        // if (flightApicontroller.offerPriceId.value.isNotEmpty &&
-                        //     flightApicontroller.executionId.value.isNotEmpty) {
+                       
+                        if (flightApicontroller.offerPriceId.value.isNotEmpty &&
+                            flightApicontroller.executionId.value.isNotEmpty) {
                         Get.to(() => YourFlightToPage());
-                        // }
+                        }
                       },
                       child: Card(
                         color: Colors.white,
@@ -1280,6 +1273,7 @@ class _SearchedFlightsPageState extends State<SearchedFlightsPage> {
               onTap: _toggleDrawer,
               child: AnimatedContainer(
                 duration: const Duration(milliseconds: 400),
+                // ignore: deprecated_member_use
                 color: Colors.black.withOpacity(0.5),
               ),
             ),
@@ -1561,6 +1555,7 @@ class _SearchedFlightsPageState extends State<SearchedFlightsPage> {
                               );
                             }
                           },
+                          // ignore: deprecated_member_use
                           activeColor: Colors.green,
                           activeTrackColor: Colors.green,
                           activeThumbColor: Colors.white,
@@ -1977,6 +1972,7 @@ class _SearchedFlightsPageState extends State<SearchedFlightsPage> {
                     ),
                   ),
 
+                  // ignore: deprecated_member_use
                   rangeSelectionColor: Colors.grey.withOpacity(0.12),
                   startRangeSelectionColor: const Color(0xFF006D5B),
                   endRangeSelectionColor: const Color(0xFF006D5B),
@@ -2171,7 +2167,9 @@ class _SearchedFlightsPageState extends State<SearchedFlightsPage> {
           children: [
             Radio<String>(
               value: label,
+              // ignore: deprecated_member_use
               groupValue: uppercontroller.selectedTripType.value,
+              // ignore: deprecated_member_use
               onChanged: (v) => uppercontroller.toggleTripType(v!),
               activeColor: const Color.fromARGB(255, 2, 89, 16),
               visualDensity: VisualDensity.compact,
@@ -2477,8 +2475,10 @@ class _SearchedFlightsPageState extends State<SearchedFlightsPage> {
                                 ),
                                 Radio<int?>(
                                   value: entry.$1,
+                                  // ignore: deprecated_member_use
                                   groupValue: tempStops,
                                   activeColor: Colors.blue,
+                                  // ignore: deprecated_member_use
                                   onChanged: (v) =>
                                       setSheet(() => tempStops = v),
                                 ),
@@ -2672,12 +2672,14 @@ class _SearchedFlightsPageState extends State<SearchedFlightsPage> {
                                 tempAirlines = airlines
                                     .map((x) => x['code']!)
                                     .toSet();
-                                if (checked != true)
+                                if (checked != true) {
                                   tempAirlines.remove(a['code']);
+                                }
                               } else if (checked == true) {
                                 tempAirlines.add(a['code']!);
-                                if (tempAirlines.length == airlines.length)
+                                if (tempAirlines.length == airlines.length) {
                                   tempAirlines = {};
+                                }
                               } else {
                                 tempAirlines.remove(a['code']);
                               }

@@ -231,8 +231,10 @@ class _FlightCustomizeScreenState extends State<FlightCustomizeScreen> {
                 ),
                 Radio<int>(
                   value: index,
+                  // ignore: deprecated_member_use
                   groupValue: isSelected ? index : -1,
                   activeColor: GuzoTheme.primaryGreen,
+                  // ignore: deprecated_member_use
                   onChanged: (val) => onTap(),
                 ),
               ],
@@ -303,6 +305,7 @@ class _FlightCustomizeScreenState extends State<FlightCustomizeScreen> {
           color: Colors.white,
           boxShadow: [
             BoxShadow(
+              // ignore: deprecated_member_use
               color: Colors.black.withOpacity(0.15),
               blurRadius: 8,
               offset: const Offset(0, -3),
@@ -579,6 +582,7 @@ class _FlightCustomizeScreenState extends State<FlightCustomizeScreen> {
               width: 4,
               height: 4,
               decoration: BoxDecoration(
+                // ignore: deprecated_member_use
                 color: Colors.white.withOpacity(0.39),
                 shape: BoxShape.circle,
               ),
