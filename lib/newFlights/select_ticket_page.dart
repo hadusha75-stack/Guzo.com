@@ -404,6 +404,7 @@ class _FlexibleNote extends StatelessWidget {
   }
 }
 
+// ignore: unused_element
 class _PriceRow extends StatelessWidget {
   final String label;
   final String amount;

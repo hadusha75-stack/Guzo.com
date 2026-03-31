@@ -9,6 +9,8 @@ import 'package:get/get.dart';
 class PaymentPage extends StatefulWidget {
   const PaymentPage({super.key});
 
+
+
   @override
   State<PaymentPage> createState() => _PaymentPageState();
 }
@@ -326,39 +328,6 @@ class _PaymentPageState extends State<PaymentPage> {
                       ],
                     ),
                     const SizedBox(height: 24),
-
-                    Obx(() {
-                      final locator = ctrl.bookingLocator.value;
-                      if (locator.isEmpty) return const SizedBox.shrink();
-                      return Container(
-                        padding: const EdgeInsets.all(14),
-                        decoration: BoxDecoration(
-                          color: Colors.green.shade50,
-                          borderRadius: BorderRadius.circular(8),
-                          border: Border.all(
-                            color: GuzoTheme.primaryGreen.withOpacity(0.4),
-                          ),
-                        ),
-                        child: Row(
-                          children: [
-                            const Icon(
-                              Icons.check_circle_outline,
-                              color: GuzoTheme.primaryGreen,
-                            ),
-                            const SizedBox(width: 10),
-                            Expanded(
-                              child: Text(
-                                'Booking reference:\n $locator',
-                                style: const TextStyle(
-                                  fontWeight: FontWeight.w600,
-                                  fontSize: 14,
-                                ),
-                              ),
-                            ),
-                          ],
-                        ),
-                      );
-                    }),
                   ],
                 ),
               ),

@@ -67,17 +67,27 @@ class BookingConfirmationPage extends StatelessWidget {
                         color: GuzoTheme.primaryGreen,
                         shape: BoxShape.circle,
                       ),
-                      child: const Icon(Icons.check, color: GuzoTheme.accentGold, size: 110),
+                      child: const Icon(
+                        Icons.check,
+                        color: GuzoTheme.accentGold,
+                        size: 110,
+                      ),
                     ),
                     const SizedBox(height: 16),
                     const Text(
                       'Booking Confirmed!',
-                      style: TextStyle(fontSize: 24, fontWeight: FontWeight.bold),
+                      style: TextStyle(
+                        fontSize: 24,
+                        fontWeight: FontWeight.bold,
+                      ),
                     ),
                     const SizedBox(height: 6),
                     Text(
-                      'Your flight has been booked successfully.',
-                      style: TextStyle(fontSize: 15, color: Colors.grey.shade600),
+                      'Your flight has been booked successfully. ',
+                      style: TextStyle(
+                        fontSize: 15,
+                        color: Colors.grey.shade600,
+                      ),
                       textAlign: TextAlign.center,
                     ),
                     const SizedBox(height: 24),
@@ -86,20 +96,24 @@ class BookingConfirmationPage extends StatelessWidget {
                       child: Column(
                         crossAxisAlignment: CrossAxisAlignment.start,
                         children: [
-                          const Text('Booking Reference',
-                              style: TextStyle(fontSize: 13, color: Colors.grey)),
+                          const Text(
+                            'PNR  ',
+                            style: TextStyle(fontSize: 13, color: Colors.grey),
+                          ),
                           const SizedBox(height: 6),
-                          Obx(() => Text(
-                            flightCtrl.airlinePnr.value.isNotEmpty
-                                ? flightCtrl.airlinePnr.value
-                                : (locator.isEmpty ? 'N/A' : locator),
-                            style: const TextStyle(
-                              fontSize: 18,
-                              fontWeight: FontWeight.bold,
-                              color: GuzoTheme.primaryGreen,
-                              letterSpacing: 1.5,
+                          Obx(
+                            () => Text(
+                              flightCtrl.airlinePnr.value.isNotEmpty
+                                  ? flightCtrl.airlinePnr.value
+                                  : (locator.isEmpty ? 'N/A' : locator),
+                              style: const TextStyle(
+                                fontSize: 18,
+                                fontWeight: FontWeight.bold,
+                                color: GuzoTheme.primaryGreen,
+                                letterSpacing: 1.5,
+                              ),
                             ),
-                          )),
+                          ),
                         ],
                       ),
                     ),
@@ -108,20 +122,30 @@ class BookingConfirmationPage extends StatelessWidget {
                     _card(
                       child: Row(
                         children: [
-                          const Icon(Icons.person_outline, size: 36, color: GuzoTheme.primaryGreen),
+                          const Icon(
+                            Icons.person_outline,
+                            size: 36,
+                            color: GuzoTheme.primaryGreen,
+                          ),
                           const SizedBox(width: 12),
                           Column(
                             crossAxisAlignment: CrossAxisAlignment.start,
                             children: [
                               Text(
                                 '${userCtrl.firstNameOf.value} ${userCtrl.lastNameOf.value}',
-                                style: const TextStyle(fontSize: 16, fontWeight: FontWeight.bold),
+                                style: const TextStyle(
+                                  fontSize: 16,
+                                  fontWeight: FontWeight.bold,
+                                ),
                               ),
                               Text(
                                 '${userCtrl.travelerType.value.isEmpty ? 'Adult' : userCtrl.travelerType.value}'
                                 ' · ${userCtrl.gender.value.isEmpty ? '' : userCtrl.gender.value}'
                                 ' · ${userCtrl.dateOfBirth.value.isEmpty ? '' : userCtrl.dateOfBirth.value}',
-                                style: TextStyle(fontSize: 13, color: Colors.grey.shade600),
+                                style: TextStyle(
+                                  fontSize: 13,
+                                  color: Colors.grey.shade600,
+                                ),
                               ),
                             ],
                           ),
@@ -137,8 +161,8 @@ class BookingConfirmationPage extends StatelessWidget {
                         label: flights.length == 1
                             ? 'Outbound Flight'
                             : i == 0
-                                ? 'Outbound Flight'
-                                : 'Return Flight',
+                            ? 'Outbound Flight'
+                            : 'Return Flight',
                         from: i == 0
                             ? flightDataCtrl.recievedFromFromName.value
                             : flightDataCtrl.recievedFromToName.value,
@@ -153,8 +177,13 @@ class BookingConfirmationPage extends StatelessWidget {
                       child: Row(
                         mainAxisAlignment: MainAxisAlignment.spaceBetween,
                         children: [
-                          const Text('Total paid',
-                              style: TextStyle(fontSize: 15, fontWeight: FontWeight.w600)),
+                          const Text(
+                            'Total paid',
+                            style: TextStyle(
+                              fontSize: 15,
+                              fontWeight: FontWeight.w600,
+                            ),
+                          ),
                           Text(
                             '$currency $total',
                             style: const TextStyle(
@@ -169,11 +198,16 @@ class BookingConfirmationPage extends StatelessWidget {
                     const SizedBox(height: 12),
 
                     Container(
-                      padding: const EdgeInsets.symmetric(horizontal: 14, vertical: 6),
+                      padding: const EdgeInsets.symmetric(
+                        horizontal: 14,
+                        vertical: 6,
+                      ),
                       decoration: BoxDecoration(
                         color: GuzoTheme.primaryGreen.withOpacity(0.1),
                         borderRadius: BorderRadius.circular(20),
-                        border: Border.all(color: GuzoTheme.primaryGreen.withOpacity(0.3)),
+                        border: Border.all(
+                          color: GuzoTheme.primaryGreen.withOpacity(0.3),
+                        ),
                       ),
                       child: Text(
                         isRoundTrip ? 'Round Trip' : 'One Way',
@@ -198,12 +232,18 @@ class BookingConfirmationPage extends StatelessWidget {
                 child: ElevatedButton(
                   style: ElevatedButton.styleFrom(
                     backgroundColor: GuzoTheme.primaryGreen,
-                    shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(8)),
+                    shape: RoundedRectangleBorder(
+                      borderRadius: BorderRadius.circular(8),
+                    ),
                   ),
                   onPressed: () => Get.offAll(() => const FlightsPage()),
                   child: const Text(
                     'Back to Home',
-                    style: TextStyle(color: Colors.white, fontSize: 18, fontWeight: FontWeight.bold),
+                    style: TextStyle(
+                      color: Colors.white,
+                      fontSize: 18,
+                      fontWeight: FontWeight.bold,
+                    ),
                   ),
                 ),
               ),
@@ -221,13 +261,20 @@ class BookingConfirmationPage extends StatelessWidget {
       decoration: BoxDecoration(
         color: Colors.white,
         borderRadius: BorderRadius.circular(12),
-        boxShadow: [BoxShadow(color: Colors.black.withOpacity(0.06), blurRadius: 8, offset: const Offset(0, 2))],
+        boxShadow: [
+          BoxShadow(
+            color: Colors.black.withOpacity(0.06),
+            blurRadius: 8,
+            offset: const Offset(0, 2),
+          ),
+        ],
       ),
       child: child,
     );
   }
 
-  Widget _flightCard(BuildContext context, {
+  Widget _flightCard(
+    BuildContext context, {
     required dynamic flight,
     required String label,
     required String from,
@@ -249,7 +296,13 @@ class BookingConfirmationPage extends StatelessWidget {
       decoration: BoxDecoration(
         color: Colors.white,
         borderRadius: BorderRadius.circular(12),
-        boxShadow: [BoxShadow(color: Colors.black.withOpacity(0.06), blurRadius: 8, offset: const Offset(0, 2))],
+        boxShadow: [
+          BoxShadow(
+            color: Colors.black.withOpacity(0.06),
+            blurRadius: 8,
+            offset: const Offset(0, 2),
+          ),
+        ],
       ),
       child: Column(
         crossAxisAlignment: CrossAxisAlignment.start,
@@ -257,17 +310,28 @@ class BookingConfirmationPage extends StatelessWidget {
           Row(
             children: [
               Container(
-                padding: const EdgeInsets.symmetric(horizontal: 10, vertical: 4),
+                padding: const EdgeInsets.symmetric(
+                  horizontal: 10,
+                  vertical: 4,
+                ),
                 decoration: BoxDecoration(
                   color: GuzoTheme.primaryGreen.withOpacity(0.1),
                   borderRadius: BorderRadius.circular(6),
                 ),
-                child: Text(label,
-                    style: const TextStyle(
-                        fontSize: 12, fontWeight: FontWeight.w600, color: GuzoTheme.primaryGreen)),
+                child: Text(
+                  label,
+                  style: const TextStyle(
+                    fontSize: 12,
+                    fontWeight: FontWeight.w600,
+                    color: GuzoTheme.primaryGreen,
+                  ),
+                ),
               ),
               const Spacer(),
-              Text(airline, style: TextStyle(fontSize: 13, color: Colors.grey.shade600)),
+              Text(
+                airline,
+                style: TextStyle(fontSize: 13, color: Colors.grey.shade600),
+              ),
             ],
           ),
           const SizedBox(height: 14),
@@ -277,28 +341,75 @@ class BookingConfirmationPage extends StatelessWidget {
                 child: Column(
                   crossAxisAlignment: CrossAxisAlignment.start,
                   children: [
-                    Text(depTime, style: const TextStyle(fontSize: 22, fontWeight: FontWeight.bold)),
-                    Text(from, style: TextStyle(fontSize: 13, color: Colors.grey.shade600), overflow: TextOverflow.ellipsis),
+                    Text(
+                      depTime,
+                      style: const TextStyle(
+                        fontSize: 22,
+                        fontWeight: FontWeight.bold,
+                      ),
+                    ),
+                    Text(
+                      from,
+                      style: TextStyle(
+                        fontSize: 13,
+                        color: Colors.grey.shade600,
+                      ),
+                      overflow: TextOverflow.ellipsis,
+                    ),
                   ],
                 ),
               ),
               Column(
                 children: [
-                  Text(duration, style: TextStyle(fontSize: 12, color: Colors.grey.shade500)),
+                  Text(
+                    duration,
+                    style: TextStyle(fontSize: 12, color: Colors.grey.shade500),
+                  ),
                   const SizedBox(height: 4),
                   Row(
                     children: [
-                      Container(width: 6, height: 6, decoration: const BoxDecoration(color: GuzoTheme.primaryGreen, shape: BoxShape.circle)),
-                      Container(width: 60, height: 1, color: Colors.grey.shade300),
-                      const Icon(Icons.flight, size: 16, color: GuzoTheme.primaryGreen),
-                      Container(width: 60, height: 1, color: Colors.grey.shade300),
-                      Container(width: 6, height: 6, decoration: BoxDecoration(color: Colors.grey.shade400, shape: BoxShape.circle)),
+                      Container(
+                        width: 6,
+                        height: 6,
+                        decoration: const BoxDecoration(
+                          color: GuzoTheme.primaryGreen,
+                          shape: BoxShape.circle,
+                        ),
+                      ),
+                      Container(
+                        width: 60,
+                        height: 1,
+                        color: Colors.grey.shade300,
+                      ),
+                      const Icon(
+                        Icons.flight,
+                        size: 16,
+                        color: GuzoTheme.primaryGreen,
+                      ),
+                      Container(
+                        width: 60,
+                        height: 1,
+                        color: Colors.grey.shade300,
+                      ),
+                      Container(
+                        width: 6,
+                        height: 6,
+                        decoration: BoxDecoration(
+                          color: Colors.grey.shade400,
+                          shape: BoxShape.circle,
+                        ),
+                      ),
                     ],
                   ),
                   const SizedBox(height: 4),
                   Text(
-                    stops == 0 ? 'Direct' : '$stops stop${stops > 1 ? 's' : ''}',
-                    style: TextStyle(fontSize: 12, color: stops == 0 ? Colors.green : Colors.orange),
+                    stops == 0
+                        ? 'Direct'
+                        : '$stops stop${stops > 1 ? 's' : ''}',
+                    style: TextStyle(
+                      fontSize: 12,
+                      color: stops == 0 ? Colors.green : Colors.orange,
+                    ),
                   ),
                 ],
               ),
@@ -306,15 +417,32 @@ class BookingConfirmationPage extends StatelessWidget {
                 child: Column(
                   crossAxisAlignment: CrossAxisAlignment.end,
                   children: [
-                    Text(arrTime, style: const TextStyle(fontSize: 22, fontWeight: FontWeight.bold)),
-                    Text(to, style: TextStyle(fontSize: 13, color: Colors.grey.shade600), overflow: TextOverflow.ellipsis, textAlign: TextAlign.end),
+                    Text(
+                      arrTime,
+                      style: const TextStyle(
+                        fontSize: 22,
+                        fontWeight: FontWeight.bold,
+                      ),
+                    ),
+                    Text(
+                      to,
+                      style: TextStyle(
+                        fontSize: 13,
+                        color: Colors.grey.shade600,
+                      ),
+                      overflow: TextOverflow.ellipsis,
+                      textAlign: TextAlign.end,
+                    ),
                   ],
                 ),
               ),
             ],
           ),
           const SizedBox(height: 10),
-          Text(depDate, style: TextStyle(fontSize: 12, color: Colors.grey.shade500)),
+          Text(
+            depDate,
+            style: TextStyle(fontSize: 12, color: Colors.grey.shade500),
+          ),
         ],
       ),
     );
