@@ -1,28 +1,47 @@
+// ignore_for_file: sized_box_for_whitespace
+
 import 'package:booking/controllers/FlightsController.dart';
 import 'package:booking/controllers/flights_with_api_controller.dart';
-import 'package:booking/controllers/user_name_controller.dart';
-import 'package:booking/newFlights/checkout_Page.dart';
-import 'package:booking/newFlights/contact_datails_page.dart';
-import 'package:booking/newFlights/travaler_details_page.dart';
+import 'package:booking/screens/flightsPage/contact_who_flying_page.dart';
+import 'package:booking/screens/flightsPage/select_your_seats_inner_page.dart';
 import 'package:booking/theam/app_color.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 
-class ContactWhoFlyingPage extends StatefulWidget {
-  const ContactWhoFlyingPage({super.key});
+class SelectYourSeatsPage extends StatefulWidget {
+  const SelectYourSeatsPage({super.key});
 
   @override
-  State<ContactWhoFlyingPage> createState() => _ContactWhoFlyingPageState();
+  State<SelectYourSeatsPage> createState() => _SelectYourSeatsPageState();
 }
 
-class _ContactWhoFlyingPageState extends State<ContactWhoFlyingPage> {
-  String capitalize(String text) {
-    if (text.isEmpty) return text;
-    return text[0].toUpperCase() + text.substring(1);
+class _SelectYourSeatsPageState extends State<SelectYourSeatsPage> {
+  final flightDataController = Get.find<FlightDataController>();
+  // ignore: unused_field
+  int _maxTravelers = 3;
+  var _numberOfSelectedSeat = 0;
+  // ignore: unused_field
+  var _numberOfSelectedSeat2 = 0;
+  final double _pricePerSeat = 200.0;
+
+  double get totalPrice {
+    if (flightDataController.numberOfTravelers.value == 0) {
+      return _pricePerSeat;
+    }
+    return _numberOfSelectedSeat * _pricePerSeat;
   }
 
-  final userNameController = Get.find<UserNameController>();
-  final flightDataController = Get.find<FlightDataController>();
+  @override
+  void initState() {
+    super.initState();
+    _initializeMaxTravelers();
+  }
+
+  void _initializeMaxTravelers() {
+    _maxTravelers = flightDataController.numberOfTravelers.value;
+    _numberOfSelectedSeat = flightDataController.numberOfselectedSeats.value;
+    _numberOfSelectedSeat2 = flightDataController.numberOfselectedSeats2.value;
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -31,28 +50,31 @@ class _ContactWhoFlyingPageState extends State<ContactWhoFlyingPage> {
     final currency = offer?['pricing']?['currency'] ?? '';
 
     return Scaffold(
+      backgroundColor: Theme.of(context).scaffoldBackgroundColor,
       appBar: PreferredSize(
         preferredSize: const Size.fromHeight(100),
+
         child: AppBar(
-          centerTitle: false,
           backgroundColor: GuzoTheme.primaryGreen,
+          elevation: 0,
           leading: IconButton(
-            onPressed: () => Get.back(),
-            icon: const Icon(Icons.arrow_back, color: Colors.white),
+            onPressed: () {
+              Get.back();
+            },
+            icon: Icon(Icons.arrow_back, color: Colors.white),
           ),
-          titleSpacing: 0,
           title: const Text(
-            "Who's flying",
+            'Select your seats',
             style: TextStyle(
-              fontSize: 20,
-              fontWeight: FontWeight.w600,
               color: Colors.white,
+              fontSize: 20,
+              fontWeight: FontWeight.bold,
             ),
           ),
           bottom: PreferredSize(
-            preferredSize: const Size.fromHeight(36),
+            preferredSize: const Size.fromHeight(40),
             child: Padding(
-              padding: const EdgeInsets.only(bottom: 12),
+              padding: const EdgeInsets.only(bottom: 20),
               child: Row(
                 mainAxisAlignment: MainAxisAlignment.center,
                 children: [
@@ -60,12 +82,14 @@ class _ContactWhoFlyingPageState extends State<ContactWhoFlyingPage> {
                   _buildLine(true),
                   _buildStep(true, true),
                   _buildLine(true),
-                  _buildStep(true, true),
-                  _buildLine(true),
                   _buildStep(true, false, isCurrent: true),
-
                   Padding(
-                    padding: const EdgeInsets.only(left: 8.0),
+                    padding: const EdgeInsets.only(left: 10.0),
+                    child: _buildLineDotted(),
+                  ),
+                  _buildStep(false, false),
+                  Padding(
+                    padding: const EdgeInsets.only(left: 10.0),
                     child: _buildLineDotted(),
                   ),
                   _buildStep(false, false),
@@ -78,224 +102,49 @@ class _ContactWhoFlyingPageState extends State<ContactWhoFlyingPage> {
       body: Column(
         children: [
           Expanded(
-            child: SingleChildScrollView(
-              child: Column(
-                children: [
-                  // One traveler card per traveler
-          ...List.generate(flightDataController.numberOfTravelers.value, (i) {
-            return Column(
+            child: ListView(
+              padding: const EdgeInsets.all(16),
               children: [
-                Obx(() {
-                  final t = userNameController.getTraveler(i);
-                  final firstName = i == 0
-                      ? userNameController.firstNameOf.value
-                      : (t['firstName'] ?? '');
-                  final lastName = i == 0
-                      ? userNameController.lastNameOf.value
-                      : (t['lastName'] ?? '');
-                  final gender = i == 0
-                      ? userNameController.gender.value
-                      : (t['gender'] ?? '');
-                  final dob = i == 0
-                      ? userNameController.dateOfBirth.value
-                      : (t['dob'] ?? '');
-                  final type = i == 0
-                      ? (userNameController.travelerType.value.isEmpty
-                          ? 'Adult'
-                          : userNameController.travelerType.value)
-                      : (t['type'] ?? 'Adult');
-                  final isComplete = firstName.isNotEmpty && gender.isNotEmpty;
-
-                  return InkWell(
-                    onTap: () => Get.to(() =>
-                        TravelerDetailsPage(travelerNumber: i)),
-                    child: Container(
-                      padding: const EdgeInsets.symmetric(
-                          horizontal: 15, vertical: 20),
-                      color: Theme.of(context).cardColor,
-                      child: Row(
-                        children: [
-                          Stack(
-                            children: [
-                              Padding(
-                                padding:
-                                    EdgeInsets.only(right: 8.0, bottom: 8),
-                                child: Icon(Icons.person_3_outlined,
-                                    size: 50, color: Theme.of(context).iconTheme.color),
-                              ),
-                              Positioned(
-                                right: 0,
-                                bottom: 0,
-                                child: Container(
-                                  width: 20,
-                                  height: 20,
-                                  decoration: BoxDecoration(
-                                    color: isComplete
-                                        // ignore: deprecated_member_use
-                                        ? Colors.greenAccent.withOpacity(0.25)
-                                        : Colors.white,
-                                    borderRadius: BorderRadius.circular(20),
-                                    border: isComplete
-                                        ? null
-                                        : Border.all(color: Colors.white),
-                                  ),
-                                  child: Icon(
-                                    isComplete
-                                        ? Icons.check_rounded
-                                        : Icons.clear,
-                                    size: 20,
-                                    color: isComplete
-                                        ? Colors.black
-                                        : Colors.white,
-                                  ),
-                                ),
-                              ),
-                            ],
-                          ),
-                          const SizedBox(width: 15),
-                          Expanded(
-                            child: Column(
-                              crossAxisAlignment: CrossAxisAlignment.start,
-                              children: [
-                                Text(
-                                  firstName.isEmpty && lastName.isEmpty
-                                      ? 'Traveler ${i + 1}'
-                                      : '${capitalize(firstName)} ${capitalize(lastName)}',
-                                  style: const TextStyle(
-                                      fontSize: 18,
-                                      fontWeight: FontWeight.bold),
-                                ),
-                                const SizedBox(height: 4),
-                                Text(
-                                  '$type${gender.isNotEmpty ? ' • $gender' : ''}${dob.isNotEmpty ? ' • $dob' : ''}',
-                                  style: TextStyle(
-                                      fontSize: 14, color: Theme.of(context).textTheme.bodySmall?.color),
-                                  overflow: TextOverflow.ellipsis,
-                                ),
-                              ],
-                            ),
-                          ),
-                          const Icon(Icons.keyboard_arrow_right,
-                              size: 30, color: null),
-                        ],
-                      ),
-                    ),
-                  );
-                }),
                 const SizedBox(height: 8),
-              ],
-            );
-          }),
-
-          SizedBox(height: 15),
-          InkWell(
-            onTap: () {
-              Get.to(() => ContactDetailsPage());
-            },
-            child: Padding(
-              padding: const EdgeInsets.only(top: 0, bottom: 0),
-              child: Container(
-                color: Theme.of(context).cardColor,
-                child: Padding(
-                  padding: const EdgeInsets.only(top: 15.0, bottom: 15),
-                  child: Obx(() {
-                    bool iscomplete =
-                        userNameController.phoneNumber.value.isNotEmpty &&
-                        userNameController.email.value.isNotEmpty;
-                    return Padding(
-                      padding: const EdgeInsets.only(left: 15.0, right: 15),
-                      child: Row(
-                        mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                        children: [
-                          Row(
-                            children: [
-                              Stack(
-                                children: [
-                                  Padding(
-                                    padding: const EdgeInsets.only(
-                                      right: 10.0,
-                                      bottom: 10,
-                                    ),
-                                    child: Icon(
-                                      Icons.mobile_friendly_outlined,
-                                      size: 40,
-                                    ),
-                                  ),
-                                  Positioned(
-                                    right: 0,
-                                    bottom: 0,
-                                    child: Container(
-                                      width: 20,
-                                      height: 20,
-                                      decoration: BoxDecoration(
-                                        color: iscomplete
-                                            // ignore: deprecated_member_use
-                                            ? Colors.greenAccent.withOpacity(
-                                                0.25,
-                                              )
-                                            : Colors.red[100],
-
-                                        borderRadius: BorderRadius.circular(20),
-                                      ),
-                                      child: iscomplete
-                                          ? Icon(Icons.check_rounded, size: 20)
-                                          : Icon(
-                                              Icons.clear,
-                                              size: 20,
-                                              color: Colors.red,
-                                            ),
-                                    ),
-                                  ),
-                                ],
-                              ),
-
-                              SizedBox(width: 15),
-                              Column(
-                                crossAxisAlignment: CrossAxisAlignment.start,
-                                children: [
-                                  Text(
-                                    "Contact details",
-                                    style: TextStyle(
-                                      fontSize: 20,
-                                      fontWeight: FontWeight.bold,
-                                    ),
-                                  ),
-                                  Text(userNameController.email.value),
-                                  iscomplete
-                                      ? Text(
-                                          userNameController.phoneCode.value +
-                                              userNameController
-                                                  .phoneNumber
-                                                  .value,
-                                        )
-                                      : Text(
-                                          "Add contact detail ",
-                                          style: TextStyle(color: Colors.red),
-                                        ),
-                                ],
-                              ),
-                            ],
-                          ),
-                          // SizedBox(width: 130),
-                          Icon(Icons.keyboard_arrow_right, size: 30),
-                        ],
-                      ),
+                // Build a SeatFlightGroup for each flight in the offer
+                ...() {
+                  final flights = flightApicontroller.selectedOffer.value?['flights'] as List? ?? [];
+                  final fromName = flightDataController.recievedFromFromName.value;
+                  final toName = flightDataController.recievedFromToName.value;
+                  return List.generate(flights.length, (i) {
+                    final flight = flights[i] as Map<String, dynamic>;
+                    final segs = flight['segments'] as List? ?? [];
+                    final firstSeg = segs.isNotEmpty ? segs.first : null;
+                    final airline = firstSeg?['airlineName'] ?? '';
+                    final dur = flight['duration'] as String? ?? '';
+                    final durMatch = RegExp(r'PT(?:(\d+)H)?(?:(\d+)M)?').firstMatch(dur);
+                    final durStr = durMatch != null
+                        ? '${durMatch.group(1) ?? '0'}h ${durMatch.group(2) ?? '0'}m'
+                        : dur;
+                    final origin = i == 0 ? fromName : toName;
+                    final dest = i == 0 ? toName : fromName;
+                    final travelers = flightDataController.numberOfTravelers.value;
+                    final selected = i == 0
+                        ? flightDataController.numberOfselectedSeats.value
+                        : flightDataController.numberOfselectedSeats2.value;
+                    return SeatFlightGroup(
+                      mainTitle: 'Flight to $dest',
+                      route: '$origin to $dest',
+                      details: '$durStr · $airline',
+                      selectionStatus: '$selected of $travelers seat selected . \$0.0',
                     );
-                  }),
-                ),
-              ),
+                  });
+                }(),
+              ],
             ),
           ),
-                ],
-              ),
+                       Container(
+            padding: const EdgeInsets.symmetric(horizontal: 16, vertical: 12),
+            decoration: BoxDecoration(
+              color: Theme.of(context).cardColor,
+              border: Border(top: BorderSide(color: Colors.grey.shade300)),
             ),
-          ), // close Expanded + SingleChildScrollView
-          Divider(height: 1),
-          Padding(
-            padding: const EdgeInsets.only(bottom: 20.0, left: 12, right: 12),
-            // ignore: sized_box_for_whitespace
-            child: Container(
-              height: 100,
+            child: SafeArea(
               child: Row(
                 mainAxisAlignment: MainAxisAlignment.spaceBetween,
                 children: [
@@ -446,7 +295,7 @@ class _ContactWhoFlyingPageState extends State<ContactWhoFlyingPage> {
                                               "Flexible ticket",
                                               style: TextStyle(
                                                 fontSize: 15,
-                                                color: Colors.grey,
+                                                color: Colors.grey[600],
                                               ),
                                             ),
                                             SizedBox(height: 7),
@@ -455,7 +304,7 @@ class _ContactWhoFlyingPageState extends State<ContactWhoFlyingPage> {
                                               "Travel protection",
                                               style: TextStyle(
                                                 fontSize: 15,
-                                                color: Colors.grey,
+                                                color: Colors.grey[600],
                                               ),
                                             ),
                                           ],
@@ -505,7 +354,7 @@ class _ContactWhoFlyingPageState extends State<ContactWhoFlyingPage> {
                                               "Guzo.com pays",
                                               style: TextStyle(
                                                 fontSize: 15,
-                                                color: Colors.grey,
+                                                color: Colors.grey[600],
                                               ),
                                             ),
                                           ],
@@ -548,7 +397,7 @@ class _ContactWhoFlyingPageState extends State<ContactWhoFlyingPage> {
                                               "Includes taxes and fees",
                                               style: TextStyle(
                                                 fontSize: 15,
-                                                color: Colors.grey,
+                                                color: Colors.grey[600],
                                               ),
                                             ),
                                             SizedBox(height: 6),
@@ -607,55 +456,47 @@ class _ContactWhoFlyingPageState extends State<ContactWhoFlyingPage> {
                         },
                       );
                     },
-                    child: Padding(
-                      padding: const EdgeInsets.only(left: 0.0, right: 15),
-                      child: Row(
-                        children: [
-                          Text(
-                            "$currency ${flightDataController.totalPrice.value}",
-                            style: TextStyle(
-                              fontWeight: FontWeight.bold,
-                              fontSize: 16,
-                            ),
-                          ),
-                          SizedBox(width: 5),
-                          Icon(Icons.info_outline),
-                        ],
-                      ),
-                    ),
-                  ),
-                  Padding(
-                    padding: const EdgeInsets.only(right: 8.0),
-                    child: SizedBox(
-                      width: 140,
-                      height: 60,
-                      child: ElevatedButton(
-                        style: ElevatedButton.styleFrom(
-                          backgroundColor: GuzoTheme.primaryGreen,
-                          foregroundColor: GuzoTheme.White,
-                          shape: RoundedRectangleBorder(
-                            borderRadius: BorderRadius.circular(4),
-                          ),
-                        ),
-                        onPressed: () {
-                          (userNameController.firstNameOf.value.isEmpty ||
-                                  userNameController.lastNameOf.value.isEmpty ||
-                                  userNameController.phoneNumber.value.isEmpty)
-                              ? Get.snackbar(
-                                  'Error',
-                                  'Please fill the contact information: ',
-                                  snackPosition: SnackPosition.BOTTOM,
-                                  backgroundColor: GuzoTheme.accentGold,
-                                  colorText: Colors.black,
-                                )
-                              : Get.to(() => CheckoutPage());
-                        },
-                        child: Text(
-                          "Next",
+                    child: Row(
+                      children: [
+                        Text(
+                          '$currency ${flightDataController.totalPrice.value}',
                           style: TextStyle(
                             fontWeight: FontWeight.bold,
-                            fontSize: 20,
+                            fontSize: 16,
                           ),
+                        ),
+                        const SizedBox(width: 6),
+                        Icon(
+                          Icons.info_outline,
+                          size: 22,
+                          color: Colors.grey.shade600,
+                        ),
+                      ],
+                    ),
+                  ),
+                  SizedBox(
+                    width: 140,
+                    height: 60,
+                    child: ElevatedButton(
+                      onPressed: () {
+                        Get.to(() => ContactWhoFlyingPage());
+                      },
+                      style: ElevatedButton.styleFrom(
+                        backgroundColor: GuzoTheme.primaryGreen,
+                        padding: const EdgeInsets.symmetric(
+                          horizontal: 40,
+                          vertical: 16,
+                        ),
+                        shape: RoundedRectangleBorder(
+                          borderRadius: BorderRadius.circular(4),
+                        ),
+                      ),
+                      child: const Text(
+                        'Next',
+                        style: TextStyle(
+                          color: Colors.white,
+                          fontSize: 16,
+                          fontWeight: FontWeight.bold,
                         ),
                       ),
                     ),
@@ -683,14 +524,13 @@ class _ContactWhoFlyingPageState extends State<ContactWhoFlyingPage> {
   }
 
   Widget _buildLineDotted() {
-    // ignore: sized_box_for_whitespace
     return Container(
       width: 40,
       child: Row(
         children: List.generate(
           5,
           (index) => Padding(
-            padding: const EdgeInsets.only(left: 2.0, bottom: 10),
+            padding: const EdgeInsets.only(left: 2.0),
             child: Container(
               width: 4,
               height: 4,
@@ -708,45 +548,144 @@ class _ContactWhoFlyingPageState extends State<ContactWhoFlyingPage> {
 }
 
 Widget _buildStep(bool isCompleted, bool isPast, {bool isCurrent = false}) {
-  return Padding(
-    padding: const EdgeInsets.only(bottom: 10.0),
-    child: Container(
-      width: 16,
-      height: 16,
-      decoration: BoxDecoration(
-        shape: BoxShape.circle,
+  return Container(
+    width: 16,
+    height: 16,
+    decoration: BoxDecoration(
+      shape: BoxShape.circle,
+      color: isCurrent
+          ? Colors.transparent
+          : (isCompleted ? Colors.orange : Colors.transparent),
+      border: Border.all(
         color: isCurrent
-            ? Colors.transparent
-            : (isCompleted ? Colors.orange : Colors.transparent),
-        border: Border.all(
-          color: isCurrent
-              ? Colors.orange
-              : (isCompleted ? Colors.orange : Colors.white),
-          width: isCurrent ? 3 : 1.5,
-        ),
+            ? Colors.orange
+            : (isCompleted ? Colors.orange : Colors.white),
+        width: isCurrent ? 3 : 1.5,
       ),
-      child: isCurrent
-          ? Container(
-              decoration: const BoxDecoration(
-                shape: BoxShape.circle,
-                color: Colors.white,
-              ),
-            )
-          : null,
     ),
+    child: isCurrent
+        ? Container(
+            decoration: const BoxDecoration(
+              shape: BoxShape.circle,
+              color: Colors.white,
+            ),
+          )
+        : null,
   );
 }
 
 Widget _buildLine(bool isActive, {bool isDotted = false}) {
-  return Padding(
-    padding: const EdgeInsets.only(bottom: 10.0),
-    child: Container(
-      width: 30,
-      height: 3,
-      margin: const EdgeInsets.symmetric(horizontal: 8),
-      color: isDotted ? null : (isActive ? Colors.white : Colors.white54),
-      child: Text(""),
-    ),
+  return Container(
+    width: 30,
+    height: 3,
+    margin: const EdgeInsets.symmetric(horizontal: 10),
+    color: isDotted ? null : (isActive ? Colors.white : Colors.white54),
+    child: Text(""),
   );
 }
 
+class SeatFlightGroup extends StatelessWidget {
+  final String mainTitle, route, details, selectionStatus;
+
+  const SeatFlightGroup({
+    super.key,
+    required this.mainTitle,
+    required this.route,
+    required this.details,
+    required this.selectionStatus,
+  });
+
+  @override
+  Widget build(BuildContext context) {
+    return Container(
+      color: Theme.of(context).scaffoldBackgroundColor,
+      child: Column(
+        crossAxisAlignment: CrossAxisAlignment.start,
+        children: [
+          SizedBox(height: 20),
+          Text(
+            mainTitle,
+            style: const TextStyle(fontWeight: FontWeight.bold, fontSize: 20),
+          ),
+          const SizedBox(height: 12),
+          Container(
+            decoration: BoxDecoration(
+              color: Theme.of(context).cardColor,
+              borderRadius: BorderRadius.circular(8),
+              border: Border.all(color: Colors.grey.shade300),
+            ),
+            child: Column(
+              crossAxisAlignment: CrossAxisAlignment.start,
+
+              children: [
+                Padding(
+                  padding: const EdgeInsets.all(16.0),
+                  child: Column(
+                    crossAxisAlignment: CrossAxisAlignment.start,
+                    children: [
+                      Text(
+                        route,
+                        style: const TextStyle(
+                          fontWeight: FontWeight.bold,
+                          fontSize: 17,
+                        ),
+                      ),
+                      const SizedBox(height: 8),
+                      Text(
+                        details,
+                        style: TextStyle(color: Theme.of(context).textTheme.bodySmall?.color, fontSize: 15),
+                      ),
+                      const SizedBox(height: 8),
+                      Text(
+                        selectionStatus,
+                        style: TextStyle(color: Theme.of(context).textTheme.bodySmall?.color, fontSize: 15),
+                      ),
+                    ],
+                  ),
+                ),
+                const Divider(height: 1, indent: 20, endIndent: 20),
+                SizedBox(height: 20),
+                InkWell(
+                  onTap: () {
+                    Get.to(
+                      () => SelectYourSeatsInnerPage(
+                        Title: "Addis ababa to Arba Munch",
+                      ),
+                    );
+                  },
+                  child: Padding(
+                    padding: const EdgeInsets.symmetric(
+                      horizontal: 16,
+                      vertical: 14,
+                    ),
+                    child: Row(
+                      mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                      children: const [
+                        Text(
+                          "Change seat",
+                          style: TextStyle(
+                            color: GuzoTheme.primaryGreen,
+                            fontWeight: FontWeight.w600,
+                            fontSize: 16,
+                          ),
+                        ),
+                        // SizedBox(width: 180),
+                        Icon(
+                          Icons.arrow_forward_ios,
+                          size: 16,
+                          color: Color.fromARGB(255, 22, 236, 72),
+                        ),
+                      ],
+                    ),
+                  ),
+                ),
+                SizedBox(height: 20),
+              ],
+            ),
+          ),
+          SizedBox(height: 15),
+        ],
+      ),
+    );
+  }
+}

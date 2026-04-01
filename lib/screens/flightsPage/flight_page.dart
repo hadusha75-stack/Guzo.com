@@ -1,7 +1,8 @@
 import 'package:booking/controllers/flights_with_api_controller.dart';
-import 'package:booking/newFlights/searched_flights_page.dart';
-import 'package:booking/newFlights/when_when_clicked_page.dart';
-import 'package:booking/newFlights/who_flying_page.dart';
+import 'package:booking/screens/flightsPage/airport_search_page.dart';
+import 'package:booking/screens/flightsPage/searched_flights_page.dart';
+import 'package:booking/screens/flightsPage/when_when_clicked_page.dart';
+import 'package:booking/screens/flightsPage/who_flying_page.dart';
 import 'package:booking/theam/app_color.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_svg/svg.dart';
@@ -9,7 +10,6 @@ import 'package:get/get.dart';
 // ignore: depend_on_referenced_packages
 import 'package:intl/intl.dart';
 import 'package:booking/controllers/FlightsController.dart';
-import 'package:booking/newFlights/airport_search_page.dart';
 
 class FlightsPage extends StatefulWidget {
   const FlightsPage({super.key});

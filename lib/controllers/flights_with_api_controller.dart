@@ -2,7 +2,7 @@ import 'package:booking/apiServies/booking_api_service.dart';
 import 'package:booking/controllers/FlightsController.dart';
 import 'package:booking/controllers/user_name_controller.dart';
 import 'package:booking/model/booking_models.dart';
-import 'package:booking/newFlights/booking_confirmation_page.dart';
+import 'package:booking/screens/flightsPage/booking_confirmation_page.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 

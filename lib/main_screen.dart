@@ -1,7 +1,7 @@
 import 'package:booking/controllers/user_name_controller.dart';
-import 'package:booking/newFlights/flight_page.dart';
 import 'package:booking/screens/booking/booking.dart';
 import 'package:booking/screens/myAccounts/my_account_page.dart';
+import 'package:booking/screens/flightsPage/flight_page.dart';
 import 'package:booking/screens/saved/saved_page.dart';
 import 'package:booking/screens/search/attractions_page.dart';
 import 'package:booking/screens/search/car_rental_page.dart';

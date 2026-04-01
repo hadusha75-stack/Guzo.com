@@ -1,3 +1,5 @@
+import 'package:booking/screens/flightsPage/payment_page.dart';
+import 'package:booking/screens/flightsPage/travaler_details_page.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_test/flutter_test.dart';
 import 'package:get/get.dart';
@@ -5,8 +7,6 @@ import 'package:booking/theam/app_color.dart';
 import 'package:booking/controllers/FlightsController.dart';
 import 'package:booking/controllers/flights_with_api_controller.dart';
 import 'package:booking/controllers/user_name_controller.dart';
-import 'package:booking/newFlights/payment_page.dart';
-import 'package:booking/newFlights/travaler_details_page.dart';
 
 void main() {
   setUp(() {
@@ -18,8 +18,6 @@ void main() {
   tearDown(() {
     Get.reset();
   });
-
-  // ── Controller unit tests (no widget pump needed) ──────────────────────────
 
   test('FlightDataController initializes with Round-trip as default', () {
     final ctrl = Get.find<FlightDataController>();
@@ -60,8 +58,6 @@ void main() {
     expect(ctrl.totalPrice.value, '250.75');
   });
 
-  // ── Widget tests (no SVG-loading pages) ────────────────────────────────────
-
   testWidgets('PaymentPage renders card form fields', (
     WidgetTester tester,
   ) async {
@@ -87,8 +83,6 @@ void main() {
     (WidgetTester tester) async {
       await tester.pumpWidget(GetMaterialApp(home: const PaymentPage()));
       await tester.pump();
-
-      // The button should be enabled (it validates on tap, not disabled)
       final btn = tester.widget<ElevatedButton>(
         find.widgetWithText(ElevatedButton, 'Complete Booking'),
       );
@@ -107,7 +101,6 @@ void main() {
     expect(find.text('Traveler details'), findsOneWidget);
     expect(find.text('First names *'), findsOneWidget);
     expect(find.text('Last names *'), findsOneWidget);
-    // Date of birth may be off-screen; verify it exists in the widget tree
     expect(find.text('Date of birth *', skipOffstage: false), findsOneWidget);
   });
 
@@ -122,7 +115,6 @@ void main() {
     await tester.tap(find.text('Done'));
     await tester.pump();
 
-    // Validation errors should appear
     expect(find.text('Add first name(s) to continue'), findsOneWidget);
     expect(find.text('Add last name(s) to continue'), findsOneWidget);
   });

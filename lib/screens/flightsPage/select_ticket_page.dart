@@ -3,7 +3,7 @@
 import 'package:booking/controllers/FlightsController.dart';
 import 'package:booking/controllers/flights_with_api_controller.dart';
 import 'package:booking/controllers/ticket_controller.dart';
-import 'package:booking/newFlights/flight_customize_page.dart';
+import 'package:booking/screens/flightsPage/flight_customize_page.dart';
 import 'package:booking/theam/app_color.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';

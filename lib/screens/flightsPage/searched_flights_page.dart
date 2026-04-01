@@ -1,10 +1,10 @@
 import 'package:booking/controllers/FlightsController.dart'
     show FlightDataController;
 import 'package:booking/controllers/flights_with_api_controller.dart';
-import 'package:booking/newFlights/airport_search_page.dart';
-import 'package:booking/newFlights/when_when_clicked_page.dart';
-import 'package:booking/newFlights/who_flying_page.dart';
-import 'package:booking/newFlights/your_flight_to_page.dart';
+import 'package:booking/screens/flightsPage/airport_search_page.dart';
+import 'package:booking/screens/flightsPage/when_when_clicked_page.dart';
+import 'package:booking/screens/flightsPage/who_flying_page.dart';
+import 'package:booking/screens/flightsPage/your_flight_to_page.dart';
 import 'package:cached_network_image/cached_network_image.dart';
 // ignore: depend_on_referenced_packages
 import 'package:intl/intl.dart';
