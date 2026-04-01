@@ -82,7 +82,6 @@ class _SettingDevicePreferancePageState
     setState(() => _isDark = value);
     box.write('isDark', value);
     Get.changeThemeMode(value ? ThemeMode.dark : ThemeMode.light);
-    // Force full app rebuild to apply theme to all pages
     Get.forceAppUpdate();
   }
 

@@ -74,6 +74,7 @@ class RewardWalletPage extends StatelessWidget {
                   ),
                 ),
                 _texts(
+                  context,
                   Icons.confirmation_num,
                   "Book and earn travel rewards",
                   "Credits,vouchers,you name it! These are all",
@@ -81,6 +82,7 @@ class RewardWalletPage extends StatelessWidget {
                 ),
                 SizedBox(height: 20),
                 _texts(
+                  context,
                   Icons.phone_android_outlined,
                   "Track everthing at a glance",
                   "Your Wallet keeps all rewards safe,while",
@@ -88,6 +90,7 @@ class RewardWalletPage extends StatelessWidget {
                 ),
                 SizedBox(height: 20),
                 _texts(
+                  context,
                   Icons.connect_without_contact_outlined,
                   "Pay with Wallet to save money",
                   "If a booking accepts any rewards in your Wallet,",
@@ -138,6 +141,7 @@ class RewardWalletPage extends StatelessWidget {
 }
 
 Widget _texts(
+  BuildContext context,
   IconData paraIcon,
   String label,
   String secondLabel,
@@ -147,7 +151,7 @@ Widget _texts(
     padding: const EdgeInsets.symmetric(horizontal: 15.0, vertical: 10),
     child: Row(
       crossAxisAlignment:
-          CrossAxisAlignment.start, // Align icon with top of text
+          CrossAxisAlignment.start, 
       children: [
         Icon(paraIcon, size: 40, color: GuzoTheme.primaryGreen),
         const SizedBox(width: 15),
@@ -165,7 +169,7 @@ Widget _texts(
               const SizedBox(height: 4),
               Text(
                 "$secondLabel$thirdLabel",
-                //style: TextStyle(fontSize: 20, color: Theme.of(context).textTheme.bodyMedium?.color),
+                style: const TextStyle(fontSize: 20, color: Colors.black87),
                 softWrap: true,
                 overflow: TextOverflow.visible,
               ),
