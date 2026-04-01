@@ -22,15 +22,15 @@ class LoginPageGoogle extends StatelessWidget {
         leading: Icon(Icons.clear, color: GuzoTheme.White,),
         centerTitle: true,
       ),
-      backgroundColor: GuzoTheme.White,
-      body: Padding(
+      backgroundColor: Theme.of(context).scaffoldBackgroundColor,
+      body: SingleChildScrollView(
         padding: const EdgeInsets.all(20.0),
         child: Column(
           children: [
             Text(
               'Sign in for easier access to your trip details',
               style: TextStyle(
-                color: GuzoTheme.black,
+                color: Theme.of(context).textTheme.bodyLarge?.color,
                 fontSize: 30,
                 fontWeight: FontWeight.bold,
               ),
@@ -39,7 +39,7 @@ class LoginPageGoogle extends StatelessWidget {
             ElevatedButton(
               onPressed: () {},
               style: ElevatedButton.styleFrom(
-                backgroundColor: GuzoTheme.White,
+                backgroundColor: Theme.of(context).cardColor,
                 padding: EdgeInsets.symmetric(horizontal: 50, vertical: 22),
                 shape: RoundedRectangleBorder(
                   borderRadius: BorderRadius.circular(8),
@@ -76,7 +76,7 @@ class LoginPageGoogle extends StatelessWidget {
             ElevatedButton(
               onPressed: () {},
               style: ElevatedButton.styleFrom(
-                backgroundColor:GuzoTheme.White,
+                backgroundColor: Theme.of(context).cardColor,
                 padding: EdgeInsets.symmetric(
                   horizontal: 50,
                   vertical: 22,
@@ -141,7 +141,7 @@ class LoginPageGoogle extends StatelessWidget {
                 ),
               ),
             ),
-            SizedBox(height: 120),
+            SizedBox(height: 30),
             Text("By singing in or creating an account, you agree with"),
             Text(" our Teams & Conditions and Privacy Statemeent"),
             Text("© 2006-2026 Booking.com"),
@@ -151,3 +151,4 @@ class LoginPageGoogle extends StatelessWidget {
     );
   }
 }
+

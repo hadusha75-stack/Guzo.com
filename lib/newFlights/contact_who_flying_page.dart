@@ -131,6 +131,7 @@ class _ContactWhoFlyingPageState extends State<ContactWhoFlyingPage> {
                                   height: 20,
                                   decoration: BoxDecoration(
                                     color: isComplete
+                                        // ignore: deprecated_member_use
                                         ? Colors.greenAccent.withOpacity(0.25)
                                         : Colors.white,
                                     borderRadius: BorderRadius.circular(20),

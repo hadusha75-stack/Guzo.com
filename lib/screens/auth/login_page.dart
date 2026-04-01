@@ -1,6 +1,6 @@
 import 'package:booking/controllers/login_controller.dart';
 import 'package:booking/controllers/user_name_controller.dart';
-import 'package:booking/newFlights/flight_page.dart';
+import 'package:booking/main_screen.dart';
 import 'package:booking/theam/app_color.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
@@ -37,7 +37,8 @@ class LoginPage extends StatelessWidget {
         centerTitle: true,
         backgroundColor: GuzoTheme.primaryGreen,
       ),
-      body: Padding(
+      resizeToAvoidBottomInset: true,
+      body: SingleChildScrollView(
         padding: const EdgeInsets.all(16),
         child: Form(
           key: _formKey,
@@ -123,8 +124,7 @@ class LoginPage extends StatelessWidget {
                       box.write('isLoggedIn', true);
 
                       userNameController.setEmail(emailController.text);
-
-                      Get.offAll(() => FlightsPage());
+                      Get.offAll(() => const MainScreen());
                     }
                   },
                   style: ElevatedButton.styleFrom(

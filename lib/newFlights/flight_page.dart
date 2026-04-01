@@ -2,7 +2,6 @@ import 'package:booking/controllers/flights_with_api_controller.dart';
 import 'package:booking/newFlights/searched_flights_page.dart';
 import 'package:booking/newFlights/when_when_clicked_page.dart';
 import 'package:booking/newFlights/who_flying_page.dart';
-import 'package:booking/screens/myAccounts/my_account_page.dart';
 import 'package:booking/theam/app_color.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_svg/svg.dart';
@@ -11,6 +10,7 @@ import 'package:get/get.dart';
 import 'package:intl/intl.dart';
 import 'package:booking/controllers/FlightsController.dart';
 import 'package:booking/newFlights/airport_search_page.dart';
+
 class FlightsPage extends StatefulWidget {
   const FlightsPage({super.key});
 
@@ -34,13 +34,6 @@ class _FlightsPageState extends State<FlightsPage> {
       body: SafeArea(
         child: Column(
           children: [
-            _buildAppBar(),
-
-            SingleChildScrollView(
-              scrollDirection: Axis.horizontal,
-              physics: const BouncingScrollPhysics(),
-              child: _buildTabBar(),
-            ),
 
             Expanded(
               child: Container(
@@ -59,107 +52,6 @@ class _FlightsPageState extends State<FlightsPage> {
                     ],
                   ),
                 ),
-              ),
-            ),
-          ],
-        ),
-      ),
-      bottomNavigationBar: _buildBottomNav(controller),
-    );
-  }
-
-  Widget _buildAppBar() {
-    return Container(
-      color: GuzoTheme.primaryGreen,
-      padding: const EdgeInsets.all(16),
-      child: Row(
-        mainAxisAlignment: MainAxisAlignment.spaceBetween,
-        children: [
-          const Text(
-            'Guzo.com',
-            style: TextStyle(
-              color: Colors.white,
-              fontSize: 20,
-              fontWeight: FontWeight.bold,
-            ),
-          ),
-          Row(
-            children: [
-              IconButton(
-                icon: const Icon(
-                  Icons.chat_bubble_outline,
-                  color: Colors.white,
-                ),
-                onPressed: () {},
-              ),
-              IconButton(
-                icon: const Icon(
-                  Icons.notifications_outlined,
-                  color: Colors.white,
-                ),
-                onPressed: () {},
-              ),
-            ],
-          ),
-        ],
-      ),
-    );
-  }
-
-  Widget _buildTabBar() {
-    return Container(
-      height: 100,
-      color: GuzoTheme.primaryGreen,
-
-      child: Padding(
-        padding: const EdgeInsets.symmetric(horizontal: 16, vertical: 8),
-        child: Row(
-          mainAxisSize: MainAxisSize.min,
-          children: [
-            _buildTab(Icons.hotel_outlined, 'Stays', false),
-            const SizedBox(width: 8),
-            _buildTab(Icons.flight, 'Flights', true),
-            const SizedBox(width: 8),
-            _buildTab(Icons.directions_car_outlined, 'Car rental', false),
-            const SizedBox(width: 8),
-            _buildTab(Icons.local_taxi, 'Taxi', false),
-            const SizedBox(width: 8),
-
-            _buildTab(Icons.local_taxi, 'Atrraction', false),
-          ],
-        ),
-      ),
-    );
-  }
-
-  Widget _buildTab(IconData icon, String label, bool isSelected) {
-    return Container(
-      padding: const EdgeInsets.symmetric(vertical: 12, horizontal: 20),
-      decoration: BoxDecoration(
-        color: isSelected ? Colors.white : Colors.transparent,
-        borderRadius: BorderRadius.circular(25),
-        border: Border.all(
-          color: isSelected ? Colors.white : Colors.transparent,
-          width: 1.5,
-        ),
-      ),
-      child: InkWell(
-        onTap: () {},
-        child: Row(
-          mainAxisSize: MainAxisSize.min,
-          children: [
-            Icon(
-              icon,
-              color: isSelected ? const Color(0xFF003580) : Colors.white,
-              size: 20,
-            ),
-            const SizedBox(width: 8),
-            Text(
-              label,
-              style: TextStyle(
-                color: isSelected ? const Color(0xFF003580) : Colors.white,
-                fontWeight: FontWeight.bold,
-                fontSize: 17,
               ),
             ),
           ],
@@ -301,11 +193,13 @@ class _FlightsPageState extends State<FlightsPage> {
         : text;
 
     return InkWell(
-      onTap: () => Get.to(() => AirportSearchPage(
-            title: displayResult,
-            isFrom: isFromField,
-            segmentIndex: index,
-          )),
+      onTap: () => Get.to(
+        () => AirportSearchPage(
+          title: displayResult,
+          isFrom: isFromField,
+          segmentIndex: index,
+        ),
+      ),
       child: Padding(
         padding: const EdgeInsets.all(16),
         child: Row(
@@ -382,7 +276,9 @@ class _FlightsPageState extends State<FlightsPage> {
       () => StatefulBuilder(
         builder: (ctx, setS) {
           final months = List.generate(
-              18, (i) => DateTime(DateTime.now().year, DateTime.now().month + i, 1));
+            18,
+            (i) => DateTime(DateTime.now().year, DateTime.now().month + i, 1),
+          );
 
           bool inRange(DateTime d) {
             if (depDate == null || retDate == null) return false;
@@ -390,7 +286,9 @@ class _FlightsPageState extends State<FlightsPage> {
           }
 
           void onTap(DateTime d) {
-            if (d.isBefore(DateTime.now().subtract(const Duration(days: 1)))) return;
+            if (d.isBefore(DateTime.now().subtract(const Duration(days: 1)))) {
+              return;
+            }
             setS(() {
               if (!selectingReturn) {
                 depDate = d;
@@ -417,12 +315,20 @@ class _FlightsPageState extends State<FlightsPage> {
               children: [
                 Padding(
                   padding: const EdgeInsets.fromLTRB(16, 20, 16, 8),
-                  child: Text(DateFormat('MMMM yyyy').format(m),
-                      style: const TextStyle(fontWeight: FontWeight.bold, fontSize: 17)),
+                  child: Text(
+                    DateFormat('MMMM yyyy').format(m),
+                    style: const TextStyle(
+                      fontWeight: FontWeight.bold,
+                      fontSize: 17,
+                    ),
+                  ),
                 ),
                 for (int row = 0; row < rows; row++)
                   Container(
-                    color: row.isOdd ? Theme.of(ctx).dividerColor.withOpacity(0.3) : Theme.of(ctx).scaffoldBackgroundColor,
+                    color: row.isOdd
+                        // ignore: deprecated_member_use
+                        ? Theme.of(ctx).dividerColor.withOpacity(0.3)
+                        : Theme.of(ctx).scaffoldBackgroundColor,
                     child: Row(
                       children: List.generate(7, (col) {
                         final idx = row * 7 + col;
@@ -431,36 +337,51 @@ class _FlightsPageState extends State<FlightsPage> {
                         }
                         final day = idx - firstDay + 1;
                         final date = DateTime(m.year, m.month, day);
-                        final isDep = depDate != null && DateUtils.isSameDay(date, depDate);
-                        final isRet = retDate != null && DateUtils.isSameDay(date, retDate);
+                        final isDep =
+                            depDate != null &&
+                            DateUtils.isSameDay(date, depDate);
+                        final isRet =
+                            retDate != null &&
+                            DateUtils.isSameDay(date, retDate);
                         final range = inRange(date);
-                        final past = date.isBefore(DateTime.now().subtract(const Duration(days: 1)));
+                        final past = date.isBefore(
+                          DateTime.now().subtract(const Duration(days: 1)),
+                        );
                         return Expanded(
                           child: GestureDetector(
                             onTap: () => onTap(date),
                             child: Container(
                               height: 52,
                               // ignore: deprecated_member_use
-                              color: range ? Colors.green.withOpacity(0.12) : Colors.transparent,
+                              color: range
+                                  // ignore: deprecated_member_use
+                                  ? Colors.green.withOpacity(0.12)
+                                  : Colors.transparent,
                               child: Center(
                                 child: Container(
                                   width: 40,
                                   height: 40,
                                   decoration: BoxDecoration(
-                                    color: (isDep || isRet) ? GuzoTheme.primaryGreen : Colors.transparent,
+                                    color: (isDep || isRet)
+                                        ? GuzoTheme.primaryGreen
+                                        : Colors.transparent,
                                     borderRadius: BorderRadius.circular(6),
                                   ),
                                   child: Center(
-                                    child: Text('$day',
-                                        style: TextStyle(
-                                          fontSize: 15,
-                                          fontWeight: FontWeight.bold,
-                                          color: past
-                                              ? Colors.grey.shade400
-                                              : (isDep || isRet)
-                                                  ? Colors.white
-                                                  : Theme.of(ctx).textTheme.bodyLarge?.color,
-                                        )),
+                                    child: Text(
+                                      '$day',
+                                      style: TextStyle(
+                                        fontSize: 15,
+                                        fontWeight: FontWeight.bold,
+                                        color: past
+                                            ? Colors.grey.shade400
+                                            : (isDep || isRet)
+                                            ? Colors.white
+                                            : Theme.of(
+                                                ctx,
+                                              ).textTheme.bodyLarge?.color,
+                                      ),
+                                    ),
                                   ),
                                 ),
                               ),
@@ -484,8 +405,14 @@ class _FlightsPageState extends State<FlightsPage> {
               actions: [
                 TextButton(
                   onPressed: () => Get.back(),
-                  child:  Text('Cancel',
-                      style: TextStyle(color: GuzoTheme.primaryGreen, fontSize: 16, fontWeight: FontWeight.bold)),
+                  child: Text(
+                    'Cancel',
+                    style: TextStyle(
+                      color: GuzoTheme.primaryGreen,
+                      fontSize: 16,
+                      fontWeight: FontWeight.bold,
+                    ),
+                  ),
                 ),
               ],
             ),
@@ -495,8 +422,13 @@ class _FlightsPageState extends State<FlightsPage> {
                   padding: EdgeInsets.symmetric(horizontal: 20),
                   child: Align(
                     alignment: Alignment.centerLeft,
-                    child: Text('When?',
-                        style: TextStyle(fontSize: 32, fontWeight: FontWeight.bold)),
+                    child: Text(
+                      'When?',
+                      style: TextStyle(
+                        fontSize: 32,
+                        fontWeight: FontWeight.bold,
+                      ),
+                    ),
                   ),
                 ),
                 const SizedBox(height: 8),
@@ -505,12 +437,20 @@ class _FlightsPageState extends State<FlightsPage> {
                   child: Row(
                     mainAxisAlignment: MainAxisAlignment.spaceAround,
                     children: ['Sun', 'Mon', 'Tue', 'Wed', 'Thu', 'Fri', 'Sat']
-                        .map((d) => SizedBox(
-                              width: 42,
-                              child: Center(
-                                  child: Text(d,
-                                      style: const TextStyle(color: Colors.grey, fontSize: 13))),
-                            ))
+                        .map(
+                          (d) => SizedBox(
+                            width: 42,
+                            child: Center(
+                              child: Text(
+                                d,
+                                style: const TextStyle(
+                                  color: Colors.grey,
+                                  fontSize: 13,
+                                ),
+                              ),
+                            ),
+                          ),
+                        )
                         .toList(),
                   ),
                 ),
@@ -525,16 +465,22 @@ class _FlightsPageState extends State<FlightsPage> {
                   padding: const EdgeInsets.fromLTRB(16, 12, 16, 32),
                   decoration: BoxDecoration(
                     color: Theme.of(ctx).cardColor,
-                    border: Border(top: BorderSide(color: Colors.grey.shade200)),
+                    border: Border(
+                      top: BorderSide(color: Colors.grey.shade200),
+                    ),
                   ),
                   child: Column(
                     mainAxisSize: MainAxisSize.min,
                     children: [
                       Row(
                         children: [
-                          Expanded(child: _pickerDateBox('Departure date', depDate)),
+                          Expanded(
+                            child: _pickerDateBox('Departure date', depDate),
+                          ),
                           const SizedBox(width: 12),
-                          Expanded(child: _pickerDateBox('Return date', retDate)),
+                          Expanded(
+                            child: _pickerDateBox('Return date', retDate),
+                          ),
                         ],
                       ),
                       const SizedBox(height: 12),
@@ -545,16 +491,23 @@ class _FlightsPageState extends State<FlightsPage> {
                           style: ElevatedButton.styleFrom(
                             backgroundColor: GuzoTheme.primaryGreen,
                             disabledBackgroundColor: Colors.grey.shade300,
-                            shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(8)),
+                            shape: RoundedRectangleBorder(
+                              borderRadius: BorderRadius.circular(8),
+                            ),
                           ),
                           onPressed: depDate != null && retDate != null
                               ? () {
-                                  controller.updateDateRange(depDate!, retDate!);
+                                  controller.updateDateRange(
+                                    depDate!,
+                                    retDate!,
+                                  );
                                   Get.back();
                                 }
                               : null,
-                          child: const Text('Done',
-                              style: TextStyle(color: Colors.white, fontSize: 18)),
+                          child: const Text(
+                            'Done',
+                            style: TextStyle(color: Colors.white, fontSize: 18),
+                          ),
                         ),
                       ),
                     ],
@@ -573,7 +526,10 @@ class _FlightsPageState extends State<FlightsPage> {
     return Column(
       crossAxisAlignment: CrossAxisAlignment.start,
       children: [
-        Text(label, style: const TextStyle(fontSize: 13, fontWeight: FontWeight.w500)),
+        Text(
+          label,
+          style: const TextStyle(fontSize: 13, fontWeight: FontWeight.w500),
+        ),
         const SizedBox(height: 6),
         Container(
           padding: const EdgeInsets.symmetric(horizontal: 10, vertical: 12),
@@ -583,14 +539,22 @@ class _FlightsPageState extends State<FlightsPage> {
           ),
           child: Row(
             children: [
-              const Icon(Icons.calendar_today_outlined, size: 16, color: Colors.grey),
+              const Icon(
+                Icons.calendar_today_outlined,
+                size: 16,
+                color: Colors.grey,
+              ),
               const SizedBox(width: 8),
               Text(
                 date == null ? '--' : DateFormat('EEE, MMM d').format(date),
                 style: TextStyle(
                   fontSize: 13,
-                  color: date == null ? Colors.grey : Theme.of(context).textTheme.bodyLarge?.color,
-                  fontWeight: date == null ? FontWeight.normal : FontWeight.w500,
+                  color: date == null
+                      ? Colors.grey
+                      : Theme.of(context).textTheme.bodyLarge?.color,
+                  fontWeight: date == null
+                      ? FontWeight.normal
+                      : FontWeight.w500,
                 ),
               ),
             ],
@@ -599,8 +563,6 @@ class _FlightsPageState extends State<FlightsPage> {
       ],
     );
   }
-
-
 
   Widget _buildAddFlightButton(FlightDataController controller) {
     return InkWell(
@@ -695,8 +657,7 @@ class _FlightsPageState extends State<FlightsPage> {
     return Row(
       children: [
         SizedBox(width: 20),
-        Container(height: 45, width: 2,
-            color: Theme.of(context).dividerColor),
+        Container(height: 45, width: 2, color: Theme.of(context).dividerColor),
         const Expanded(child: Divider(indent: 55, endIndent: 10)),
         IconButton(
           onPressed: () => apicontroller.toggleSort(),
@@ -823,35 +784,4 @@ class _FlightsPageState extends State<FlightsPage> {
       ],
     ),
   );
-
-  Widget _buildBottomNav(FlightDataController controller) {
-    return BottomNavigationBar(
-      currentIndex: controller.selectedIndex.value,
-      onTap: (i) => controller.updateIndex(i),
-      type: BottomNavigationBarType.fixed,
-      selectedItemColor: const Color(0xFF0071C2),
-      backgroundColor: Theme.of(context).cardColor,
-      items: [
-        const BottomNavigationBarItem(
-          icon: Icon(Icons.search),
-          label: 'Search',
-        ),
-        const BottomNavigationBarItem(
-          icon: Icon(Icons.favorite_border),
-          label: 'Saved',
-        ),
-        const BottomNavigationBarItem(
-          icon: Icon(Icons.book_outlined),
-          label: 'Bookings',
-        ),
-        BottomNavigationBarItem(
-          icon: InkWell(
-            onTap: () => Get.to(() => MyAccountPage()),
-            child: const Icon(Icons.person_outline),
-          ),
-          label: 'Account',
-        ),
-      ],
-    );
-  }
 }

@@ -188,6 +188,7 @@ class _TravelProtectionScreenState extends State<TravelProtectionScreen> {
                 boxShadow: [
                   BoxShadow(
                     blurRadius: 6,
+                    // ignore: deprecated_member_use
                     color: Colors.black.withOpacity(.08),
                   ),
                 ],

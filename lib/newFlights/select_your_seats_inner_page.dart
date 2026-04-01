@@ -36,7 +36,7 @@ class _SelectYourSeatsInnerPageState extends State<SelectYourSeatsInnerPage> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      backgroundColor: Colors.white,
+      backgroundColor: Theme.of(context).scaffoldBackgroundColor,
       appBar: AppBar(
         backgroundColor: GuzoTheme.primaryGreen,
         elevation: 0,
@@ -125,7 +125,7 @@ class _SelectYourSeatsInnerPageState extends State<SelectYourSeatsInnerPage> {
               borderRadius: BorderRadius.circular(4),
               border: border,
             ),
-            child: isIcon ? Icon(icon, size: 16, color: Colors.black54) : null,
+            child: isIcon ? Icon(icon, size: 16) : null,
           ),
           const SizedBox(width: 16),
           Text(text, style: const TextStyle(fontSize: 15)),
@@ -176,7 +176,7 @@ class _SelectYourSeatsInnerPageState extends State<SelectYourSeatsInnerPage> {
             child: Center(
               child: Text(
                 "$rowNum",
-                style: const TextStyle(color: Colors.black, fontSize: 13),
+                style: const TextStyle(color: null, fontSize: 13),
               ),
             ),
           ),
@@ -257,7 +257,7 @@ class _SelectYourSeatsInnerPageState extends State<SelectYourSeatsInnerPage> {
     return Container(
       padding: const EdgeInsets.all(20),
       decoration: BoxDecoration(
-        color: Colors.white,
+        color: Theme.of(context).cardColor,
         boxShadow: const [
           BoxShadow(
             color: Colors.black12,
@@ -283,7 +283,7 @@ class _SelectYourSeatsInnerPageState extends State<SelectYourSeatsInnerPage> {
                 InkWell(
                   onTap: () => Get.bottomSheet(
                     _buildOverviewSheet(),
-                    backgroundColor: Colors.white,
+                    backgroundColor: Theme.of(context).cardColor,
                     isScrollControlled: true,
                   ),
                   child: const Text(
@@ -323,9 +323,9 @@ class _SelectYourSeatsInnerPageState extends State<SelectYourSeatsInnerPage> {
                                   duration: const Duration(milliseconds: 0),
                                   height: priceDetailSelected ? 815 : 615,
                                   padding: const EdgeInsets.all(20),
-                                  decoration: const BoxDecoration(
-                                    color: Colors.white,
-                                    borderRadius: BorderRadius.vertical(
+                                  decoration: BoxDecoration(
+                                    color: Theme.of(context).cardColor,
+                                    borderRadius: const BorderRadius.vertical(
                                       top: Radius.circular(20),
                                     ),
                                   ),
@@ -390,7 +390,7 @@ class _SelectYourSeatsInnerPageState extends State<SelectYourSeatsInnerPage> {
                                                 priceDetailSelected
                                                     ? Icons.keyboard_arrow_up
                                                     : Icons.keyboard_arrow_down,
-                                                color: Colors.black54,
+                                                color: Colors.grey,
                                               ),
                                             ],
                                           ),
@@ -451,7 +451,7 @@ class _SelectYourSeatsInnerPageState extends State<SelectYourSeatsInnerPage> {
                                                 "Flexible ticket",
                                                 style: TextStyle(
                                                   fontSize: 15,
-                                                  color: Colors.grey[600],
+                                                  color: Colors.grey,
                                                 ),
                                               ),
                                               SizedBox(height: 15),
@@ -460,7 +460,7 @@ class _SelectYourSeatsInnerPageState extends State<SelectYourSeatsInnerPage> {
                                                 "Travel protection",
                                                 style: TextStyle(
                                                   fontSize: 15,
-                                                  color: Colors.grey[600],
+                                                  color: Colors.grey,
                                                 ),
                                               ),
                                             ],
@@ -514,7 +514,7 @@ class _SelectYourSeatsInnerPageState extends State<SelectYourSeatsInnerPage> {
                                                 "Guzo.com pays",
                                                 style: TextStyle(
                                                   fontSize: 15,
-                                                  color: Colors.grey[600],
+                                                  color: Colors.grey,
                                                 ),
                                               ),
                                             ],
@@ -559,7 +559,7 @@ class _SelectYourSeatsInnerPageState extends State<SelectYourSeatsInnerPage> {
                                                 "Includes taxes and fees",
                                                 style: TextStyle(
                                                   fontSize: 15,
-                                                  color: Colors.grey[600],
+                                                  color: Colors.grey,
                                                 ),
                                               ),
                                               SizedBox(height: 15),
@@ -677,7 +677,7 @@ class _SelectYourSeatsInnerPageState extends State<SelectYourSeatsInnerPage> {
       child: Row(
         mainAxisAlignment: MainAxisAlignment.spaceBetween,
         children: [
-          Text(label, style: TextStyle(color: Colors.grey[700], fontSize: 15)),
+          Text(label, style: TextStyle(color: Colors.grey, fontSize: 15)),
           Text(price, style: const TextStyle(fontSize: 15)),
         ],
       ),
@@ -733,3 +733,4 @@ class _SelectYourSeatsInnerPageState extends State<SelectYourSeatsInnerPage> {
     );
   }
 }
+

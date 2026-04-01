@@ -129,6 +129,7 @@ class _SettingDevicePreferancePageState
                 const SizedBox(width: 8),
                 Switch(
                   value: _isDark,
+                  // ignore: deprecated_member_use
                   activeColor: GuzoTheme.primaryGreen,
                   onChanged: _toggleTheme,
                 ),

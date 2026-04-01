@@ -11,8 +11,6 @@ import 'package:get/get.dart';
 
 class PersonalDetailsPage extends StatelessWidget {
   const PersonalDetailsPage({super.key});
-  
-   get context => null;
 
   @override
   Widget build(BuildContext context) {
@@ -29,6 +27,7 @@ class PersonalDetailsPage extends StatelessWidget {
         ),
         title: const Text(
           'Personal details',
+          overflow: TextOverflow.ellipsis,
           style: TextStyle(color: Colors.white, fontWeight: FontWeight.bold),
         ),
       ),
@@ -246,7 +245,7 @@ class PersonalDetailsPage extends StatelessWidget {
                 ],
               ),
             ),
-              Icon(Icons.chevron_right, color: Theme.of(context).iconTheme.color),
+              const Icon(Icons.chevron_right),
           ],
         ),
       ),

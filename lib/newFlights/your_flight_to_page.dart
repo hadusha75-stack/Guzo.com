@@ -150,6 +150,7 @@ class _YourFlightToPageState extends State<YourFlightToPage> {
                                       const SizedBox(height: 5),
                                       Container(width: 1.5, height: 110, color: Colors.grey.shade300),
                                       const SizedBox(height: 5),
+                                      // ignore: deprecated_member_use
                                       Icon(Icons.circle_outlined, size: 18, color: Theme.of(context).iconTheme.color?.withOpacity(0.5)),
                                     ],
                                   ),

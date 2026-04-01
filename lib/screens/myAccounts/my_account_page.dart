@@ -60,7 +60,7 @@ class _MyAccountPageState extends State<MyAccountPage> {
                 ),
                 const Text(
                   'Genius Level 1',
-                  style: const TextStyle(
+                  style:  TextStyle(
                     color: Colors.white,
                     fontSize: 14,
                     fontWeight: FontWeight.bold,
